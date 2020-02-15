@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GradConnect.Models
 {
-    public class UserRole : IdentityRole
+    public class Role : IdentityRole
     {
 
     }
