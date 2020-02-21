@@ -1,8 +1,18 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace GradConnect.Models
 {
     public class Portfolio
     {
-        public int Id { get; set; }
+        public Portfolio(int id, string description, int photoId, string userId) 
+        {
+            this.Id = id;
+                this.Description = description;
+                this.PhotoId = photoId;
+                this.UserId = userId;
+               
+        }
+                public int Id { get; set; }
         public string Description { get; set; }
 
         //Navigational properties

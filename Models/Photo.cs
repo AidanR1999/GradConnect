@@ -11,10 +11,5 @@ namespace GradConnect.Models
         public string Link { get; set; }
         public DateTime? DateUploaded { get; set; }
 
-        //Naviagtional properties
-        [InverseProperty("User")]
-        public string UserId { get; set; }
-        public virtual User User { get; set; }
-
     }
 }

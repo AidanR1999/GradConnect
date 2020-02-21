@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace GradConnect.Models
 {
     public class Sponsored : Post
