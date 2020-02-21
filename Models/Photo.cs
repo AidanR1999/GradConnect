@@ -10,10 +10,10 @@ namespace GradConnect.Models
         public int Id { get; set; }
         public string Link { get; set; }
         public DateTime? DateUploaded { get; set; }
+
         //Naviagtional properties
-        
+        [InverseProperty("User")]
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
     }

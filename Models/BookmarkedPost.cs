@@ -5,10 +5,11 @@ namespace GradConnect.Models
 {
     public class BookmarkedPost
     {
-        [Key, Column(Order = 0)]
+        [InverseProperty("User")]
         public string UserId { get; set; }
         public virtual User User { get; set; }
-        [Key, Column(Order = 1)]
+
+        [InverseProperty("Post")]
         public int PostId { get; set; }
         public virtual Post Post { get; set; }
     }

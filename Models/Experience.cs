@@ -9,6 +9,7 @@ namespace GradConnect.Models
         public string Description { get; set; }
         public string EmployerName { get; set; }
 
+        [InverseProperty("User")]
         public string UserId { get; set; }
         public virtual User User { get; set; }
     }

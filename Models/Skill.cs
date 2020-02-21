@@ -12,6 +12,7 @@ namespace GradConnect.Models
             PostSkills = new List<PostSkill>();
             JobSkills = new List<JobSkill>();
         }
+        
         //Navigational properties
         public IEnumerable<UserSkill> UserSkills { get; set; }
         public IEnumerable<PostSkill> PostSkills { get; set; }

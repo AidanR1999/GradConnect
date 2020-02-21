@@ -9,6 +9,7 @@ namespace GradConnect.Models
         public string Content { get; set; }
 
         //Navigational properties
+        [InverseProperty("User")]
         public string UserId { get; set; }
         public virtual User User { get; set; }
     }

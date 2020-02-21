@@ -8,7 +8,6 @@ namespace GradConnect.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public int LogoId { get; set; }
 
         //Navigational props
         public IEnumerable<Job> Jobs { get; set; }

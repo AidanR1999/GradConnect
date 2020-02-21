@@ -23,10 +23,12 @@ namespace GradConnect.Models
         //Naviagtional properties        
         public IEnumerable<Photo> Photos { get; set; }
         public IEnumerable<BookmarkedPost> BookmarkedPosts { get; set; }
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
         public IEnumerable<PostSkill> PostSkills { get; set; }
+
+        [InverseProperty("User")]
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
+        
 
     }
 }
