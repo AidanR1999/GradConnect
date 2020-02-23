@@ -35,15 +35,14 @@ namespace GradConnect.Models
         public IEnumerable<Experience> Experiences { get; set; }
         public IEnumerable<CV> CVs { get; set; }
         public IEnumerable<Portfolio> Portfolios { get; set; }
-
-        public int? PhotoId { get; set; }
-        [ForeignKey("PhotoId")]
-        public virtual Photo Photo { get; set; }
         public IEnumerable<UserSkill> UserSkills { get; set; }
         public IEnumerable<BookmarkedPost> BookmarkedPosts { get; set; }
         public IEnumerable<Submission> Submissions { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<Post> Posts { get; set; }
 
+        [InverseProperty("Photo")]
+        public int? PhotoId { get; set; }
+        public virtual Photo Photo { get; set; }
     }
 }
