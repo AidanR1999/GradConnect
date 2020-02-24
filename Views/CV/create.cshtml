@@ -1,0 +1,41 @@
+@model GradConnect.Models.CV
+@{
+    ViewData["Title"] = "Cv create Page";
+}
+
+<h2 class="text-info"> Create CV</h2>
+<form method="POST" asp-action="Create">
+    <div class="p-4 border rounded" style="height : 100%;">
+        <div class="col-4 border rounded" style="float: left; height = 100%;">
+            <div class="col-12"><b>Details</b></div>
+            <div class="col-12">Experience</div>
+            <div class="col-12">Skills</div>           
+        </div>   
+        <div></div>
+        <div class="col-8">
+             <div class="col-12">
+                 <label>First name</label>
+                 <input type="text"></input>
+             </div>
+             <div class="col-12">
+                 <label>Last name</label>
+                 <input type="text"></input>
+             </div>
+             <div class="col-12">
+                 <label>Email</label>
+                 <input type="text"></input>
+             </div>
+             <div class="col-12">
+                 <label>Phone number</label>
+                 <input type="text"></input>
+             </div>
+             <div class="col-12">
+                 <label>Address</label>
+                 <input type="text"></input>
+             </div>
+            
+        </div>
+    </div>
+
+
+</form>
