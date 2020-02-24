@@ -17,6 +17,8 @@ namespace GradConnect.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //CONFIGURE INHERITANCE RELATIONSHIP
             modelBuilder.Entity<Post>()
                 .HasDiscriminator<string>("post_type")

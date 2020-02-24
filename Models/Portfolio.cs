@@ -12,7 +12,7 @@ namespace GradConnect.Models
                 this.UserId = userId;
                
         }
-                public int Id { get; set; }
+        public int Id { get; set; }
         public string Description { get; set; }
 
         //Navigational properties
