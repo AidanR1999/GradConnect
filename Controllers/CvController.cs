@@ -27,13 +27,8 @@ namespace GradConnect.Controllers
         }
         [HttpPost]
         [ActionName("Create")]
-        public async Task<IActionResult> CreateCv(CreateCvViewModel model)
+        public async Task<IActionResult> CreateCv(CV cv)
         {
-            var cv = new CV
-            {
-                Address = model.Address
-            };
-
             await _context.CVs.AddAsync(cv);
             await _context.SaveChangesAsync();
             return View();
