@@ -1,4 +1,5 @@
 app.db
 obj/
 .vs/
+bin/
 
