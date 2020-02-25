@@ -51,6 +51,26 @@ namespace GradConnect.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+            return View(cv);
+        }
+        [HttpPost]
+        [ActionName("Edit")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if(ModelState.IsValid)
+            {
+                
+            }
+            return View();
+        }
 
 
     }
