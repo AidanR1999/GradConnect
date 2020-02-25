@@ -3,39 +3,138 @@
     ViewData["Title"] = "Cv create Page";
 }
 
+
+
 <h2 class="text-info"> Create CV</h2>
 <form method="POST" asp-action="Create">
-    <div class="p-4 border rounded" style="height : 100%;">
-        <div class="col-4 border rounded" style="float: left; height = 100%;">
-            <div class="col-12"><b>Details</b></div>
-            <div class="col-12">Experience</div>
-            <div class="col-12">Skills</div>           
-        </div>   
-        <div></div>
-        <div class="col-8">
-             <div class="col-12">
-                 <label>First name</label>
-                 <input type="text"></input>
-             </div>
-             <div class="col-12">
-                 <label>Last name</label>
-                 <input type="text"></input>
-             </div>
-             <div class="col-12">
-                 <label>Email</label>
-                 <input type="text"></input>
-             </div>
-             <div class="col-12">
-                 <label>Phone number</label>
-                 <input type="text"></input>
-             </div>
-             <div class="col-12">
-                 <label>Address</label>
-                 <input type="text"></input>
-             </div>
-            
+   <div class="p-4 border rounded">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="CvName"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="CvName">
+            </div>
+            <span asp-validation-for="CvName" class="text-danger"></span>
+        </div>       
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="FirstName"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="FirstName">
+            </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="LastName"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="LastName" type="text"/>
+            </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="PhoneNumber"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="PhoneNumber"/>
+            </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Street"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Street"/>
+            </div>
+            <span asp-validation-for="Street" class="text-danger"></span>
+        </div>        
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="City"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="City" />
+            </div>
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Email"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Email" />
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Postcode"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Postcode" />
+            </div>
+            <span asp-validation-for="Postcode" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="DateOfBirth"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="DateOfBirth" />
+            </div>
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Experience"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Experience" />
+            </div>
+            <span asp-validation-for="Experience" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="PersonalStatement"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="PersonalStatement" />
+            </div>
+            <span asp-validation-for="PersonalStatement" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Education"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Education" />
+            </div>
+            <span asp-validation-for="Education" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="References"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="References" />
+            </div>
+            <span asp-validation-for="References" class="text-danger"></span>
+        </div>
+        
+        <br />
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Create" />
+            <a asp-action="Index" class="btn btn-primary">Back to List</a>
         </div>
     </div>
-
-
 </form>

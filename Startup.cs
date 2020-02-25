@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GradConnect.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace GradConnect
 {
@@ -35,6 +36,8 @@ namespace GradConnect
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            //thanks to this we can get the logged user ID
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

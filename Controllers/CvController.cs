@@ -8,21 +8,29 @@ using Microsoft.Extensions.Logging;
 using GradConnect.Models;
 using GradConnect.ViewModels;
 using GradConnect.Data;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace GradConnect.Controllers
 {
     public class CvController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CvController(ApplicationDbContext context)
+        public CvController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //var user = await _context.Users.Include(x => x.CVs).FirstOrDefaultAsync(x => x.Id == userId);
+            var allCvs = await _context.CVs.Where(x => x.UserId == userId).ToListAsync();
+            return View(allCvs);
         }
 
         public IActionResult Create()
@@ -33,9 +41,15 @@ namespace GradConnect.Controllers
         [ActionName("Create")]
         public async Task<IActionResult> CreateCv(CV cv)
         {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            cv.UserId = userId;
+            cv.User = user;
+            user.CVs.Append(cv);
+            _context.Users.Update(user);
             await _context.CVs.AddAsync(cv);
             await _context.SaveChangesAsync();
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
 

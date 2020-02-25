@@ -1,7 +1,27 @@
+@model IEnumerable<GradConnect.Models.CV>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">CV index page</h1>    
+   
 </div>
+ <a class="btn btn-primary" href="cv/create" role="button">Create</a>
+
+ <div>
+     <table class="table table-striped">
+        <tr class="table-info">
+            CV title
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.CvName)
+                </td>
+               
+            </tr>
+        }
+     </table>   
+ </div>
