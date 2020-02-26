@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class updateCv : Migration
+    public partial class updatedModules : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,19 +33,6 @@ namespace GradConnect.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,30 +75,6 @@ namespace GradConnect.Migrations
                         principalTable: "Employers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobSkills",
-                columns: table => new
-                {
-                    JobId = table.Column<int>(nullable: false),
-                    SkillId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobSkills", x => new { x.JobId, x.SkillId });
-                    table.ForeignKey(
-                        name: "FK_JobSkills_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JobSkills_Skills_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skills",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,15 +201,124 @@ namespace GradConnect.Migrations
                     Email = table.Column<string>(nullable: true),
                     Postcode = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
-                    Experience = table.Column<string>(nullable: true),
                     PersonalStatement = table.Column<string>(nullable: true),
-                    Education = table.Column<string>(nullable: true),
-                    References = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CVs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "References",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    CvId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_References", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_References_CVs_CvId",
+                        column: x => x.CvId,
+                        principalTable: "CVs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Skills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true),
+                    CVId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Skills_CVs_CVId",
+                        column: x => x.CVId,
+                        principalTable: "CVs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobSkills",
+                columns: table => new
+                {
+                    JobId = table.Column<int>(nullable: false),
+                    SkillId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobSkills", x => new { x.JobId, x.SkillId });
+                    table.ForeignKey(
+                        name: "FK_JobSkills_Jobs_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Jobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobSkills_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Educations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    YearStart = table.Column<string>(nullable: true),
+                    YearEnd = table.Column<string>(nullable: true),
+                    CvId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Educations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Educations_CVs_CvId",
+                        column: x => x.CvId,
+                        principalTable: "CVs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Modules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(nullable: true),
+                    Grade = table.Column<string>(nullable: true),
+                    EducationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Modules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Modules_Educations_EducationId",
+                        column: x => x.EducationId,
+                        principalTable: "Educations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,11 +329,18 @@ namespace GradConnect.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Description = table.Column<string>(nullable: true),
                     EmployerName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    CvId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Experiences", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Experiences_CVs_CvId",
+                        column: x => x.CvId,
+                        principalTable: "CVs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -507,6 +586,21 @@ namespace GradConnect.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Educations_CvId",
+                table: "Educations",
+                column: "CvId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Educations_UserId",
+                table: "Educations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Experiences_CvId",
+                table: "Experiences",
+                column: "CvId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Experiences_UserId",
                 table: "Experiences",
                 column: "UserId");
@@ -520,6 +614,11 @@ namespace GradConnect.Migrations
                 name: "IX_JobSkills_SkillId",
                 table: "JobSkills",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Modules_EducationId",
+                table: "Modules",
+                column: "EducationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_PostId",
@@ -555,6 +654,16 @@ namespace GradConnect.Migrations
                 name: "IX_PostSkills_SkillId",
                 table: "PostSkills",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_References_CvId",
+                table: "References",
+                column: "CvId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_CVId",
+                table: "Skills",
+                column: "CVId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_ChallengeId",
@@ -657,6 +766,14 @@ namespace GradConnect.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Educations_AspNetUsers_UserId",
+                table: "Educations",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Experiences_AspNetUsers_UserId",
                 table: "Experiences",
                 column: "UserId",
@@ -717,19 +834,22 @@ namespace GradConnect.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "CVs");
-
-            migrationBuilder.DropTable(
                 name: "Experiences");
 
             migrationBuilder.DropTable(
                 name: "JobSkills");
 
             migrationBuilder.DropTable(
+                name: "Modules");
+
+            migrationBuilder.DropTable(
                 name: "Portfolios");
 
             migrationBuilder.DropTable(
                 name: "PostSkills");
+
+            migrationBuilder.DropTable(
+                name: "References");
 
             migrationBuilder.DropTable(
                 name: "Submissions");
@@ -744,10 +864,16 @@ namespace GradConnect.Migrations
                 name: "Jobs");
 
             migrationBuilder.DropTable(
+                name: "Educations");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Skills");
+
+            migrationBuilder.DropTable(
+                name: "CVs");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

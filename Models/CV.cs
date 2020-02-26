@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,16 +17,25 @@ namespace GradConnect.Models
         public string City { get; set; }
         public string Email { get; set; }
         public string Postcode { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string Experience { get; set; }
-        public string  PersonalStatement { get; set; }
-        public string Education { get; set; }
-        public string References { get; set; }
-    
+        public DateTime DateOfBirth { get; set; }        
+        public string  PersonalStatement { get; set; } 
+
+        public CV()
+        {
+            Experiences = new List<Experience>();
+            Educations = new List<Education>();
+            References = new List<Reference>();
+            Skills = new List<Skill>();
+        }
 
         //Navigational properties
         [InverseProperty("User")]
         public string UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual User User { get; set; }        
+        public IEnumerable<Experience> Experiences { get; set; }
+        public IEnumerable<Education> Educations { get; set; }
+        public IEnumerable<Reference> References { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
+        
     }
 }

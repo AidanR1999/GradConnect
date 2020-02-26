@@ -29,6 +29,7 @@ namespace GradConnect.Models
             Submissions = new List<Submission>();
             Comments = new List<Comment>();
             Posts = new List<Post>();
+            Educations = new List<Education>();
         }
         //Naviagtional properties
         public IEnumerable<UserRole> UserRoles { get; set; }
@@ -40,6 +41,7 @@ namespace GradConnect.Models
         public IEnumerable<Submission> Submissions { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<Post> Posts { get; set; }
+        public IEnumerable<Education> Educations { get; set; }
 
         [InverseProperty("Photo")]
         public int? PhotoId { get; set; }

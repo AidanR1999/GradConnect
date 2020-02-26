@@ -41,9 +41,8 @@ namespace GradConnect.Controllers
         [ActionName("Create")]
         public async Task<IActionResult> CreateCv(CV cv)
         {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            cv.UserId = userId;
+            var user = GetUser();
+            cv.UserId = user.Id;
             cv.User = user;
             user.CVs.Append(cv);
             _context.Users.Update(user);
@@ -72,6 +71,12 @@ namespace GradConnect.Controllers
             return View();
         }
 
+        public User GetUser()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user =  _context.Users.FirstOrDefault(x => x.Id == userId);
+            return user;
+        }
 
     }
 }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200225183618_updateCv")]
-    partial class updateCv
+    [Migration("20200226143236_updatedModules")]
+    partial class updatedModules
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,13 +48,7 @@ namespace GradConnect.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Education")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Experience")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
@@ -70,9 +64,6 @@ namespace GradConnect.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Postcode")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("References")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Street")
@@ -112,6 +103,39 @@ namespace GradConnect.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("GradConnect.Models.Education", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CvId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("YearEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("YearStart")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CvId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Educations");
+                });
+
             modelBuilder.Entity("GradConnect.Models.Employer", b =>
                 {
                     b.Property<int>("Id")
@@ -132,6 +156,9 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CvId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -142,6 +169,8 @@ namespace GradConnect.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CvId");
 
                     b.HasIndex("UserId");
 
@@ -183,6 +212,28 @@ namespace GradConnect.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("JobSkills");
+                });
+
+            modelBuilder.Entity("GradConnect.Models.Module", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EducationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EducationId");
+
+                    b.ToTable("Modules");
                 });
 
             modelBuilder.Entity("GradConnect.Models.Photo", b =>
@@ -280,16 +331,49 @@ namespace GradConnect.Migrations
                     b.ToTable("PostSkills");
                 });
 
+            modelBuilder.Entity("GradConnect.Models.Reference", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CvId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CvId");
+
+                    b.ToTable("References");
+                });
+
             modelBuilder.Entity("GradConnect.Models.Skill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CVId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CVId");
 
                     b.ToTable("Skills");
                 });
@@ -666,8 +750,27 @@ namespace GradConnect.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GradConnect.Models.Education", b =>
+                {
+                    b.HasOne("GradConnect.Models.CV", "Cv")
+                        .WithMany("Educations")
+                        .HasForeignKey("CvId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GradConnect.Models.User", "User")
+                        .WithMany("Educations")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("GradConnect.Models.Experience", b =>
                 {
+                    b.HasOne("GradConnect.Models.CV", "Cv")
+                        .WithMany("Experiences")
+                        .HasForeignKey("CvId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GradConnect.Models.User", "User")
                         .WithMany("Experiences")
                         .HasForeignKey("UserId");
@@ -691,6 +794,15 @@ namespace GradConnect.Migrations
                     b.HasOne("GradConnect.Models.Skill", "Skill")
                         .WithMany("JobSkills")
                         .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GradConnect.Models.Module", b =>
+                {
+                    b.HasOne("GradConnect.Models.Education", "Education")
+                        .WithMany("Modules")
+                        .HasForeignKey("EducationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -735,6 +847,22 @@ namespace GradConnect.Migrations
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GradConnect.Models.Reference", b =>
+                {
+                    b.HasOne("GradConnect.Models.CV", "Cv")
+                        .WithMany("References")
+                        .HasForeignKey("CvId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GradConnect.Models.Skill", b =>
+                {
+                    b.HasOne("GradConnect.Models.CV", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("GradConnect.Models.Submission", b =>

@@ -94,15 +94,7 @@
             </div>
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="Experience"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="Experience" />
-            </div>
-            <span asp-validation-for="Experience" class="text-danger"></span>
-        </div>
+        
         <div class="form-group row">
             <div class="col-2">
                 <label asp-for="PersonalStatement"></label>
@@ -111,26 +103,8 @@
                 <input type="text" asp-for="PersonalStatement" />
             </div>
             <span asp-validation-for="PersonalStatement" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="Education"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="Education" />
-            </div>
-            <span asp-validation-for="Education" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="References"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="References" />
-            </div>
-            <span asp-validation-for="References" class="text-danger"></span>
-        </div>
-        
+        </div>      
+
         <br />
         <div class="form-group">
             <input type="submit" class="btn btn-success" value="Create" />

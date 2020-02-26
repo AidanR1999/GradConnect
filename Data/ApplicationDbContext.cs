@@ -104,6 +104,9 @@ namespace GradConnect.Data
         public DbSet<CV> CVs { get; set; }
         public DbSet<Employer> Employers { get; set; }
         public DbSet<Experience> Experiences { get; set; }
+        public DbSet<Education> Educations { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Reference> References { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobSkill> JobSkills { get; set; }
         public DbSet<Photo> Photos { get; set; }

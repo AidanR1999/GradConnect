@@ -20,6 +20,9 @@
                 <td>
                     @Html.DisplayFor(m => item.CvName)
                 </td>
+                <td>
+                    <partial name="_TableButtonPartial" model="item.Id" />
+                </td>
                
             </tr>
         }
