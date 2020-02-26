@@ -6,8 +6,8 @@ namespace GradConnect.Models
     public class Education
     {
         public int Id { get; set; }
-        public string Description { get; set; }
-        public string Name { get; set; }
+        public string Institution { get; set; }
+        public string CourseName { get; set; }
         public string YearStart { get; set; }
         public string YearEnd { get; set; }
         public IEnumerable<Module> Modules { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class updatedModules : Migration
+    public partial class updateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

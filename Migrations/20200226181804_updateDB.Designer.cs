@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200226143236_updatedModules")]
-    partial class updatedModules
+    [Migration("20200226181804_updateDB")]
+    partial class updateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

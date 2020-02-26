@@ -1,4 +1,4 @@
-@model GradConnect.Models.CV
+@model GradConnect.ViewModels.CreateCvViewModel
 @{
     ViewData["Title"] = "Cv create Page";
 }
@@ -7,108 +7,222 @@
 
 <h2 class="text-info"> Create CV</h2>
 <form method="POST" asp-action="Create">
-   <div class="p-4 border rounded">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="CvName"></label>
+    <div class="p-4 border rounded">
+        <div class="row">
+           <div class="col-md-4">
+                <div class="col-md-12"
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Details" aria-expanded="true" aria-controls="Details">Details</button>
+                </div>
+                <div class="col-md-12"
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#PersonalStatement" aria-expanded="false" aria-controls="PersonalStatement">Personal Statement</button>
+                </div>
+                <div class="col-md-12"
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Education" aria-expanded="false" aria-controls="Education">Education</button>
+                </div>
+                <div class="col-md-12"
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Experience" aria-expanded="false" aria-controls="Experience">Experience</button>
+                </div>
+                <div class="col-md-12"    
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Skills" aria-expanded="false" aria-controls="Skills">Skills</button>
+                </div>
+                <div class="col-md-12"    
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#References" aria-expanded="false" aria-controls="References">References</button>
+                </div>              
+           </div>
+           <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="collapse multi-collapse" id="Details">
+                        <div class="card card-body">
+                            <h2 style= "text-align: center;">Details</h2>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="FirstName"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="FirstName">
+                                </div>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="LastName"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="LastName" type="text"/>
+                                </div>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>                         
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="PhoneNumber"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="PhoneNumber"/>
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="Street"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="Street"/>
+                                </div>
+                                <span asp-validation-for="Street" class="text-danger"></span>
+                            </div>        
+
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="City"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="City" />
+                                </div>
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="Email"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="Email" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="Postcode"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="Postcode" />
+                                </div>
+                                <span asp-validation-for="Postcode" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="DateOfBirth"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="DateOfBirth" />
+                                </div>
+                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="collapse multi-collapse" id="PersonalStatement">
+                        <div class="card card-body">
+                            <h2 style= "text-align: center;">Personal Statement</h2>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="PersonalStatement"></label>
+                                </div>
+                                <div class="col-9">
+                                    <textarea rows="4" cols="50" asp-for="PersonalStatement" >
+                                    </textarea>
+                                </div>
+                                <span asp-validation-for="PersonalStatement" class="text-danger"></span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="collapse multi-collapse" id="Education">
+                        <div class="card card-body">
+                            <ul id="eduList" style = "list-style-type: none;">
+                                <li>
+                                    <h2 style= "text-align: center;">Education</h2>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label asp-for="Education.Institution"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" asp-for="Education.Institution" />
+                                        </div>
+                                        <span asp-validation-for="Education.Institution" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label asp-for="Education.CourseName"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" asp-for="Education.CourseName" />
+                                        </div>
+                                        <span asp-validation-for="Education.CourseName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label asp-for="Education.YearStart"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" asp-for="Education.YearStart" />
+                                        </div>
+                                        <span asp-validation-for="Education.YearStart" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label asp-for="Education.YearEnd"></label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" asp-for="Education.YearEnd" />
+                                        </div>
+                                        <span asp-validation-for="Education.YearEnd" class="text-danger"></span>
+                                    </div>
+                                </li>
+                                <hr>
+                                
+                            </ul>
+                            <button type="button" id="btnAdd">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="collapse multi-collapse" id="Experience">
+                        <div class="card card-body">
+                            <h2 style= "text-align: center;">Experience</h2>
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="collapse multi-collapse" id="Skills">
+                        <div class="card card-body">
+                            <h2 style= "text-align: center;">Skills</h2>
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="collapse multi-collapse" id="References">
+                        <div class="card card-body">
+                            <h2 style= "text-align: center;">References</h2>
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-5">
-                <input type="text" asp-for="CvName">
-            </div>
-            <span asp-validation-for="CvName" class="text-danger"></span>
         </div>       
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="FirstName"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="FirstName">
-            </div>
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="LastName"></label>
-            </div>
-            <div class="col-5">
-                <input asp-for="LastName" type="text"/>
-            </div>
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-        
-
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="PhoneNumber"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="PhoneNumber"/>
-            </div>
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="Street"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="Street"/>
-            </div>
-            <span asp-validation-for="Street" class="text-danger"></span>
-        </div>        
-
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="City"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="City" />
-            </div>
-            <span asp-validation-for="City" class="text-danger"></span>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="Email"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="Email" />
-            </div>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="Postcode"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="Postcode" />
-            </div>
-            <span asp-validation-for="Postcode" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="DateOfBirth"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="DateOfBirth" />
-            </div>
-            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-        </div>
-        
-        <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="PersonalStatement"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="PersonalStatement" />
-            </div>
-            <span asp-validation-for="PersonalStatement" class="text-danger"></span>
-        </div>      
-
+            
         <br />
-        <div class="form-group">
-            <input type="submit" class="btn btn-success" value="Create" />
-            <a asp-action="Index" class="btn btn-primary">Back to List</a>
-        </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-success" value="Create" />
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
     </div>
+    </div>    
 </form>
+@section Scripts{
+<script>
+    $(document).ready(function(){ 
+
+    $("#btnAdd").click(function(){
+        $("#eduList").append("<li> ass</li>");
+        $("#eduList").append("<hr>");
+    });
+    });
+</script>
+}

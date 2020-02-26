@@ -39,11 +39,31 @@ namespace GradConnect.Controllers
         }
         [HttpPost]
         [ActionName("Create")]
-        public async Task<IActionResult> CreateCv(CV cv)
+        public async Task<IActionResult> CreateCv(CreateCvViewModel model)
         {
             var user = GetUser();
-            cv.UserId = user.Id;
-            cv.User = user;
+            var cv = new CV
+            {
+                CvName = model.CvName,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserId = user.Id,
+                User = user,
+                Street = model.Street,
+                City = model.City,
+                Postcode = model.Postcode,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                DateOfBirth = model.DateOfBirth,
+                PersonalStatement = model.PersonalStatement,
+                Experiences = model.Experiences,
+                Educations = model.Educations,
+                References = model.References,
+                Skills = model.Skills
+
+            };
+
+
             user.CVs.Append(cv);
             _context.Users.Update(user);
             await _context.CVs.AddAsync(cv);
@@ -56,7 +76,7 @@ namespace GradConnect.Controllers
             {
                 return NotFound();
             }
-            
+
             var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
             return View(cv);
         }
@@ -64,9 +84,9 @@ namespace GradConnect.Controllers
         [ActionName("Edit")]
         public async Task<IActionResult> Edit(int id)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                
+
             }
             return View();
         }
@@ -74,7 +94,7 @@ namespace GradConnect.Controllers
         public User GetUser()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user =  _context.Users.FirstOrDefault(x => x.Id == userId);
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
             return user;
         }
 
