@@ -18,6 +18,8 @@ namespace GradConnect.Models
         public string InstitutionName { get; set; }
         public string CourseName { get; set; }
 
+        //git purposes
+
         public User()
         {
             UserRoles = new List<UserRole>();
