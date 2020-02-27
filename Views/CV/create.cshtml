@@ -1,4 +1,5 @@
 @model GradConnect.ViewModels.CreateCvViewModel
+
 @{
     ViewData["Title"] = "Cv create Page";
 }
@@ -10,31 +11,46 @@
     <div class="p-4 border rounded">
         <div class="row">
            <div class="col-md-4">
-                <div class="col-md-12"
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Details" aria-expanded="true" aria-controls="Details">Details</button>
+                <div class="col-md-12 btn btn-primary"
+                    <button type="button" data-toggle="collapse" data-target="#Details" aria-expanded="true" aria-controls="Details">Details</button>
                 </div>
-                <div class="col-md-12"
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#PersonalStatement" aria-expanded="false" aria-controls="PersonalStatement">Personal Statement</button>
+                <br />
+                <div class="col-md-12 btn btn-primary"
+                    <button type="button" data-toggle="collapse" data-target="#PersonalStatement" aria-expanded="false" aria-controls="PersonalStatement">Personal Statement</button>
                 </div>
-                <div class="col-md-12"
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Education" aria-expanded="false" aria-controls="Education">Education</button>
+                <br />
+                <div class="col-md-12 btn btn-primary"
+                    <button type="button" data-toggle="collapse" data-target="#Education" aria-expanded="false" aria-controls="Education">Education</button>
                 </div>
-                <div class="col-md-12"
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Experience" aria-expanded="false" aria-controls="Experience">Experience</button>
+                <br />
+                <div class="col-md-12 btn btn-primary"
+                    <button type="button" data-toggle="collapse" data-target="#Experience" aria-expanded="false" aria-controls="Experience">Experience</button>
                 </div>
-                <div class="col-md-12"    
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Skills" aria-expanded="false" aria-controls="Skills">Skills</button>
+                <br />
+                <div class="col-md-12 btn btn-primary"    
+                    <button type="button" data-toggle="collapse" data-target="#Skills" aria-expanded="false" aria-controls="Skills">Skills</button>
                 </div>
-                <div class="col-md-12"    
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#References" aria-expanded="false" aria-controls="References">References</button>
-                </div>              
+                <br />
+                <div class="col-md-12 btn btn-primary"    
+                    <button type="button" data-toggle="collapse" data-target="#References" aria-expanded="false" aria-controls="References">References</button>
+                </div> 
+                <br />             
            </div>
            <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="collapse multi-collapse" id="Details">
+                        <div class="collapse" id="Details">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Details</h2>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="CvName"></label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" asp-for="CvName">
+                                </div>
+                                <span asp-validation-for="CvName" class="text-danger"></span>
+                            </div>
                             <div class="form-group row">
                                 <div class="col-3">
                                     <label asp-for="FirstName"></label>
@@ -113,7 +129,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="collapse multi-collapse" id="PersonalStatement">
+                        <div class="collapse" id="PersonalStatement">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Personal Statement</h2>
                             <div class="form-group row">
@@ -130,77 +146,57 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="collapse multi-collapse" id="Education">
+                        <div class="collapse" id="Education">
                         <div class="card card-body">
-                            <ul id="eduList" style = "list-style-type: none;">
-                                <li>
-                                    <h2 style= "text-align: center;">Education</h2>
-                                    <div class="form-group row">
-                                        <div class="col-3">
-                                            <label asp-for="Education.Institution"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input type="text" asp-for="Education.Institution" />
-                                        </div>
-                                        <span asp-validation-for="Education.Institution" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-3">
-                                            <label asp-for="Education.CourseName"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input type="text" asp-for="Education.CourseName" />
-                                        </div>
-                                        <span asp-validation-for="Education.CourseName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-3">
-                                            <label asp-for="Education.YearStart"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input type="text" asp-for="Education.YearStart" />
-                                        </div>
-                                        <span asp-validation-for="Education.YearStart" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-3">
-                                            <label asp-for="Education.YearEnd"></label>
-                                        </div>
-                                        <div class="col-9">
-                                            <input type="text" asp-for="Education.YearEnd" />
-                                        </div>
-                                        <span asp-validation-for="Education.YearEnd" class="text-danger"></span>
-                                    </div>
-                                </li>
-                                <hr>
-                                
-                            </ul>
-                            <button type="button" id="btnAdd">
+                            <h2 style= "text-align: center;">Education</h2>
+                            <div id="EduEditorRows">
+                                <partial name="_EducationEditor" />                                
+                                    
+                            </div>
+                            <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="collapse multi-collapse" id="Experience">
+                        <div class="collapse" id="Experience">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Experience</h2>
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                            <div id="ExpEditorRows">
+                                <partial name="_ExperienceEditor" />                                
+                                    
+                            </div>
+                            <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="collapse multi-collapse" id="Skills">
+                        <div class="collapse" id="Skills">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Skills</h2>
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                            <div id="SkillEditorRows">
+                                <partial name="_SkillsEditor" />                                
+                                    
+                            </div>
+                            <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="collapse multi-collapse" id="References">
+                        <div class="collapse" id="References">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">References</h2>
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                            <div id="RefEditorRows">
+                                <partial name="_ReferencesEditor" />                                
+                                    
+                            </div>
+                            <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         </div>
                     </div>
@@ -217,12 +213,37 @@
 </form>
 @section Scripts{
 <script>
-    $(document).ready(function(){ 
-
-    $("#btnAdd").click(function(){
-        $("#eduList").append("<li> ass</li>");
-        $("#eduList").append("<hr>");
-    });
-    });
+   $("#btnAddEdu").click(function () {
+            $.ajax({
+                url: "/CV/BlankEducation",
+                cache: false,
+                success: function (html) { $("#EduEditorRows").append(html);}
+            });
+            return false;
+        });
+        $("#btnAddExp").click(function () {
+            $.ajax({
+                url: "/CV/BlankExperience",
+                cache: false,
+                success: function (html) { $("#ExpEditorRows").append(html);}
+            });
+            return false;
+        });
+        $("#btnAddSkill").click(function () {
+            $.ajax({
+                url: "/CV/BlankSkill",
+                cache: false,
+                success: function (html) { $("#SkillEditorRows").append(html);}
+            });
+            return false;
+        });
+        $("#btnAddRef").click(function () {
+            $.ajax({
+                url: "/CV/BlankReference",
+                cache: false,
+                success: function (html) { $("#RefEditorRows").append(html);}
+            });
+            return false;
+        });        
 </script>
 }

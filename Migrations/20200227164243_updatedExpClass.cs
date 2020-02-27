@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class updateDB : Migration
+    public partial class updatedExpClass : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -282,8 +282,8 @@ namespace GradConnect.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
+                    Institution = table.Column<string>(nullable: true),
+                    CourseName = table.Column<string>(nullable: true),
                     YearStart = table.Column<string>(nullable: true),
                     YearEnd = table.Column<string>(nullable: true),
                     CvId = table.Column<int>(nullable: false),
@@ -327,8 +327,11 @@ namespace GradConnect.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(nullable: true),
-                    EmployerName = table.Column<string>(nullable: true),
+                    CompanyName = table.Column<string>(nullable: true),
+                    JobTitle = table.Column<string>(nullable: true),
+                    YearStart = table.Column<string>(nullable: true),
+                    YearEnd = table.Column<string>(nullable: true),
+                    Responsibilities = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
                     CvId = table.Column<int>(nullable: false)
                 },

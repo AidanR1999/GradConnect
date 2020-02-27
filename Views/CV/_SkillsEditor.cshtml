@@ -1,0 +1,17 @@
+@model Skill
+
+<div class="editorRow">
+    @using (Html.BeginCollectionItem("skills"))
+    {
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Name"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="Name" />
+            </div>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>        
+        <hr>
+    }
+</div>

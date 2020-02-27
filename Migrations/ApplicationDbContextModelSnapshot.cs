@@ -107,13 +107,13 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CourseName")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("CvId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Institution")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -154,16 +154,25 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("CvId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("JobTitle")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EmployerName")
+                    b.Property<string>("Responsibilities")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("YearEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("YearStart")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

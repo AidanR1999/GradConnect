@@ -1,0 +1,44 @@
+@model Education
+
+<div class="editorRow">
+    @using (Html.BeginCollectionItem("educations"))
+    {
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Institution"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="Institution" />
+            </div>
+            <span asp-validation-for="Institution" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="CourseName"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="CourseName" />
+            </div>
+            <span asp-validation-for="CourseName" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="YearStart"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="YearStart" />
+            </div>
+            <span asp-validation-for="YearStart" class="text-danger"></span> 
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="YearEnd"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="YearEnd" />
+            </div>
+            <span asp-validation-for="YearEnd" class="text-danger"></span>
+        </div>
+        <hr>
+    }
+</div>

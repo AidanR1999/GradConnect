@@ -27,21 +27,48 @@ namespace GradConnect.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //var user = await _context.Users.Include(x => x.CVs).FirstOrDefaultAsync(x => x.Id == userId);
-            var allCvs = await _context.CVs.Where(x => x.UserId == userId).ToListAsync();
+            var user = GetUser();           
+            var allCvs = await _context.CVs.Where(x => x.UserId == user.Id).ToListAsync();
             return View(allCvs);
+        }
+        public IActionResult BlankEducation()
+        {
+            return PartialView("_EducationEditor", new Education());
+        }
+        public IActionResult BlankExperience()
+        {
+            return PartialView("_ExperienceEditor", new Experience());
+        }
+        public IActionResult BlankSkill()
+        {
+            return PartialView("_SkillsEditor", new Skill());
+        }
+        public IActionResult BlankReference()
+        {
+            return PartialView("_ReferencesEditor", new Reference());
         }
 
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         [ActionName("Create")]
         public async Task<IActionResult> CreateCv(CreateCvViewModel model)
         {
             var user = GetUser();
+            foreach(var edu in model.Educations)
+            {
+                edu.UserId = user.Id;
+                edu.User = user;
+            }
+            foreach(var exp in model.Experiences)
+            {
+                exp.UserId = user.Id;
+                exp.User = user;
+            }
+            
             var cv = new CV
             {
                 CvName = model.CvName,
@@ -62,7 +89,6 @@ namespace GradConnect.Controllers
                 Skills = model.Skills
 
             };
-
 
             user.CVs.Append(cv);
             _context.Users.Update(user);

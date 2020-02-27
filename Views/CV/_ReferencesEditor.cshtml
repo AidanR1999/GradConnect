@@ -1,0 +1,44 @@
+@model Reference
+
+<div class="editorRow">
+    @using (Html.BeginCollectionItem("references"))
+    {
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="FirstName"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="FirstName" />
+            </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="LastName"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="LastName" />
+            </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="PhoneNumber"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="PhoneNumber" />
+            </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span> 
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Email"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="Email" />
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>        
+        <hr>
+    }
+</div>

@@ -1,0 +1,54 @@
+@model Experience
+
+<div class="editorRow">
+    @using (Html.BeginCollectionItem("experiences"))
+    {
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="CompanyName"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="CompanyName" />
+            </div>
+            <span asp-validation-for="CompanyName" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="JobTitle"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="JobTitle" />
+            </div>
+            <span asp-validation-for="JobTitle" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="YearStart"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="YearStart" />
+            </div>
+            <span asp-validation-for="YearStart" class="text-danger"></span> 
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="YearEnd"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="YearEnd" />
+            </div>
+            <span asp-validation-for="YearEnd" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Responsibilities"></label>
+            </div>
+            <div class="col-9">
+                <textarea asp-for="Responsibilities" >
+                </textarea>
+            </div>
+            <span asp-validation-for="Responsibilities" class="text-danger"></span>
+        </div>
+        <hr>
+    }
+</div>

@@ -32,10 +32,10 @@ namespace GradConnect.Models
         [InverseProperty("User")]
         public string UserId { get; set; }
         public virtual User User { get; set; }        
-        public IEnumerable<Experience> Experiences { get; set; }
-        public IEnumerable<Education> Educations { get; set; }
-        public IEnumerable<Reference> References { get; set; }
-        public IEnumerable<Skill> Skills { get; set; }
+        public List<Experience> Experiences { get; set; }
+        public List<Education> Educations { get; set; }
+        public List<Reference> References { get; set; }
+        public List<Skill> Skills { get; set; }
         
     }
 }

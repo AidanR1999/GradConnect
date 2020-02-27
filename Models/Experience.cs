@@ -7,8 +7,11 @@ namespace GradConnect.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Description { get; set; }
-        public string EmployerName { get; set; }
+        public string CompanyName { get; set; }
+        public string JobTitle { get; set; }
+        public string YearStart { get; set; }
+        public string YearEnd { get; set; }
+        public string Responsibilities { get; set; }
 
         //Navigational props
         [InverseProperty("User")]
