@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GradConnect.Data;
 using GradConnect.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace GradConnect.Controllers
 {
     public class PostsController : Controller
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         private readonly ApplicationDbContext _context;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET: Posts
@@ -57,10 +62,13 @@ namespace GradConnect.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,DatePosted,Thumbnail,UserId")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
+                post.DatePosted = DateTime.Now;
+                post.UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                post.Thumbnail = 0;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -72,6 +80,8 @@ namespace GradConnect.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //protect against unauthorised editing here
+
             if (id == null)
             {
                 return NotFound();
