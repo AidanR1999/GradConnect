@@ -37,10 +37,6 @@ namespace GradConnect.ViewModels
         public List<Education> Educations { get; set; }        
         public List<Reference> References { get; set; }
         public List<Skill> Skills { get; set; }
-        public Education Education { get; set; }       
-        public Experience Experience { get; set; }
-        public Skill Skill { get; set; }
-        public Reference Reference { get; set; }
         public CreateCvViewModel()
         {
             Educations = new List<Education>();
