@@ -1,8 +1,11 @@
 @model Education
 
-<div class="editorRow">
+<div class="EduEditorRow">
     @using (Html.BeginCollectionItem("educations"))
     {
+        <button type="button"  id="btnDeleteEdu">
+            <i class="fas fa-times"></i>
+        </button>
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="Institution"></label>
@@ -41,4 +44,5 @@
         </div>
         <hr>
     }
+    
 </div>

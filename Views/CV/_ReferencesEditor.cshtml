@@ -1,8 +1,11 @@
 @model Reference
 
-<div class="editorRow">
+<div class="RefEditorRow">
     @using (Html.BeginCollectionItem("references"))
     {
+        <button type="button"  id="btnDeleteRef">
+            <i class="fas fa-times"></i>
+        </button>
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="FirstName"></label>
@@ -41,4 +44,5 @@
         </div>        
         <hr>
     }
+    
 </div>

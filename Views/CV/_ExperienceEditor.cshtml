@@ -1,8 +1,11 @@
 @model Experience
 
-<div class="editorRow">
+<div class="ExpEditorRow">
     @using (Html.BeginCollectionItem("experiences"))
     {
+        <button type="button"  id="btnDeleteExp">
+            <i class="fas fa-times"></i>
+        </button>
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="CompanyName"></label>
@@ -51,4 +54,5 @@
         </div>
         <hr>
     }
+    
 </div>

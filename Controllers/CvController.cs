@@ -96,6 +96,7 @@ namespace GradConnect.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -103,18 +104,35 @@ namespace GradConnect.Controllers
                 return NotFound();
             }
 
-            var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+            var cv = await _context.CVs.Include(x => x.References).Include(x => x.Educations).Include(x => x.Experiences).FirstOrDefaultAsync(x => x.Id == id);
             return View(cv);
         }
         [HttpPost]
         [ActionName("Edit")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, UpdateCvViewModel model)
         {
             if (ModelState.IsValid)
             {
-
+               var cv = await _context.CVs.Include(m => m.References).Include(m => m.Educations)
+                        .Include(m => m.Experiences).Include(m => m.Skills).FirstOrDefaultAsync(x => x.Id == id);
+                cv.CvName = model.CvName;
+                cv.FirstName = model.FirstName;
+                cv.LastName = model.LastName;              
+                cv.Street = model.Street;
+                cv.City = model.City;
+                cv.Postcode = model.Postcode;
+                cv.PhoneNumber = model.PhoneNumber;
+                cv.Email = model.Email;
+                cv.DateOfBirth = model.DateOfBirth;
+                cv.PersonalStatement = model.PersonalStatement;
+                cv.Experiences = model.Experiences;
+                cv.Educations = model.Educations;
+                cv.References = model.References;
+                cv.Skills = model.Skills;
+                _context.CVs.Update(cv);
+                await _context.SaveChangesAsync();
             }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         public User GetUser()
