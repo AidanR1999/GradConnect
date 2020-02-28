@@ -27,8 +27,13 @@ namespace GradConnect.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.User);
-            return View(await applicationDbContext.ToListAsync());
+            //previous scaffolded code
+            //var applicationDbContext = _context.Posts.Include(p => p.User);
+            //return View(await applicationDbContext.ToListAsync());
+
+            //sorts the posts and lists them in chronological order
+            var posts = _context.Posts.Include(p => p.User);
+            return View(posts.OrderByDescending(x => x.DatePosted).ToList());
         }
 
         // GET: Posts/Details/5
