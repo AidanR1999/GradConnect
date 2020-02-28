@@ -1,11 +1,12 @@
 @model Education
 
-<div class="EduEditorRow" id="1">
+<div class="EduEditorRow">
     @using (Html.BeginCollectionItem("educations"))
     {
-        <button type="button"  id="btnDeleteEdu">
+        <a href="#" class="deleteRow">delete</a>
+        @* <button type="button"  id="btnDeleteEdu">
             <i class="fas fa-times"></i>
-        </button>
+        </button> *@
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="Institution"></label>

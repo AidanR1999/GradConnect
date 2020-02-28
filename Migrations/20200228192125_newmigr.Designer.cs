@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200228155255_addedNullableIds")]
-    partial class addedNullableIds
+    [Migration("20200228192125_newmigr")]
+    partial class newmigr
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

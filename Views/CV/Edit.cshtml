@@ -225,13 +225,21 @@
     </div>
     </div>    
 </form>
-@* @section Scripts{
+ @section Scripts{
 <script>
+    var eduDivId = 1;
+    var expDivId = 1;
+    var refDivId = 1;
+    var skillDivId = 1;
+    
    $("#btnAddEdu").click(function () {
             $.ajax({
                 url: "/CV/BlankEducation",
                 cache: false,
-                success: function (html) { $("#EduEditorRows").append(html);}
+                success: function (html) { $("#EduEditorRows").append(html);
+                    $(".EduEditorRow").prev('div').prop('id', 'eduDivId');
+                    eduDivId++;
+                }
             });
             return false;
         });
@@ -286,4 +294,4 @@
             });
         
 </script>
-} *@
+} 

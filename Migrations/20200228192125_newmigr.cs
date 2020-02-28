@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class addedNullableIds : Migration
+    public partial class newmigr : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

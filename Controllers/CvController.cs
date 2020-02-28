@@ -161,6 +161,39 @@ namespace GradConnect.Controllers
         return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+        var model = new UpdateCvViewModel();
+        
+        model.CvName = cv.CvName;
+        model.FirstName = cv.FirstName;
+        model.LastName = cv.LastName;
+        model.Street = cv.Street;
+        model.City = cv.City;
+        model.Postcode = cv.Postcode;
+        model.PhoneNumber = cv.PhoneNumber;
+        model.Email = cv.Email;
+        model.DateOfBirth = cv.DateOfBirth;
+        model.PersonalStatement = cv.PersonalStatement;
+        model.Experiences = experiences;
+        model.Educations = educations;
+        model.References = references;
+        model.Skills = skills;
+        
+        
+        return View(model); 
+    }
+
     public User GetUser()
     {
         var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
