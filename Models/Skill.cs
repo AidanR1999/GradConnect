@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GradConnect.Models
 {
@@ -17,6 +18,10 @@ namespace GradConnect.Models
         public IEnumerable<UserSkill> UserSkills { get; set; }
         public IEnumerable<PostSkill> PostSkills { get; set; }
         public IEnumerable<JobSkill> JobSkills { get; set; }
+        [InverseProperty("CV")]
+
+        public int CvId { get; set; }
+        public virtual CV Cv { get; set; }
 
     }
 }

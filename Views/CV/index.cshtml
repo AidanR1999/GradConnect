@@ -8,7 +8,7 @@
    
 </div>
  <a class="btn btn-primary" href="cv/create" role="button">Create</a>
-
+@{string controller = "Cv";}
  <div>
      <table class="table table-striped">
         
@@ -22,7 +22,7 @@
                     @Html.DisplayFor(m => item.CvName)
                 </td>
                 <td>
-                    <partial name="_TableButtonPartial" model="item.Id" />
+                    <partial name="_TableButtonPartial" model="@new GradConnect.ViewModels.TablePartialVM(item.Id, controller);" />
                 </td>
                
             </tr>

@@ -5,7 +5,7 @@
 }
 
 <h2 class="text-info"> Edit CV</h2>
-<form method="POST">
+<form method="POST" asp-action="Edit">
     <div class="p-4 border rounded">        
         <div class="row">
            <div class="col-md-4">
@@ -204,7 +204,7 @@
             
         <br />
     <div class="form-group">
-        <input type="submit" class="btn btn-success" value="Create" />
+        <input type="submit" class="btn btn-success" value="Edit" />
         <a asp-action="Index" class="btn btn-primary">Back to List</a>
     </div>
     </div>    

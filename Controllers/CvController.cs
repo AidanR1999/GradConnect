@@ -27,7 +27,7 @@ namespace GradConnect.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = GetUser();           
+            var user = GetUser();
             var allCvs = await _context.CVs.Where(x => x.UserId == user.Id).ToListAsync();
             return View(allCvs);
         }
@@ -58,17 +58,17 @@ namespace GradConnect.Controllers
         public async Task<IActionResult> CreateCv(CreateCvViewModel model)
         {
             var user = GetUser();
-            foreach(var edu in model.Educations)
+            foreach (var edu in model.Educations)
             {
                 edu.UserId = user.Id;
                 edu.User = user;
             }
-            foreach(var exp in model.Experiences)
+            foreach (var exp in model.Experiences)
             {
                 exp.UserId = user.Id;
                 exp.User = user;
             }
-            
+
             var cv = new CV
             {
                 CvName = model.CvName,
@@ -96,51 +96,79 @@ namespace GradConnect.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
+    [HttpGet]
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cv = await _context.CVs.Include(x => x.References).Include(x => x.Educations).Include(x => x.Experiences).FirstOrDefaultAsync(x => x.Id == id);
-            return View(cv);
-        }
-        [HttpPost]
-        [ActionName("Edit")]
-        public async Task<IActionResult> Edit(int id, UpdateCvViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-               var cv = await _context.CVs.Include(m => m.References).Include(m => m.Educations)
-                        .Include(m => m.Experiences).Include(m => m.Skills).FirstOrDefaultAsync(x => x.Id == id);
-                cv.CvName = model.CvName;
-                cv.FirstName = model.FirstName;
-                cv.LastName = model.LastName;              
-                cv.Street = model.Street;
-                cv.City = model.City;
-                cv.Postcode = model.Postcode;
-                cv.PhoneNumber = model.PhoneNumber;
-                cv.Email = model.Email;
-                cv.DateOfBirth = model.DateOfBirth;
-                cv.PersonalStatement = model.PersonalStatement;
-                cv.Experiences = model.Experiences;
-                cv.Educations = model.Educations;
-                cv.References = model.References;
-                cv.Skills = model.Skills;
-                _context.CVs.Update(cv);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
+            return NotFound();
         }
 
-        public User GetUser()
-        {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
-            return user;
-        }
-
+        var cv = await _context.CVs
+                .Include(x => x.References)
+                .Include(x => x.Skills)
+                .Include(x => x.Educations)
+                .Include(x => x.Experiences)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        var model = new UpdateCvViewModel();
+        
+        model.CvName = cv.CvName;
+        model.FirstName = cv.FirstName;
+        model.LastName = cv.LastName;
+        model.Street = cv.Street;
+        model.City = cv.City;
+        model.Postcode = cv.Postcode;
+        model.PhoneNumber = cv.PhoneNumber;
+        model.Email = cv.Email;
+        model.DateOfBirth = cv.DateOfBirth;
+        model.PersonalStatement = cv.PersonalStatement;
+        model.Experiences = cv.Experiences;
+        model.Educations = cv.Educations;
+        model.References = cv.References;
+        model.Skills = cv.Skills;
+        
+        
+        return View(model);        
     }
+        
+    [HttpPost]
+    [ActionName("Edit")]
+    public async Task<IActionResult> Edit(int id, UpdateCvViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var cv = await _context.CVs
+                .Include(m => m.References)
+                .Include(m => m.Educations)
+                .Include(m => m.Experiences)
+                .Include(m => m.Skills)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            cv.CvName = model.CvName;
+            cv.FirstName = model.FirstName;
+            cv.LastName = model.LastName;
+            cv.Street = model.Street;
+            cv.City = model.City;
+            cv.Postcode = model.Postcode;
+            cv.PhoneNumber = model.PhoneNumber;
+            cv.Email = model.Email;
+            cv.DateOfBirth = model.DateOfBirth;
+            cv.PersonalStatement = model.PersonalStatement;
+            cv.Experiences = model.Experiences;
+            cv.Educations = model.Educations;
+            cv.References = model.References;
+            cv.Skills = model.Skills;
+            _context.CVs.Update(cv);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
+    public User GetUser()
+    {
+        var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+        return user;
+    }
+
+}
 }
