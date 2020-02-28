@@ -17,7 +17,7 @@ namespace GradConnect.Models
         }
         //Navigational props
         [InverseProperty("CV")]
-        public int CvId { get; set; }
+        public int? CvId { get; set; }
         public virtual CV Cv { get; set; }
 
         public IEnumerable<Module> Modules { get; set; }

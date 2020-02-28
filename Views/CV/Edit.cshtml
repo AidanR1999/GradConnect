@@ -147,26 +147,34 @@
                         <div class="collapse" id="Education">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Education</h2>
-                            <div id="EduEditorRows">
-                                <partial name="_EducationEditor" />                                
+                            @foreach (var item in Model.Educations)
+                            {
+                                <div id="EduEditorRows">
+                                    <partial name="_EducationEditor" model="item" />                                
                                     
-                            </div>
-                            <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                                </div>
+                                <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            }
+                            
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="collapse" id="Experience">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Experience</h2>
-                            <div id="ExpEditorRows">
-                                <partial name="_ExperienceEditor" />                                
+                            @foreach(var exp in Model.Experiences)
+                            {
+                                <div id="ExpEditorRows">
+                                <partial name="_ExperienceEditor" model="exp"/>                                
                                     
-                            </div>
-                            <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                                </div>
+                                <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            }
+                            
                         </div>
                         </div>
                     </div>
@@ -174,13 +182,17 @@
                         <div class="collapse" id="Skills">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">Skills</h2>
-                            <div id="SkillEditorRows">
-                                <partial name="_SkillsEditor" />                                
+                            @foreach (var item in Model.Skills)
+                            {
+                                <div id="SkillEditorRows">
+                                <partial name="_SkillsEditor" model="item"/>                                
                                     
-                            </div>
-                            <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                                </div>
+                                <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            }
+                            
                         </div>
                         </div>
                     </div>
@@ -188,13 +200,17 @@
                         <div class="collapse" id="References">
                         <div class="card card-body">
                             <h2 style= "text-align: center;">References</h2>
-                            <div id="RefEditorRows">
-                                <partial name="_ReferencesEditor" />                                
+                            @foreach(var item in Model.References)
+                            {
+                                <div id="RefEditorRows">
+                                <partial name="_ReferencesEditor" model="item"/>                                
                                     
-                            </div>
-                            <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                                </div>
+                                <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            }
+                            
                         </div>
                         </div>
                     </div>
@@ -209,7 +225,7 @@
     </div>
     </div>    
 </form>
-@section Scripts{
+@* @section Scripts{
 <script>
    $("#btnAddEdu").click(function () {
             $.ajax({
@@ -270,4 +286,4 @@
             });
         
 </script>
-}
+} *@

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200227164243_updatedExpClass")]
-    partial class updatedExpClass
+    [Migration("20200228155255_addedNullableIds")]
+    partial class addedNullableIds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,7 +112,7 @@ namespace GradConnect.Migrations
                     b.Property<string>("CourseName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CvId")
+                    b.Property<int?>("CvId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Institution")
@@ -159,7 +159,7 @@ namespace GradConnect.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CvId")
+                    b.Property<int?>("CvId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("JobTitle")
@@ -374,7 +374,7 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CVId")
+                    b.Property<int>("CvId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -382,7 +382,7 @@ namespace GradConnect.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CVId");
+                    b.HasIndex("CvId");
 
                     b.ToTable("Skills");
                 });
@@ -763,9 +763,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.CV", "Cv")
                         .WithMany("Educations")
-                        .HasForeignKey("CvId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CvId");
 
                     b.HasOne("GradConnect.Models.User", "User")
                         .WithMany("Educations")
@@ -776,9 +774,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.CV", "Cv")
                         .WithMany("Experiences")
-                        .HasForeignKey("CvId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CvId");
 
                     b.HasOne("GradConnect.Models.User", "User")
                         .WithMany("Experiences")
@@ -869,9 +865,11 @@ namespace GradConnect.Migrations
 
             modelBuilder.Entity("GradConnect.Models.Skill", b =>
                 {
-                    b.HasOne("GradConnect.Models.CV", null)
+                    b.HasOne("GradConnect.Models.CV", "Cv")
                         .WithMany("Skills")
-                        .HasForeignKey("CVId");
+                        .HasForeignKey("CvId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GradConnect.Models.Submission", b =>

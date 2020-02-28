@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class updatedExpClass : Migration
+    public partial class addedNullableIds : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -239,17 +239,17 @@ namespace GradConnect.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
-                    CVId = table.Column<int>(nullable: true)
+                    CvId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Skills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Skills_CVs_CVId",
-                        column: x => x.CVId,
+                        name: "FK_Skills_CVs_CvId",
+                        column: x => x.CvId,
                         principalTable: "CVs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,7 +286,7 @@ namespace GradConnect.Migrations
                     CourseName = table.Column<string>(nullable: true),
                     YearStart = table.Column<string>(nullable: true),
                     YearEnd = table.Column<string>(nullable: true),
-                    CvId = table.Column<int>(nullable: false),
+                    CvId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -297,7 +297,7 @@ namespace GradConnect.Migrations
                         column: x => x.CvId,
                         principalTable: "CVs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -333,7 +333,7 @@ namespace GradConnect.Migrations
                     YearEnd = table.Column<string>(nullable: true),
                     Responsibilities = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    CvId = table.Column<int>(nullable: false)
+                    CvId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -343,7 +343,7 @@ namespace GradConnect.Migrations
                         column: x => x.CvId,
                         principalTable: "CVs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -664,9 +664,9 @@ namespace GradConnect.Migrations
                 column: "CvId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skills_CVId",
+                name: "IX_Skills_CvId",
                 table: "Skills",
-                column: "CVId");
+                column: "CvId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_ChallengeId",

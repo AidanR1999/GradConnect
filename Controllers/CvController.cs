@@ -104,12 +104,11 @@ namespace GradConnect.Controllers
             return NotFound();
         }
 
-        var cv = await _context.CVs
-                .Include(x => x.References)
-                .Include(x => x.Skills)
-                .Include(x => x.Educations)
-                .Include(x => x.Experiences)
-            .FirstOrDefaultAsync(x => x.Id == id);
+        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
         var model = new UpdateCvViewModel();
         
         model.CvName = cv.CvName;
@@ -122,10 +121,10 @@ namespace GradConnect.Controllers
         model.Email = cv.Email;
         model.DateOfBirth = cv.DateOfBirth;
         model.PersonalStatement = cv.PersonalStatement;
-        model.Experiences = cv.Experiences;
-        model.Educations = cv.Educations;
-        model.References = cv.References;
-        model.Skills = cv.Skills;
+        model.Experiences = experiences;
+        model.Educations = educations;
+        model.References = references;
+        model.Skills = skills;
         
         
         return View(model);        
@@ -133,30 +132,29 @@ namespace GradConnect.Controllers
         
     [HttpPost]
     [ActionName("Edit")]
-    public async Task<IActionResult> Edit(int id, UpdateCvViewModel model)
+    public async Task<IActionResult> Edit(int id, UpdateCvViewModel updateModel)
     {
         if (ModelState.IsValid)
         {
-            var cv = await _context.CVs
-                .Include(m => m.References)
-                .Include(m => m.Educations)
-                .Include(m => m.Experiences)
-                .Include(m => m.Skills)
-                .FirstOrDefaultAsync(x => x.Id == id);
-            cv.CvName = model.CvName;
-            cv.FirstName = model.FirstName;
-            cv.LastName = model.LastName;
-            cv.Street = model.Street;
-            cv.City = model.City;
-            cv.Postcode = model.Postcode;
-            cv.PhoneNumber = model.PhoneNumber;
-            cv.Email = model.Email;
-            cv.DateOfBirth = model.DateOfBirth;
-            cv.PersonalStatement = model.PersonalStatement;
-            cv.Experiences = model.Experiences;
-            cv.Educations = model.Educations;
-            cv.References = model.References;
-            cv.Skills = model.Skills;
+            var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+            var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+            var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+            var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+            var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+            cv.CvName = updateModel.CvName;
+            cv.FirstName = updateModel.FirstName;
+            cv.LastName = updateModel.LastName;
+            cv.Street = updateModel.Street;
+            cv.City = updateModel.City;
+            cv.Postcode = updateModel.Postcode;
+            cv.PhoneNumber = updateModel.PhoneNumber;
+            cv.Email = updateModel.Email;
+            cv.DateOfBirth = updateModel.DateOfBirth;
+            cv.PersonalStatement = updateModel.PersonalStatement;
+            cv.Experiences = updateModel.Experiences;
+            cv.Educations = updateModel.Educations;
+            cv.References = updateModel.References;
+            cv.Skills = updateModel.Skills;
             _context.CVs.Update(cv);
             await _context.SaveChangesAsync();
         }
