@@ -9,5 +9,10 @@ namespace GradConnect.Models
     public class Role : IdentityRole
     {
         public IEnumerable<UserRole> UserRoles { get; set; }
+
+        public Role(string name) : base()
+        {
+            Name = name;
+        }
     }
 }

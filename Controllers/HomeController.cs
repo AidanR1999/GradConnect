@@ -20,6 +20,11 @@ namespace GradConnect.Controllers
 
         public IActionResult Index()
         {
+            //redirects the user to the homefeed if they are successfully logged in
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Posts", null);
+            }
             return View();
         }
 
