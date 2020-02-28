@@ -60,14 +60,19 @@ namespace GradConnect.Controllers
         // POST: Posts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        //this method adds a post to the database and saves the changes to the database.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
+                //post date time is now
                 post.DatePosted = DateTime.Now;
+                //find the current user, this user posts the post
                 post.UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //the thumbnail is always zero. would reference a photoId, but out of scope.
                 post.Thumbnail = 0;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
