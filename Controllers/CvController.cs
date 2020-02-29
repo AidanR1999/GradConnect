@@ -246,10 +246,67 @@ namespace GradConnect.Controllers
 
         // return fileStreamResult;
     }
-    public IActionResult Delete(int? id)
+    public async Task<IActionResult> Delete(int? id)
     {
-        return View();
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+        var model = new UpdateCvViewModel();
+        
+        model.CvName = cv.CvName;
+        model.FirstName = cv.FirstName;
+        model.LastName = cv.LastName;
+        model.Street = cv.Street;
+        model.City = cv.City;
+        model.Postcode = cv.Postcode;
+        model.PhoneNumber = cv.PhoneNumber;
+        model.Email = cv.Email;
+        model.DateOfBirth = cv.DateOfBirth;
+        model.PersonalStatement = cv.PersonalStatement;
+        model.Experiences = experiences;
+        model.Educations = educations;
+        model.References = references;
+        model.Skills = skills;
+        
+        
+        return View(model); 
     }
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+            //find fitness class in db using passed in id
+        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+        cv.Experiences = experiences;
+        cv.Educations = educations;
+        cv.Skills = skills;
+        cv.References = references;
+            //if class in null
+        if (cv == null)
+        {
+            //display error                
+            return NotFound();
+        }
+        else
+        {
+            //remove class from db
+            _context.CVs.Remove(cv);
+            await _context.SaveChangesAsync();                
+            return RedirectToAction(nameof(Index));
+        }
+
+    } 
     public User GetUser()
     {
         var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
