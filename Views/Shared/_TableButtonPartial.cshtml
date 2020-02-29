@@ -10,10 +10,10 @@
             <i class="fas fa-edit"></i>
         </a>
 
-        <a type="button" class="btn btn-success" href="@Url.Action("Details/" + Model)">
+        <a type="button" class="btn btn-success" asp-controller="@Model.Controller" asp-action="Details" asp-route-id="@Model.Id">
             <i class="far fa-list-alt"></i>
         </a>
-        <a type="button" class="btn btn-danger" href="@Url.Action("Delete/" + Model)">
+        <a type="button" class="btn btn-danger" asp-controller="@Model.Controller" asp-action="Delete" asp-route-id="@Model.Id">
             <i class="fas fa-trash-alt"></i>
         </a>
     </div>

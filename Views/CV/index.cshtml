@@ -24,7 +24,18 @@
                 <td>
                     <partial name="_TableButtonPartial" model="@new GradConnect.ViewModels.TablePartialVM(item.Id, controller);" />
                 </td>
-               
+                <td>
+                   
+                        @* @{Html.BeginForm("GeneratePDF", "CV",  FormMethod.Post);
+                            { *@
+                                @* <input type="submit", class="btn btn-success" , value="Export To PDF" /> *@
+                                <a type="button" class="btn btn-success" asp-controller="CV" asp-action="GeneratePDF" asp-route-id="@item.Id">
+                                    Export To PDF
+                                </a>
+
+                            @* }} *@
+                    
+               </td>
             </tr>
         }
      </table>   

@@ -11,18 +11,24 @@ using GradConnect.Data;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.HtmlConverter;
+using Syncfusion.Pdf;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace GradConnect.Controllers
 {
     public class CvController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CvController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CvController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -193,11 +199,48 @@ namespace GradConnect.Controllers
         
         return View(model); 
     }
+    
+    public IActionResult GeneratePDF(int id)
+    {
+        var user = GetUser();
+        //Initialize HTML to PDF converter 
+        HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
+        WebKitConverterSettings settings = new WebKitConverterSettings();
+            //Set WebKit path
+        settings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "QtBinariesWindows");
+            //Assign WebKit settings to HTML converter
+        htmlConverter.ConverterSettings = settings;
+            //Convert URL to PDF
+        PdfDocument document = htmlConverter.Convert("https://localhost:5001/CV/Details/"+id);
+        MemoryStream stream = new MemoryStream();
+        document.Save(stream);
+        return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "cv" + "." + user.Forename + "." + user.Surname + ".pdf");
+        // var user = GetUser();
+        // var url = "localhost:5001/CV/Details/"+id;
+        // HtmlToPdfConverter converter = new HtmlToPdfConverter();
 
+        // WebKitConverterSettings settings = new WebKitConverterSettings();
+        // settings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "QtBinariesWindows");
+        // converter.ConverterSettings = settings;
+
+        // PdfDocument document = converter.Convert(url);
+
+        // MemoryStream ms = new MemoryStream();
+        // document.Save(ms);
+        // document.Close();
+
+        // ms.Position = 0;
+
+        // FileStreamResult fileStreamResult = new FileStreamResult(ms, "application/pdf");
+        // fileStreamResult.FileDownloadName = "cv" + "." + user.Forename + "." + user.Surname+".pdf";
+
+        // return fileStreamResult;
+    }
     public User GetUser()
     {
         var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+        
         return user;
     }
 

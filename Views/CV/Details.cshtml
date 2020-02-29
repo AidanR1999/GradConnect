@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "View your CV";
+    Layout = "_CvLayout";
 }
 <style type="text/css">
         * { margin: 0; padding: 0; }
@@ -22,7 +23,7 @@
         dd { width: 600px; float: right; }
         dd.clear { float: none; margin: 0; height: 15px; }
 </style>
-<button onclick="convert_HTML_To_PDF();">Download PDF</button>
+
 <div id="page-wrap">
     
 
@@ -104,7 +105,7 @@
 </div>
 @section Scripts
 {
-    <script>
+    @* <script>
         function convert_HTML_To_PDF()
         {
             var doc = new jsPDF();     
@@ -121,5 +122,5 @@
             doc.save("cv.pdf");
         }
 
-    </script>
+    </script> *@
 }
