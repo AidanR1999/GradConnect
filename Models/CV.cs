@@ -19,7 +19,7 @@ namespace GradConnect.Models
         public string Postcode { get; set; }
         public DateTime DateOfBirth { get; set; }        
         public string  PersonalStatement { get; set; } 
-
+        
         public CV()
         {
             Experiences = new List<Experience>();

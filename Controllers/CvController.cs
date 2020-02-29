@@ -202,7 +202,16 @@ namespace GradConnect.Controllers
     
     public IActionResult GeneratePDF(int id)
     {
+        var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+        //UriBuilder uriBuilder = new UriBuilder();
+        // uriBuilder.Scheme = "https";
+        // uriBuilder.Host = "localhost";
+        // uriBuilder.Port = 5001;
+        // uriBuilder.Path = "CV/Details/"+id;
+        // Uri uri = uriBuilder.Uri;
+        // uri.ToString();
         var user = GetUser();
+            //object p = Request.Url.AbsoluteUri();
         //Initialize HTML to PDF converter 
         HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
         WebKitConverterSettings settings = new WebKitConverterSettings();
@@ -211,7 +220,8 @@ namespace GradConnect.Controllers
             //Assign WebKit settings to HTML converter
         htmlConverter.ConverterSettings = settings;
             //Convert URL to PDF
-        PdfDocument document = htmlConverter.Convert("https://localhost:5001/CV/Details/"+id);
+        //PdfDocument document = htmlConverter.Convert("https://localhost:5001/CV/Details/"+id);
+        PdfDocument document = htmlConverter.Convert(host + "/CV/Details/" + id);
         MemoryStream stream = new MemoryStream();
         document.Save(stream);
         return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "cv" + "." + user.Forename + "." + user.Surname + ".pdf");
@@ -236,6 +246,10 @@ namespace GradConnect.Controllers
 
         // return fileStreamResult;
     }
+    public IActionResult Delete(int? id)
+    {
+        return View();
+    }
     public User GetUser()
     {
         var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -244,5 +258,6 @@ namespace GradConnect.Controllers
         return user;
     }
 
+    
 }
 }
