@@ -3,9 +3,7 @@
 <div class="RefEditorRow">
     @using (Html.BeginCollectionItem("references"))
     {
-        <button type="button"  id="btnDeleteRef">
-            <i class="fas fa-times"></i>
-        </button>
+        <a href="#" class="deleteRow" id="removeRef"><i class="fas fa-times"></i></a>
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="FirstName"></label>

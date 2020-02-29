@@ -211,26 +211,15 @@
 </form>
 @section Scripts{
 <script>
-   $("#btnAddEdu").click(function () {
-        let eduDivId = 0;
-        let expDivId = 1;
-        let refDivId = 1;
-        let skillDivId = 1;
+   $("#btnAddEdu").click(function () {        
             $.ajax({
                 url: "/CV/BlankEducation",
                 cache: false,
-                success: function (html) { $("#EduEditorRows").append(html);
-                    //$('.EduEditorRow').each(function() {                   
-                        //$('.EduEditorRow').attr('id', eduDivId);                   
-                        //$('#eduDivId').each(function() { 
-                            //eduDivId++; 
-                        //}); 
-                    //});
-                }
-            
+                success: function (html) { $("#EduEditorRows").append(html);}            
         });
         return false;
    });
+
         $("#btnAddExp").click(function () {
             $.ajax({
                 url: "/CV/BlankExperience",
@@ -256,27 +245,36 @@
             return false;
         });
         //REMOvE EDUCATION
-        $(document).ready(function () {
-            $("a.deleteRow").on("click", function () {
+        $(document).on("click", "#removeEdu", function () {
+                console.log($(this).text());
                 $(this).parents("div.EduEditorRow:first").remove();
+                console.log('clicked');
                 return false;
             });
-        });
+        
             //REMOvE SKILL
-        $("#btnDeleteSkill").on("click", function () {
-            $(this).parents("div.SkillEditorRow:first").remove();
-            return false;
-        });
+            $(document).on("click", "#removeSkill", function () {
+                console.log($(this).text());
+                $(this).parents("div.SkillEditorRow:first").remove();
+                console.log('clicked');
+                return false;
+            });
+        
             //REMOvE EXPERIENCE
-        $("#btnDeleteExp").on("click", function () {
-            $(this).parents("div.ExpEditorRow:first").remove();
-            return false;
-        });
+            $(document).on("click", "#removeExp", function () {
+                console.log($(this).text());
+                $(this).parents("div.ExpEditorRow:first").remove();
+                console.log('clicked');
+                return false;
+            });
+        
             //REMOvE REFERENCE
-        $("#btnDeleteRef").on("click", function () {
-            $(this).parents("div.RefEditorRow:first").remove();
-            return false;
-        });
+        $(document).on("click", "#removeRef", function () {
+                console.log($(this).text());
+                $(this).parents("div.RefEditorRow:first").remove();
+                console.log('clicked');
+                return false;
+            });
         
 </script>
 }

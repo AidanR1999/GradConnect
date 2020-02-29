@@ -153,10 +153,11 @@
                                     <partial name="_EducationEditor" model="item" />                                
                                     
                                 </div>
-                                <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                
                             }
+                            <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu">
+                                    <i class="fas fa-plus"></i>
+                            </button>
                             
                         </div>
                     </div>
@@ -170,11 +171,11 @@
                                 <partial name="_ExperienceEditor" model="exp"/>                                
                                     
                                 </div>
-                                <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp">
+                                
+                            }
+                            <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp">
                                     <i class="fas fa-plus"></i>
                                 </button>
-                            }
-                            
                         </div>
                         </div>
                     </div>
@@ -188,11 +189,11 @@
                                 <partial name="_SkillsEditor" model="item"/>                                
                                     
                                 </div>
-                                <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill">
+                                
+                            }
+                            <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill">
                                     <i class="fas fa-plus"></i>
                                 </button>
-                            }
-                            
                         </div>
                         </div>
                     </div>
@@ -206,11 +207,11 @@
                                 <partial name="_ReferencesEditor" model="item"/>                                
                                     
                                 </div>
-                                <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                
                             }
-                            
+                            <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef">
+                                    <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         </div>
                     </div>
@@ -227,71 +228,79 @@
 </form>
  @section Scripts{
 <script>
-    var eduDivId = 1;
-    var expDivId = 1;
-    var refDivId = 1;
-    var skillDivId = 1;
-    
+
+    //ADD EDUCATION ROW
    $("#btnAddEdu").click(function () {
-            $.ajax({
-                url: "/CV/BlankEducation",
-                cache: false,
-                success: function (html) { $("#EduEditorRows").append(html);
-                    $(".EduEditorRow").prev('div').prop('id', 'eduDivId');
-                    eduDivId++;
-                }
-            });
-            return false;
+        $.ajax({
+            url: "/CV/BlankEducation",
+            cache: false,
+            success: function (html) { 
+                $("#EduEditorRows:last").append(html);}
         });
-        $("#btnAddExp").click(function () {
-            $.ajax({
-                url: "/CV/BlankExperience",
-                cache: false,
-                success: function (html) { $("#ExpEditorRows").append(html);}
-            });
-            return false;
+        return false;
+    });
+
+    // ADD EXPERIENCE ROW
+    $("#btnAddExp").click(function () {
+        $.ajax({
+            url: "/CV/BlankExperience",
+            cache: false,
+            success: function (html) { $("#ExpEditorRows").append(html);}
         });
-        $("#btnAddSkill").click(function () {
-            $.ajax({
-                url: "/CV/BlankSkill",
-                cache: false,
-                success: function (html) { $("#SkillEditorRows").append(html);}
-            });
-            return false;
+        return false;
+    });
+
+    //ADD SKILL ROW
+    $("#btnAddSkill").click(function () {
+        $.ajax({
+            url: "/CV/BlankSkill",
+            cache: false,
+            success: function (html) { $("#SkillEditorRows").append(html);}
         });
-        $("#btnAddRef").click(function () {
-            $.ajax({
-                url: "/CV/BlankReference",
-                cache: false,
-                success: function (html) { $("#RefEditorRows").append(html);}
-            });
-            return false;
+        return false;
+    });
+
+    //ADD REFERENCE ROW
+    $("#btnAddRef").click(function () {
+        $.ajax({
+            url: "/CV/BlankReference",
+            cache: false,
+            success: function (html) { $("#RefEditorRows").append(html);}
         });
-       
-            $("#btnDeleteEdu").on("click", function () {
-                $(this).parents("div.EduEditorRow:first").remove();
-                return false;
-            });
+        return false;
+    });
+
+    //REMOvE EDUCATION
+    $(document).on("click", "#removeEdu", function () {
+        console.log($(this).text());
+        $(this).parents("div.EduEditorRow:first").remove();
+        console.log('clicked');
+        return false;
+    });
         
+    //REMOvE SKILL
+    $(document).on("click", "#removeSkill", function () {
+        console.log($(this).text());
+            $(this).parents("div.SkillEditorRow:first").remove();
+        console.log('clicked');
+        return false;
+    });
         
-            $("#btnDeleteSkill").on("click", function () {
-                $(this).parents("div.SkillEditorRow:first").remove();
-                return false;
-            });
+    //REMOvE EXPERIENCE
+    $(document).on("click", "#removeExp", function () {
+        console.log($(this).text());
+        $(this).parents("div.ExpEditorRow:first").remove();
+        console.log('clicked');
+        return false;
+    });
         
-        
-        
-            $("#btnDeleteExp").on("click", function () {
-                $(this).parents("div.ExpEditorRow:first").remove();
-                return false;
-            });
-       
-        
-        
-            $("#btnDeleteRef").on("click", function () {
-                $(this).parents("div.RefEditorRow:first").remove();
-                return false;
-            });
+    //REMOvE REFERENCE
+    $(document).on("click", "#removeRef", function () {
+        console.log($(this).text());
+        $(this).parents("div.RefEditorRow:first").remove();
+        console.log('clicked');
+        return false;
+    });
         
 </script>
 } 
