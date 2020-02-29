@@ -145,71 +145,78 @@
                     </div>
                     <div class="col-md-12">
                         <div class="collapse" id="Education">
-                        <div class="card card-body">
-                            <h2 style= "text-align: center;">Education</h2>
-                            @foreach (var item in Model.Educations)
-                            {
-                                <div id="EduEditorRows">
-                                    <partial name="_EducationEditor" model="item" />                                
-                                    
-                                </div>
-                                
-                            }
-                            <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu">
-                                    <i class="fas fa-plus"></i>
+                        <div class="card card-body" >
+                            <div id="educationList">
+                                <h2 style= "text-align: center;">Education</h2>
+                                @foreach (var item in Model.Educations)
+                                {
+                                    <div id="EduEditorRows">
+                                        <partial name="_EducationEditor" model="item" />                                
+                                        
+                                    </div>                                    
+                                }                            
+                            </div>
+                             <button type="button" asp-action="BlankEducation" asp-controller="CV" id="btnAddEdu" style="border-radius:42px;">
+                                <i class="fas fa-plus"></i>
                             </button>
-                            
                         </div>
+                       
                     </div>
                     <div class="col-md-12">
                         <div class="collapse" id="Experience">
-                        <div class="card card-body">
-                            <h2 style= "text-align: center;">Experience</h2>
-                            @foreach(var exp in Model.Experiences)
-                            {
-                                <div id="ExpEditorRows">
-                                <partial name="_ExperienceEditor" model="exp"/>                                
+                        <div class="card card-body" >
+                            <div id="experienceList">                            
+                                <h2 style= "text-align: center;">Experience</h2>
+                                @foreach(var exp in Model.Experiences)
+                                {
+                                    <div id="ExpEditorRows">
+                                    <partial name="_ExperienceEditor" model="exp"/>                                
+                                        
+                                    </div>
                                     
-                                </div>
-                                
-                            }
-                            <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                }
+                            </div>
+                            <button type="button" asp-action="BlankExperience" asp-controller="CV" id="btnAddExp" style="border-radius:42px;">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="collapse" id="Skills">
                         <div class="card card-body">
-                            <h2 style= "text-align: center;">Skills</h2>
-                            @foreach (var item in Model.Skills)
-                            {
-                                <div id="SkillEditorRows">
-                                <partial name="_SkillsEditor" model="item"/>                                
+                            <div id="skillsList">                            
+                                <h2 style= "text-align: center;">Skills</h2>
+                                @foreach (var item in Model.Skills)
+                                {
+                                    <div id="SkillEditorRows">
+                                    <partial name="_SkillsEditor" model="item"/>                                
+                                        
+                                    </div>
                                     
-                                </div>
-                                
-                            }
-                            <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                }
+                            </div>
+                            <button type="button" asp-action="BlankSkill" asp-controller="CV" id="btnAddSkill" style="border-radius:42px;">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="collapse" id="References">
-                        <div class="card card-body">
-                            <h2 style= "text-align: center;">References</h2>
-                            @foreach(var item in Model.References)
-                            {
-                                <div id="RefEditorRows">
-                                <partial name="_ReferencesEditor" model="item"/>                                
+                        <div class="card card-body" >
+                            <div id="referencesList">                            
+                                <h2 style= "text-align: center;">References</h2>
+                                @foreach(var item in Model.References)
+                                {
+                                    <div id="RefEditorRows">
+                                    <partial name="_ReferencesEditor" model="item"/>                                
+                                        
+                                    </div>
                                     
-                                </div>
-                                
-                            }
-                            <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef">
+                                }
+                            </div>
+                            <button type="button" asp-action="BlankReference" asp-controller="CV" id="btnAddRef" style="border-radius:42px;">
                                     <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -230,46 +237,49 @@
 <script>
 
     //ADD EDUCATION ROW
-   $("#btnAddEdu").click(function () {
+   $(document).on("click" ,"#btnAddEdu", function () {
         $.ajax({
             url: "/CV/BlankEducation",
             cache: false,
-            success: function (html) { 
-                $("#EduEditorRows:last").append(html);}
+            success: function (html) { $("#educationList").append(html);
+            }      
         });
         return false;
     });
 
     // ADD EXPERIENCE ROW
-    $("#btnAddExp").click(function () {
+    $(document).on("click" ,"#btnAddExp", function () {
         $.ajax({
             url: "/CV/BlankExperience",
             cache: false,
-            success: function (html) { $("#ExpEditorRows").append(html);}
+            success: function (html) { $("#experienceList").append(html);
+            }      
         });
         return false;
-    });
+    });    
 
     //ADD SKILL ROW
-    $("#btnAddSkill").click(function () {
+    $(document).on("click" ,"#btnAddSkill", function () {
         $.ajax({
             url: "/CV/BlankSkill",
             cache: false,
-            success: function (html) { $("#SkillEditorRows").append(html);}
+            success: function (html) { $("#skillsList").append(html);
+            }      
         });
         return false;
-    });
+    });    
 
     //ADD REFERENCE ROW
-    $("#btnAddRef").click(function () {
+    $(document).on("click" ,"#btnAddRef", function () {
         $.ajax({
             url: "/CV/BlankReference",
             cache: false,
-            success: function (html) { $("#RefEditorRows").append(html);}
+            success: function (html) { $("#referencesList").append(html);
+            }      
         });
         return false;
-    });
-
+    }); 
+   
     //REMOvE EDUCATION
     $(document).on("click", "#removeEdu", function () {
         console.log($(this).text());
