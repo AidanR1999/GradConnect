@@ -5,12 +5,11 @@
 
 <div class="text-center">
     <h1 class="display-4">CV index page</h1>    
-   
 </div>
- <a class="btn btn-primary" href="cv/create" role="button">Create</a>
+<a class="btn btn-primary" href="cv/create" role="button">Create</a>
 @{string controller = "Cv";}
- <div>
-     <table class="table table-striped">
+<div>
+    <table class="table table-striped">
         
         <tr class="table-info">
             CV title
@@ -25,18 +24,11 @@
                     <partial name="_TableButtonPartial" model="@new GradConnect.ViewModels.TablePartialVM(item.Id, controller);" />
                 </td>
                 <td>
-                   
-                        @* @{Html.BeginForm("GeneratePDF", "CV",  FormMethod.Post);
-                            { *@
-                                @* <input type="submit", class="btn btn-success" , value="Export To PDF" /> *@
-                                <a type="button" class="btn btn-success" asp-controller="CV" asp-action="GeneratePDF" asp-route-id="@item.Id">
-                                    Export To PDF
-                                </a>
-
-                            @* }} *@
-                    
-               </td>
+                    <a type="button" class="btn btn-success" asp-controller="CV" asp-action="GeneratePDF" asp-route-id="@item.Id">
+                        Export To PDF
+                    </a>
+                </td>
             </tr>
         }
-     </table>   
- </div>
+    </table>   
+</div>
