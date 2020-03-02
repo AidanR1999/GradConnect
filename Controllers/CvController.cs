@@ -21,7 +21,7 @@ namespace GradConnect.Controllers
 {
     public class CvController : Controller
     {
-        #region CONSTRUCTOR
+    #region CONSTRUCTOR
 
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
@@ -35,7 +35,7 @@ namespace GradConnect.Controllers
         }
         #endregion
         
-        #region CRUD
+    #region CRUD
         public async Task<IActionResult> Index()
         {
             var user = GetUser();
