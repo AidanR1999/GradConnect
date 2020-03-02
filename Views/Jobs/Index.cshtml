@@ -49,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Salary)
+                @String.Format("{0:c}",item.Salary)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)

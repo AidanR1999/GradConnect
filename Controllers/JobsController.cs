@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GradConnect.Data;
 using GradConnect.Models;
+using GradConnect.ViewModels;
 
 namespace GradConnect.Controllers
 {
@@ -54,15 +55,25 @@ namespace GradConnect.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Salary,Location,ContractType,ContractedHours")] Job job)
+        public async Task<IActionResult> Create(CreateJobsViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Job job = new Job
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Salary = model.Salary,
+                    Location = model.Location,
+                    ContractType = model.ContractType,
+                    ContractedHours = model.ContractedHours
+                };
+
                 _context.Add(job);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(job);
+            return View(model);
         }
 
         // GET: Jobs/Edit/5

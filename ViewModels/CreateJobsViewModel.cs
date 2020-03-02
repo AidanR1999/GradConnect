@@ -10,10 +10,10 @@ namespace GradConnect.ViewModels
     public class CreateJobsViewModel
     {
         [Display(Name = "Job Title")]
-        public string JobTitle { get; set; }
+        public string Title { get; set; }
 
         [Display(Name = "Description")]
-        public string JobDescription { get; set; }
+        public string Description { get; set; }
 
         [Display(Name = "Salary")]
         public double Salary { get; set; }
@@ -24,7 +24,7 @@ namespace GradConnect.ViewModels
         [Display(Name = "Employment Type")]
         public string ContractType { get; set; }
 
-        [Display(Name = "Contract Type")]
+        [Display(Name = "Contracted Hours")]
         public string ContractedHours { get; set; }
 
         [Display(Name = "Applicable Job Skills")]
