@@ -9,8 +9,7 @@ namespace GradConnect.Models
             this.Id = id;
                 this.Description = description;
                 this.PhotoId = photoId;
-                this.UserId = userId;
-               
+                this.UserId = userId;               
         }
         public int Id { get; set; }
         public string Description { get; set; }

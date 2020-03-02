@@ -1,16 +1,15 @@
 @model IEnumerable<GradConnect.Models.CV>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "CV Index Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">CV index page</h1>    
-   
 </div>
- <a class="btn btn-primary" href="cv/create" role="button">Create</a>
+<a class="btn btn-primary" href="cv/create" role="button">Create</a>
 @{string controller = "Cv";}
- <div>
-     <table class="table table-striped">
+<div>
+    <table class="table table-striped">
         
         <tr class="table-info">
             CV title
@@ -24,8 +23,7 @@
                 <td>
                     <partial name="_TableButtonPartial" model="@new GradConnect.ViewModels.TablePartialVM(item.Id, controller);" />
                 </td>
-               
             </tr>
         }
-     </table>   
- </div>
+    </table>   
+</div>
