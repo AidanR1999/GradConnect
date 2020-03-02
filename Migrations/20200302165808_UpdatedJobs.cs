@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class RemovedCVFromSkills : Migration
+    public partial class UpdatedJobs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,7 @@ namespace GradConnect.Migrations
                     Location = table.Column<string>(nullable: true),
                     ContractType = table.Column<string>(nullable: true),
                     ContractedHours = table.Column<string>(nullable: true),
+                    DatePosted = table.Column<DateTime>(nullable: true),
                     EmployerId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

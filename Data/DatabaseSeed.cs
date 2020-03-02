@@ -197,11 +197,36 @@ namespace GradConnect.Data
                 context.Skills.Add(Leadership);
                 context.Skills.Add(ActiveListening);
                 context.Skills.Add(Teamwork);
-                context.Skills.Add(Communication);
-
-                context.SaveChanges();
+                context.Skills.Add(Communication); 
             }
 
+            if (!context.Jobs.Any())
+            {
+                Job RockstarGames = new Job()
+                {
+                    Title = "Games Designer",
+                    Description = "Games Designer at World Famous developer, Rockstar Games.",
+                    Salary = 40000.00,
+                    Location = "Dundee",
+                    ContractType = "Permanent",
+                    ContractedHours = "Full Time",
+                    DatePosted = DateTime.Now
+                };
+                context.Jobs.Add(RockstarGames);
+            }
+
+            if (!context.Posts.Any())
+            {
+                Post post = new Post()
+                {
+                    Title = "Sample Post",
+                    Description = "This is a sample seeded post.",
+                    DatePosted = DateTime.Now,
+                    Thumbnail = 0
+                };
+                context.Posts.Add(post);
+            }
+            context.SaveChanges();
         }
     }
 }

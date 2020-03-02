@@ -196,6 +196,9 @@ namespace GradConnect.Migrations
                     b.Property<string>("ContractedHours")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("DatePosted")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 

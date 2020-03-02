@@ -30,7 +30,7 @@ namespace GradConnect
                     var roleManager = services.GetRequiredService<RoleManager<Role>>();
 
                     // if no db / migrations exist - create
-                    //context.Database.Migrate();
+                    context.Database.Migrate();
 
                     // seed roles
                     DatabaseSeed.Seed(context, roleManager, userManager);
