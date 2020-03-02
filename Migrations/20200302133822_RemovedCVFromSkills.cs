@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class updatedExpClass : Migration
+    public partial class RemovedCVFromSkills : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -64,6 +64,10 @@ namespace GradConnect.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    Salary = table.Column<double>(nullable: false),
+                    Location = table.Column<string>(nullable: true),
+                    ContractType = table.Column<string>(nullable: true),
+                    ContractedHours = table.Column<string>(nullable: true),
                     EmployerId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

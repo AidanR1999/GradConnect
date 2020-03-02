@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200227164243_updatedExpClass")]
-    partial class updatedExpClass
+    [Migration("20200302133822_RemovedCVFromSkills")]
+    partial class RemovedCVFromSkills
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -192,11 +192,23 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ContractType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ContractedHours")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("EmployerId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
