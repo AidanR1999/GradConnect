@@ -17,8 +17,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="Syncfusion.HtmlToPdfConverter.IE.AspNet.Mvc5" Version="17.4.0.53" />
-    <PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="17.4.0.46" />
   </ItemGroup>
 
 </Project>

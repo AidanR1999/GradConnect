@@ -12,8 +12,6 @@ using GradConnect.Data;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.HtmlConverter;
-using Syncfusion.Pdf;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using DinkToPdf;
@@ -323,6 +321,7 @@ namespace GradConnect.Controllers
 
         public IActionResult GeneratePDF(int id)
         {
+            var user = GetUser();
             var converter = new SynchronizedConverter(new PdfTools());
             var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             //byte[] pdf = converter.Convert(doc);
@@ -347,7 +346,7 @@ namespace GradConnect.Controllers
             };
 
             var file = converter.Convert(doc);
-            return File(file, "application/pdf", "cv.pdf");
+            return File(file, "application/pdf", "cv" + "." + user.Forename + "." + user.Surname + ".pdf");
         }
 
 
