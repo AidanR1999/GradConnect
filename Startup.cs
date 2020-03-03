@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GradConnect.Models;
 using Microsoft.AspNetCore.Http;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 namespace GradConnect
 {
@@ -37,6 +39,7 @@ namespace GradConnect
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

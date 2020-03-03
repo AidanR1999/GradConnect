@@ -16,26 +16,30 @@ using Syncfusion.HtmlConverter;
 using Syncfusion.Pdf;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 #endregion
 namespace GradConnect.Controllers
 {
     public class CvController : Controller
     {
-    #region CONSTRUCTOR
+        #region CONSTRUCTOR
 
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
+        private readonly IConverter _converter;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CvController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment)
+        public CvController(ApplicationDbContext context, IConverter converter, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _converter = converter;
             _httpContextAccessor = httpContextAccessor;
             _hostingEnvironment = hostingEnvironment;
         }
         #endregion
-        
-    #region CRUD
+
+        #region CRUD
         public async Task<IActionResult> Index()
         {
             var user = GetUser();
@@ -107,226 +111,258 @@ namespace GradConnect.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-    [HttpGet]
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
-            return NotFound();
-        }
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
-        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
-        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
-        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
-        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
-        var model = new UpdateCvViewModel();
-        
-        model.CvName = cv.CvName;
-        model.FirstName = cv.FirstName;
-        model.LastName = cv.LastName;
-        model.Street = cv.Street;
-        model.City = cv.City;
-        model.Postcode = cv.Postcode;
-        model.PhoneNumber = cv.PhoneNumber;
-        model.Email = cv.Email;
-        model.DateOfBirth = cv.DateOfBirth;
-        model.PersonalStatement = cv.PersonalStatement;
-        model.Experiences = experiences;
-        model.Educations = educations;
-        model.References = references;
-        model.Skills = skills;
-        
-        
-        return View(model);        
-    }
-        
-    [HttpPost]
-    [ActionName("Edit")]
-    public async Task<IActionResult> Edit(int id, UpdateCvViewModel updateModel)
-    {
-        if (ModelState.IsValid)
-        {
             var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
             var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
             var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
             var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
             var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
-            cv.CvName = updateModel.CvName;
-            cv.FirstName = updateModel.FirstName;
-            cv.LastName = updateModel.LastName;
-            cv.Street = updateModel.Street;
-            cv.City = updateModel.City;
-            cv.Postcode = updateModel.Postcode;
-            cv.PhoneNumber = updateModel.PhoneNumber;
-            cv.Email = updateModel.Email;
-            cv.DateOfBirth = updateModel.DateOfBirth;
-            cv.PersonalStatement = updateModel.PersonalStatement;
-            cv.Experiences = updateModel.Experiences;
-            cv.Educations = updateModel.Educations;
-            cv.References = updateModel.References;
-            cv.Skills = updateModel.Skills;
-            _context.CVs.Update(cv);
-            await _context.SaveChangesAsync();
-        }
-        return RedirectToAction(nameof(Index));
-    }
+            var model = new UpdateCvViewModel();
 
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
+            model.CvName = cv.CvName;
+            model.FirstName = cv.FirstName;
+            model.LastName = cv.LastName;
+            model.Street = cv.Street;
+            model.City = cv.City;
+            model.Postcode = cv.Postcode;
+            model.PhoneNumber = cv.PhoneNumber;
+            model.Email = cv.Email;
+            model.DateOfBirth = cv.DateOfBirth;
+            model.PersonalStatement = cv.PersonalStatement;
+            model.Experiences = experiences;
+            model.Educations = educations;
+            model.References = references;
+            model.Skills = skills;
+
+
+            return View(model);
         }
 
-        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
-        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
-        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
-        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
-        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
-        var model = new UpdateCvViewModel();
-        
-        model.CvName = cv.CvName;
-        model.FirstName = cv.FirstName;
-        model.LastName = cv.LastName;
-        model.Street = cv.Street;
-        model.City = cv.City;
-        model.Postcode = cv.Postcode;
-        model.PhoneNumber = cv.PhoneNumber;
-        model.Email = cv.Email;
-        model.DateOfBirth = cv.DateOfBirth;
-        model.PersonalStatement = cv.PersonalStatement;
-        model.Experiences = experiences;
-        model.Educations = educations;
-        model.References = references;
-        model.Skills = skills;
-        
-        
-        return View(model); 
-    }
-
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
+        [HttpPost]
+        [ActionName("Edit")]
+        public async Task<IActionResult> Edit(int id, UpdateCvViewModel updateModel)
         {
-            return NotFound();
-        }
-
-        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
-        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
-        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
-        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
-        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
-        var model = new UpdateCvViewModel();
-        
-        model.CvName = cv.CvName;
-        model.FirstName = cv.FirstName;
-        model.LastName = cv.LastName;
-        model.Street = cv.Street;
-        model.City = cv.City;
-        model.Postcode = cv.Postcode;
-        model.PhoneNumber = cv.PhoneNumber;
-        model.Email = cv.Email;
-        model.DateOfBirth = cv.DateOfBirth;
-        model.PersonalStatement = cv.PersonalStatement;
-        model.Experiences = experiences;
-        model.Educations = educations;
-        model.References = references;
-        model.Skills = skills;       
-        
-        return View(model); 
-    }
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-            //find fitness class in db using passed in id
-        var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
-        var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
-        var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
-        var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
-        var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
-        cv.Experiences = experiences;
-        cv.Educations = educations;
-        cv.Skills = skills;
-        cv.References = references;
-            //if class in null
-        if (cv == null)
-        {
-            //display error                
-            return NotFound();
-        }
-        else
-        {
-            //remove class from db
-            _context.CVs.Remove(cv);
-            await _context.SaveChangesAsync();                
+            if (ModelState.IsValid)
+            {
+                var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+                var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+                var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+                var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+                var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+                cv.CvName = updateModel.CvName;
+                cv.FirstName = updateModel.FirstName;
+                cv.LastName = updateModel.LastName;
+                cv.Street = updateModel.Street;
+                cv.City = updateModel.City;
+                cv.Postcode = updateModel.Postcode;
+                cv.PhoneNumber = updateModel.PhoneNumber;
+                cv.Email = updateModel.Email;
+                cv.DateOfBirth = updateModel.DateOfBirth;
+                cv.PersonalStatement = updateModel.PersonalStatement;
+                cv.Experiences = updateModel.Experiences;
+                cv.Educations = updateModel.Educations;
+                cv.References = updateModel.References;
+                cv.Skills = updateModel.Skills;
+                _context.CVs.Update(cv);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
-    } 
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    #endregion
-    
-    #region PDF
-    public IActionResult GeneratePDF(int id)
-    {
-        var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-        //UriBuilder uriBuilder = new UriBuilder();
-        // uriBuilder.Scheme = "https";
-        // uriBuilder.Host = "localhost";
-        // uriBuilder.Port = 5001;
-        // uriBuilder.Path = "CV/Details/"+id;
-        // Uri uri = uriBuilder.Uri;
-        // uri.ToString();
-        var user = GetUser();
-            //object p = Request.Url.AbsoluteUri();
-        //Initialize HTML to PDF converter 
-        HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
-        WebKitConverterSettings settings = new WebKitConverterSettings();
-            //Set WebKit path
-        settings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "QtBinariesWindows");
-            //Assign WebKit settings to HTML converter
-        htmlConverter.ConverterSettings = settings;
-            //Convert URL to PDF
-        //PdfDocument document = htmlConverter.Convert("https://localhost:5001/CV/Details/"+id);
-        PdfDocument document = htmlConverter.Convert(host + "/CV/Details/" + id);
-        MemoryStream stream = new MemoryStream();
-        document.Save(stream);
-        return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "cv" + "." + user.Forename + "." + user.Surname + ".pdf");
-        // var user = GetUser();
-        // var url = "localhost:5001/CV/Details/"+id;
-        // HtmlToPdfConverter converter = new HtmlToPdfConverter();
+            var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+            var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+            var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+            var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+            var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+            var model = new UpdateCvViewModel();
 
-        // WebKitConverterSettings settings = new WebKitConverterSettings();
-        // settings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "QtBinariesWindows");
-        // converter.ConverterSettings = settings;
+            model.CvName = cv.CvName;
+            model.FirstName = cv.FirstName;
+            model.LastName = cv.LastName;
+            model.Street = cv.Street;
+            model.City = cv.City;
+            model.Postcode = cv.Postcode;
+            model.PhoneNumber = cv.PhoneNumber;
+            model.Email = cv.Email;
+            model.DateOfBirth = cv.DateOfBirth;
+            model.PersonalStatement = cv.PersonalStatement;
+            model.Experiences = experiences;
+            model.Educations = educations;
+            model.References = references;
+            model.Skills = skills;
 
-        // PdfDocument document = converter.Convert(url);
 
-        // MemoryStream ms = new MemoryStream();
-        // document.Save(ms);
-        // document.Close();
+            return View(model);
+        }
 
-        // ms.Position = 0;
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        // FileStreamResult fileStreamResult = new FileStreamResult(ms, "application/pdf");
-        // fileStreamResult.FileDownloadName = "cv" + "." + user.Forename + "." + user.Surname+".pdf";
+            var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+            var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+            var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+            var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+            var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+            var model = new UpdateCvViewModel();
 
-        // return fileStreamResult;
+            model.CvName = cv.CvName;
+            model.FirstName = cv.FirstName;
+            model.LastName = cv.LastName;
+            model.Street = cv.Street;
+            model.City = cv.City;
+            model.Postcode = cv.Postcode;
+            model.PhoneNumber = cv.PhoneNumber;
+            model.Email = cv.Email;
+            model.DateOfBirth = cv.DateOfBirth;
+            model.PersonalStatement = cv.PersonalStatement;
+            model.Experiences = experiences;
+            model.Educations = educations;
+            model.References = references;
+            model.Skills = skills;
+
+            return View(model);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            //find fitness class in db using passed in id
+            var cv = await _context.CVs.FirstOrDefaultAsync(x => x.Id == id);
+            var experiences = await _context.Experiences.Where(x => x.CvId == id).ToListAsync();
+            var educations = await _context.Educations.Where(x => x.CvId == id).ToListAsync();
+            var references = await _context.References.Where(x => x.CvId == id).ToListAsync();
+            var skills = await _context.Skills.Where(x => x.CvId == id).ToListAsync();
+            cv.Experiences = experiences;
+            cv.Educations = educations;
+            cv.Skills = skills;
+            cv.References = references;
+            //if class in null
+            if (cv == null)
+            {
+                //display error                
+                return NotFound();
+            }
+            else
+            {
+                //remove class from db
+                _context.CVs.Remove(cv);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+        }
+
+        #endregion
+
+        #region PDF
+        // public IActionResult GeneratePDF(int id)
+        // {
+        //     var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+        //     //UriBuilder uriBuilder = new UriBuilder();
+        //     // uriBuilder.Scheme = "https";
+        //     // uriBuilder.Host = "localhost";
+        //     // uriBuilder.Port = 5001;
+        //     // uriBuilder.Path = "CV/Details/"+id;
+        //     // Uri uri = uriBuilder.Uri;
+        //     // uri.ToString();
+        //     var user = GetUser();
+        //         //object p = Request.Url.AbsoluteUri();
+        //     //Initialize HTML to PDF converter 
+        //     HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
+        //     WebKitConverterSettings settings = new WebKitConverterSettings();
+        //         //Set WebKit path
+        //     settings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "QtBinariesWindows");
+        //         //Assign WebKit settings to HTML converter
+        //     htmlConverter.ConverterSettings = settings;
+        //         //Convert URL to PDF
+        //     //PdfDocument document = htmlConverter.Convert("https://localhost:5001/CV/Details/"+id);
+        //     PdfDocument document = htmlConverter.Convert(host + "/CV/Details/" + id);
+        //     MemoryStream stream = new MemoryStream();
+        //     document.Save(stream);
+        //     return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "cv" + "." + user.Forename + "." + user.Surname + ".pdf");
+        //     // var user = GetUser();
+        //     // var url = "localhost:5001/CV/Details/"+id;
+        //     // HtmlToPdfConverter converter = new HtmlToPdfConverter();
+
+        //     // WebKitConverterSettings settings = new WebKitConverterSettings();
+        //     // settings.WebKitPath = Path.Combine(_hostingEnvironment.ContentRootPath, "QtBinariesWindows");
+        //     // converter.ConverterSettings = settings;
+
+        //     // PdfDocument document = converter.Convert(url);
+
+        //     // MemoryStream ms = new MemoryStream();
+        //     // document.Save(ms);
+        //     // document.Close();
+
+        //     // ms.Position = 0;
+
+        //     // FileStreamResult fileStreamResult = new FileStreamResult(ms, "application/pdf");
+        //     // fileStreamResult.FileDownloadName = "cv" + "." + user.Forename + "." + user.Surname+".pdf";
+
+        //     // return fileStreamResult;
+        // }
+
+        public IActionResult GeneratePDF(int id)
+        {
+            var converter = new SynchronizedConverter(new PdfTools());
+            var host = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            //byte[] pdf = converter.Convert(doc);
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings() { Top = 10 },
+                DocumentTitle = "cv"
+                //Out = @"C:\DinkToPdf\src\DinkToPdf.TestThreadSafe\test.pdf",
+            },
+                Objects = {
+                new ObjectSettings()
+                {
+                    Page = host + "/CV/Details/" + id,
+                },
+            }
+
+            };
+
+            var file = converter.Convert(doc);
+            return File(file, "application/pdf", "cv.pdf");
+        }
+
+
+
+        #endregion
+
+        #region UTILS
+        public User GetUser()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+
+            return user;
+        }
+
+        #endregion
     }
-    #endregion
-
-    #region UTILS
-    public User GetUser()
-    {
-        var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        var user = _context.Users.FirstOrDefault(x => x.Id == userId);
-        
-        return user;
-    }
-
-    #endregion
-}
 }
