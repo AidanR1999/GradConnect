@@ -17,6 +17,7 @@ namespace GradConnect.Models
         public string About { get; set; }
         public string InstitutionName { get; set; }
         public string CourseName { get; set; }
+        public string ProfileImage { get; set; }
 
         //git purposes
 

@@ -3,8 +3,218 @@
 @{
     ViewData["Title"] = "Profile";
 }
+<div class="card card-body">
+<!-- Image trigger modal -->
+<div>
+  
+    @if(Model.ProfilePhoto == null)
+    {
+      <p>
+        <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+          <img src="~/Images/UsersProfileImages/blank.jpg"   
+              class="rounded-circle"   
+              height="200" width="200"   
+              asp-append-version="true"
+              style="z-index: 100; position: fixed; cursor: pointer;"/>
+        </a>
+      </p>
+    }
+    else
+    {
+      <p>
+        <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+          <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input">
+            <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
+              class="rounded-circle"   
+              height="200" width="200"   
+              asp-append-version="true"
+              style="z-index: 100; position: fixed; cursor: pointer;" />
+            </label>
+        </a>
+      </p>
+      
+    }
 
-<div class="text-center">
-    <h2 class="display-4">@Model.Forename @Model.Surname</h2>    
+    <br />  
+  <div class="text-center">
+      <h3>@Model.Forename @Model.Surname</h3>    
+  </div>
+   <div class="text-center">
+      <p>@Model.Institution</p>
+      <p>@Model.Course</p>        
+  </div>
 </div>
+</div>
+<hr>
 
+<div class="col-md-4">
+  <div class="card card-body" style="margin-top: 30px;">
+    @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
+    {
+      <p>Please add skills</p>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+        <i class="fas fa-plus"></i> Add Skills
+      </button>
+    }
+    else
+    {
+      foreach (var item in Model.ListOfSkills)
+      {
+          if(item.Id % 2 != 0)
+          {
+            <div class="col-md-6">
+              <p>@item.Name</p>
+            </div>
+          }
+          else
+          {
+            <div class="col-md-6">
+              <p>@item.Name</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+              <i class="fas fa-plus"></i> Edit Skills
+            </button>
+          }
+      }
+    }
+    
+  </div>
+</div>
+<!-- Modal for image uploads -->
+<form enctype="multipart/form-data" asp-action="AddProfileImage">
+  <div class="modal fade" id="ImageUpload" tabindex="-1" role="dialog" aria-labelledby="ImageUploadCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ImageUploadLongTitle">Upload Your Profile Picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          @if(Model.ProfilePhoto == null)
+          {
+            <img src="~/Images/UsersProfileImages/blank.jpg"   
+                class="rounded-circle"   
+                height="100" width="100"   
+                asp-append-version="true" />
+          }
+          else
+          {
+            <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"   
+                class="rounded-circle"   
+                height="100" width="100"   
+                asp-append-version="true" />
+          }
+          @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
+        </div>
+        <div class="modal-footer">
+          <div class="input-group mb-3">
+          <div class="custom-file">
+              <input asp-for="ProfilePicture" class="custom-file-input" id="cropzee-input">  
+              <label class="custom-file-label" for="customFile">Choose image</label>
+          </div>
+          <span asp-validation-for="ProfilePicture" class="text-danger"></span>  
+          <div class="input-group-append">
+              <input type="submit" value="Upload" onclick="cropzeeGetImage('cropzee-input')" class="btn btn-sm btn-primary rounded-0" /> 
+              @* <button onclick="cropzeeGetImage('cropzee-input')"></button> *@
+          </div>
+          <div>
+            
+            @* <input id="cropzee-input" type="file" accept="image/*"> *@
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<form asp-action="EditProfile">
+  <div class="modal fade" id="EditSkillsModalCenter" tabindex="-1" role="dialog" aria-labelledby="EditSkillsCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditSkillsLongTitle">Add Skills</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-body" style="margin-top: 30px;">
+    @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
+    {
+      @* <div id="SkillEditorRows">
+        <partial name="_SkillsEditor"/>                                                          
+      </div>  *@
+      
+        <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
+          <i class="fas fa-plus"></i>
+        </button>            
+    }
+    else
+    {
+      <div id="skillsList">
+        @foreach (var item in Model.ListOfSkills)
+        {
+          <div id="SkillEditorRows">
+            <partial name="_SkillsEditor" model="item"/>                      
+          </div>
+                                      
+        }
+      </div>
+      <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
+          <i class="fas fa-plus"></i>
+      </button>                      
+    }
+    
+    </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="EditSkills" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+@section scripts{  
+  		
+    <script type="text/javascript">  
+        // Add the following code if you want the name of the file appear on select  
+        $(".custom-file-input").on("change", function () {  
+            var fileName = $(this).val().split("\\").pop();  
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
+        });  
+
+        $(document).ready(function(){
+			    $("#cropzee-input").cropzee(
+            {startSize: [85, 85, '%'],
+            returnImageMode:'data-url'
+            });
+		    });
+
+      @* //$("#cropzee-input").cropzee({
+        //returnImageMode: 'data-url'
+      //}); *@
+    </script>
+    <script>
+      //ADD SKILL ROW
+    $(document).on("click" ,"#btnAddSkill", function () {
+        $.ajax({
+            url: "/Profile/BlankSkill",
+            cache: false,
+            success: function (html) { $("#skillsList").append(html);
+            }      
+        });
+        return false;
+    });
+    //REMOVE SKILL
+    $(document).on("click", "#removeSkill", function () {
+        console.log($(this).text());
+            $(this).parents("div.SkillEditorRow:first").remove();
+        console.log('clicked');
+        return false;
+    });    
+
+    </script>  
+}
