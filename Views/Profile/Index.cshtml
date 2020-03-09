@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Profile";
 }
+<div id="indexBody">
+
+
 <div class="card card-body">
 <!-- Image trigger modal -->
 <div>
@@ -130,7 +133,7 @@
 </form>
 
 <!-- MODAL FOR EDIT SKILLS -->
-<form asp-action="AddSkillsToUser">
+<form asp-action="AddSkillsToUser" id="addSkillsForm">
   <div class="modal fade" id="EditSkillsModalCenter" tabindex="-1" role="dialog" aria-labelledby="EditSkillsCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -146,11 +149,11 @@
     {
         var skill = new GradConnect.Models.Skill();
         skill.Name = "";
-    <div id="skillsList">
-      <div id="SkillEditorRows">
-        <partial name="_SkillsEditor" model="skill"/>                                                          
-      </div>  
-    </div> 
+      <div id="skillsList">
+        <div id="SkillEditorRows">
+          <partial name="_SkillsEditor" model="skill"/>                                                          
+        </div>  
+      </div> 
         <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
           <i class="fas fa-plus"></i>
         </button>            
@@ -180,6 +183,7 @@
     </div>
   </div>
 </form>
+</div>
 @section scripts{  
 
     <script type="text/javascript">  
@@ -217,6 +221,21 @@
         console.log('clicked');
         return false;
     });    
+
+    $(document).ready(function () {            
+        $('#addSkillsForm').submit(function (e) {
+            e.preventDefault();
+            var $form = $(this);
+            $.post($form.attr("AddSkillsToUser"), $form.serialize()).done(function (res) {
+                $mymodal = $("#EditSkillsModalCenter");
+                //update the modal's body with the response received
+                $mymodal.find("div.modal-body").html(res);
+                // Show the modal
+                $mymodal.modal("close");
+            });
+        });
+
+      });
 
     </script>  
 }
