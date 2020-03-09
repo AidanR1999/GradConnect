@@ -38,7 +38,7 @@ namespace GradConnect.Controllers
 
             var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
             var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
-            var userSkills = await _context.UserSkills.Where(x => x.UserId == user.Id).ToListAsync();
+            var userSkills = await _context.UserSkills.Include(x =>x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
             // var photos = await _context.Photos.Where(x => x. == user.Id).ToListAsync();
             model.Forename = userFromDb.Forename;
             model.Surname = userFromDb.Surname;
@@ -50,6 +50,7 @@ namespace GradConnect.Controllers
             model.UserPortfolios = portfolios;
             model.VerifiedStudent = userFromDb.StudentEmailConfirmed;
             model.Institution = userFromDb.InstitutionName;
+            List<Skill> skills = new List<Skill>();
             if(userSkills.Count == 0)
             {
                 return View(model);
@@ -59,8 +60,10 @@ namespace GradConnect.Controllers
                 foreach (var s in userSkills)
                 {
                     var skill = await _context.Skills.FirstOrDefaultAsync(x => x.Id == s.SkillId);
-                    model.ListOfSkills.Add(s.Skill);
+                    skills.Add(s.Skill);
+                    
                 }
+                model.ListOfSkills = skills;
             }
             
             
@@ -78,9 +81,12 @@ namespace GradConnect.Controllers
             if (ModelState.IsValid)
             {
                 var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
-                var userSkills = await _context.UserSkills.Where(x => x.UserId == user.Id).ToListAsync();
+                var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
+                
+                //userSkills.ToHashSet();
                 foreach (var skill in model.ListOfSkills)
                 {
+                        
                     UserSkill us = new UserSkill
                     {
                         Skill = skill,
@@ -89,13 +95,17 @@ namespace GradConnect.Controllers
                         User = user
                     };
                     await _context.UserSkills.AddAsync(us);
-                    await _context.SaveChangesAsync();
+                        
+                    //await _context.UserSkills.AddRangeAsync(us);
                 }
-                
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
+                
             return RedirectToAction(nameof(Index));
         }
+    
+            
+        
         public async Task<IActionResult> EditProfile(UserProfileViewModel model)
         {
             var user = GetUser();

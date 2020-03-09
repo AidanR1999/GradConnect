@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class removedCvFromSkill : Migration
+    public partial class newImigrant2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200309123514_removedCvFromSkill")]
-    partial class removedCvFromSkill
+    [Migration("20200309171841_newImigrant2")]
+    partial class newImigrant2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

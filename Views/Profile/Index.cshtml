@@ -8,49 +8,47 @@
 
 <div class="card card-body">
 <!-- Image trigger modal -->
-<div>
-  
-    @if(Model.ProfilePhoto == null)
-    {
-      <p>
-        <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
-          <img src="~/Images/UsersProfileImages/blank.jpg"   
-              class="rounded-circle"   
-              height="200" width="200"   
-              asp-append-version="true"
-              style="z-index: 100; position: fixed; cursor: pointer; 1px solid black;"/>
-        </a>
-      </p>
-    }
-    else
-    {
-      <p>
-        <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
-            <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
-              class="rounded-circle"   
-              height="200" width="200"   
-              asp-append-version="true"
-              style="z-index: 100; position: fixed; cursor: pointer; border: 1px solid black;" />
-        </a>
-      </p>
-          @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
-      
-    }
-
-    <br />  
-  <div class="text-center">
+  <div class="col-md-3">
+    
+      @if(Model.ProfilePhoto == null)
+      {
+        <p>
+          <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+            <img src="~/Images/UsersProfileImages/blank.jpg"   
+                class="rounded-circle"   
+                height="200" width="200"   
+                asp-append-version="true"
+                style="cursor: pointer; 1px solid black;"/>
+          </a>
+        </p>
+      }
+      else
+      {
+        <p>
+          <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+              <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
+                class="rounded-circle"   
+                height="200" width="200"   
+                asp-append-version="true"
+                style="cursor: pointer; border: 1px solid black;" />
+          </a>
+        </p>
+            @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
+        
+      }
+  </div>
+  <div class="text-center col-md-8">
       <h3>@Model.Forename @Model.Surname</h3>    
-  </div>
-   <div class="text-center">
       <p>@Model.Institution</p>
-      <p>@Model.Course</p>        
+      
+      <p>@Model.Course</p> 
+      
   </div>
-</div>
 </div>
 <hr>
 
 <div class="col-md-4">
-  <div class="card card-body" style="margin-top: 30px;">
+  <div class="card card-body">
     @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
     {
       <p>Please add skills</p>
@@ -64,24 +62,36 @@
       {
           if(item.Id % 2 != 0)
           {
-            <div class="col-md-6">
+            <div>
               <p>@item.Name</p>
             </div>
           }
           else
           {
-            <div class="col-md-6">
+            <div>
               <p>@item.Name</p>
             </div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
-              <i class="fas fa-plus"></i> Edit Skills
-            </button>
           }
       }
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+        <i class="fas fa-plus"></i> Edit Skills
+      </button>
     }
     
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Modal for image uploads -->
 <form enctype="multipart/form-data" asp-action="AddProfileImage">
   <div class="modal fade" id="ImageUpload" tabindex="-1" role="dialog" aria-labelledby="ImageUploadCenterTitle" aria-hidden="true">
@@ -222,20 +232,20 @@
         return false;
     });    
 
-    $(document).ready(function () {            
-        $('#addSkillsForm').submit(function (e) {
-            e.preventDefault();
-            var $form = $(this);
-            $.post($form.attr("AddSkillsToUser"), $form.serialize()).done(function (res) {
-                $mymodal = $("#EditSkillsModalCenter");
+    //$(document).ready(function () {            
+      //  $('#addSkillsForm').submit(function (e) {
+        //    e.preventDefault();
+          //  var $form = $(this);
+            //$.post($form.attr("AddSkillsToUser"), $form.serialize()).done(function (res) {
+              //  $mymodal = $("#EditSkillsModalCenter");
                 //update the modal's body with the response received
-                $mymodal.find("div.modal-body").html(res);
+                //$mymodal.find("div.modal-body").html(res);
                 // Show the modal
-                $mymodal.modal("close");
-            });
-        });
+                //$mymodal.modal("close");
+            //});
+ //       });
 
-      });
+//      });
 
     </script>  
 }

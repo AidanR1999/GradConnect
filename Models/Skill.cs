@@ -10,8 +10,8 @@ namespace GradConnect.Models
         public Skill()
         {
             UserSkills = new List<UserSkill>();
-            //PostSkills = new List<PostSkill>();
-            //JobSkills = new List<JobSkill>();
+            PostSkills = new List<PostSkill>();
+            JobSkills = new List<JobSkill>();
         }
         //Navigational properties
 
