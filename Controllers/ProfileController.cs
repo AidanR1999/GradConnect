@@ -35,8 +35,8 @@ namespace GradConnect.Controllers
         {
             var user = GetUser();
             UserProfileViewModel model = new UserProfileViewModel();
-            var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
 
+            var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
             var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
             var userSkills = await _context.UserSkills.Where(x => x.UserId == user.Id).ToListAsync();
             // var photos = await _context.Photos.Where(x => x. == user.Id).ToListAsync();
@@ -47,14 +47,23 @@ namespace GradConnect.Controllers
             model.About = userFromDb.About;
             model.Course = userFromDb.CourseName;
             model.ProfilePhoto = userFromDb.ProfileImage;
-
-            foreach (var s in userSkills)
-            {
-                model.ListOfSkills.Add(s.Skill);
-            }
             model.UserPortfolios = portfolios;
             model.VerifiedStudent = userFromDb.StudentEmailConfirmed;
             model.Institution = userFromDb.InstitutionName;
+            if(userSkills.Count == 0)
+            {
+                return View(model);
+            }
+            else
+            {
+                foreach (var s in userSkills)
+                {
+                    var skill = await _context.Skills.FirstOrDefaultAsync(x => x.Id == s.SkillId);
+                    model.ListOfSkills.Add(s.Skill);
+                }
+            }
+            
+            
             return View(model);
         }
         public IActionResult BlankSkill()
@@ -62,6 +71,31 @@ namespace GradConnect.Controllers
             return PartialView("_SkillsEditor", new Skill());
         }
 
+        public async Task<IActionResult> AddSkillsToUser(UserProfileViewModel model)
+        {
+            var user = GetUser();
+
+            if (ModelState.IsValid)
+            {
+                var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+                var userSkills = await _context.UserSkills.Where(x => x.UserId == user.Id).ToListAsync();
+                foreach (var skill in model.ListOfSkills)
+                {
+                    UserSkill us = new UserSkill
+                    {
+                        Skill = skill,
+                        SkillId = skill.Id,
+                        UserId = user.Id,
+                        User = user
+                    };
+                    await _context.UserSkills.AddAsync(us);
+                    await _context.SaveChangesAsync();
+                }
+                
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
         public async Task<IActionResult> EditProfile(UserProfileViewModel model)
         {
             var user = GetUser();

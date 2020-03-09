@@ -15,7 +15,7 @@
               class="rounded-circle"   
               height="200" width="200"   
               asp-append-version="true"
-              style="z-index: 100; position: fixed; cursor: pointer;"/>
+              style="z-index: 100; position: fixed; cursor: pointer; 1px solid black;"/>
         </a>
       </p>
     }
@@ -23,15 +23,14 @@
     {
       <p>
         <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
-          <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input">
             <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
               class="rounded-circle"   
               height="200" width="200"   
               asp-append-version="true"
-              style="z-index: 100; position: fixed; cursor: pointer;" />
-            </label>
+              style="z-index: 100; position: fixed; cursor: pointer; border: 1px solid black;" />
         </a>
       </p>
+          @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
       
     }
 
@@ -129,7 +128,9 @@
     </div>
   </div>
 </form>
-<form asp-action="EditProfile">
+
+<!-- MODAL FOR EDIT SKILLS -->
+<form asp-action="AddSkillsToUser">
   <div class="modal fade" id="EditSkillsModalCenter" tabindex="-1" role="dialog" aria-labelledby="EditSkillsCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -143,10 +144,13 @@
         <div class="card card-body" style="margin-top: 30px;">
     @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
     {
-      @* <div id="SkillEditorRows">
-        <partial name="_SkillsEditor"/>                                                          
-      </div>  *@
-      
+        var skill = new GradConnect.Models.Skill();
+        skill.Name = "";
+    <div id="skillsList">
+      <div id="SkillEditorRows">
+        <partial name="_SkillsEditor" model="skill"/>                                                          
+      </div>  
+    </div> 
         <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
           <i class="fas fa-plus"></i>
         </button>            
@@ -159,7 +163,6 @@
           <div id="SkillEditorRows">
             <partial name="_SkillsEditor" model="item"/>                      
           </div>
-                                      
         }
       </div>
       <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
@@ -171,14 +174,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" asp-action="EditSkills" class="btn btn-primary">Save changes</button>
+          <button type="submit" asp-action="AddSkillsToUser" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
   </div>
 </form>
 @section scripts{  
-  		
+
     <script type="text/javascript">  
         // Add the following code if you want the name of the file appear on select  
         $(".custom-file-input").on("change", function () {  
@@ -186,18 +189,17 @@
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
         });  
 
-        $(document).ready(function(){
-			    $("#cropzee-input").cropzee(
-            {startSize: [85, 85, '%'],
-            returnImageMode:'data-url'
-            });
-		    });
+        //$(document).ready(function(){
+			    //$("#cropzee-input").cropzee(
+         //   {startSize: [85, 85, '%'],
+           // returnImageMode:'data-url'
+           // });
+		    //});
 
       @* //$("#cropzee-input").cropzee({
         //returnImageMode: 'data-url'
       //}); *@
-    </script>
-    <script>
+   
       //ADD SKILL ROW
     $(document).on("click" ,"#btnAddSkill", function () {
         $.ajax({
