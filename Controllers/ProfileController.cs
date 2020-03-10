@@ -48,7 +48,7 @@ namespace GradConnect.Controllers
             model.About = userFromDb.About;
             model.Course = userFromDb.CourseName;
             model.ProfilePhoto = userFromDb.ProfileImage;
-            model.UserPortfolios = portfolios;
+            model.ListOfPortfolios = portfolios;
             model.VerifiedStudent = userFromDb.StudentEmailConfirmed;
             model.Institution = userFromDb.InstitutionName;
             List<Skill> skills = new List<Skill>();
@@ -78,7 +78,11 @@ namespace GradConnect.Controllers
         {
             return PartialView("_ExperienceEditor", new Experience());
         }
-
+        
+        public IActionResult BlankPortfolio()
+        {
+            return PartialView("_PortfolioEditor", new Portfolio());
+        }
         public async Task<IActionResult> AddSkillsToUser(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -93,23 +97,31 @@ namespace GradConnect.Controllers
                     _context.UserSkills.Remove(item);
                     await _context.SaveChangesAsync();
                 }
-                //userSkills.ToHashSet();
-                foreach (var skill in model.ListOfSkills)
+
+                if(model.ListOfSkills == null || model.ListOfSkills.Count() == 0)
                 {
-                    if (model.ListOfSkills.FindAll(x => x.Name == skill.Name).Count == 1)
-                    {
-                        UserSkill us = new UserSkill
-                        {
-                            Skill = skill,
-                            SkillId = skill.Id,
-                            UserId = user.Id,
-                            User = user
-                        };
-                        await _context.UserSkills.AddAsync(us);
-                        //await _context.UserSkills.AddRangeAsync(us);
-                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                await _context.SaveChangesAsync();
+                else
+                {
+                    foreach (var skill in model.ListOfSkills)
+                    {
+                        if (model.ListOfSkills.FindAll(x => x.Name == skill.Name).Count == 1)
+                        {
+                            UserSkill us = new UserSkill
+                            {
+                                Skill = skill,
+                                SkillId = skill.Id,
+                                UserId = user.Id,
+                                User = user
+                            };
+                            await _context.UserSkills.AddAsync(us);
+                            //await _context.UserSkills.AddRangeAsync(us);
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+                }
+                
             }
 
             return RedirectToAction(nameof(Index));
@@ -171,6 +183,54 @@ namespace GradConnect.Controllers
                         
 
                         await _context.Experiences.AddAsync(newExp);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> EditPortfolio(UserProfileViewModel model)
+        {
+            var user = GetUser();
+
+            if (ModelState.IsValid)
+            {
+                //var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+                var portfoliosFromDb = await _context.Portfolios.Include(x => x.Photo).Where(x => x.UserId == user.Id).ToListAsync();
+
+                if(portfoliosFromDb != null || model.ListOfPortfolios.Count() !=0)
+                {
+                    foreach (var port in portfoliosFromDb)
+                    {
+                        _context.Portfolios.Remove(port);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                
+                if(model.ListOfPortfolios == null || model.ListOfPortfolios.Count() == 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var mPort in model.ListOfPortfolios)
+                    {
+                        Portfolio newPort = new Portfolio();
+                        newPort.ProjectName = mPort.ProjectName;
+                        newPort.Description = mPort.Description;
+                        newPort.Link = mPort.Link;
+                        newPort.User = user;
+                        newPort.UserId = user.Id;
+                        // if(mPort.Photo != null)
+                        // {
+                        //     newPort.Photo.Link = mPort.Photo.Link;
+                        // }
+                        
+
+                        await _context.Portfolios.AddAsync(newPort);
                         await _context.SaveChangesAsync();
                     }
                 }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200310162511_newImigrant4")]
-    partial class newImigrant4
+    [Migration("20200310204657_newImigrant6")]
+    partial class newImigrant6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -276,8 +276,14 @@ namespace GradConnect.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PhotoId")
+                    b.Property<string>("Link")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PhotoId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProjectName")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
@@ -828,9 +834,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.Photo", "Photo")
                         .WithMany()
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PhotoId");
 
                     b.HasOne("GradConnect.Models.User", "User")
                         .WithMany("Portfolios")

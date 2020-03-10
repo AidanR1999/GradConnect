@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class newImigrant4 : Migration
+    public partial class newImigrant6 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -352,8 +352,10 @@ namespace GradConnect.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ProjectName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    PhotoId = table.Column<int>(nullable: false),
+                    Link = table.Column<string>(nullable: true),
+                    PhotoId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -799,7 +801,7 @@ namespace GradConnect.Migrations
                 column: "PhotoId",
                 principalTable: "Photos",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Posts_AspNetUsers_UserId",

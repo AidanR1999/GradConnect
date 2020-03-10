@@ -15,8 +15,8 @@ namespace GradConnect.ViewModels
         public bool VerifiedStudent { get; set; }
         public IFormFile ProfilePicture { get; set; }        
         public string ProfilePhoto { get; set; }
-        public IEnumerable<Portfolio> UserPortfolios { get; set; }
-        public IEnumerable<Experience> Experiences { get; set; }
+        public List<Portfolio> ListOfPortfolios { get; set; }
+        public List<Experience> Experiences { get; set; }
         public List<Skill> ListOfSkills { get; set; }
 
     }

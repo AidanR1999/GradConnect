@@ -152,7 +152,33 @@
           </div>
           <div id="portfolio" class="tab-pane fade">
             <h3>Portfolio</h3>
-            <p>Some content in Portfolio.</p>
+            @if(Model.ListOfPortfolios == null || Model.ListOfPortfolios.Count() ==0)
+            {
+              <p>Here you can show up your skills and add any of your projects with images and links i.e. Github</p>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                <i class="fas fa-plus"></i> Add Project
+              </button>
+            }
+            else
+            {
+              foreach(var port in Model.ListOfPortfolios)
+              {
+                <dd>
+                    <h4>@port.ProjectName</h4>
+                    <p>@port.Description</p>
+                    <a href="@port.Link">@port.Link</a>                    
+                </dd>
+                if(Model.ListOfPortfolios.Count() > 1)
+                {
+                  <hr>
+                }
+              }
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                <i class="fas fa-plus"></i> Add Project
+              </button>
+            }
+
+
           </div>
         </div>
       </div>
@@ -249,7 +275,6 @@
           <i class="fas fa-plus"></i>
       </button>                      
     }
-    
     </div>
         </div>
         <div class="modal-footer">
@@ -322,10 +347,8 @@
             @foreach(var exp in Model.Experiences)
             {
               <div id="ExpEditorRows">
-              <partial name="_ExperienceEditor" model="exp"/>                                
-                                            
+                <partial name="_ExperienceEditor" model="exp"/>                                
               </div>
-                                        
             }
           </div>
           <button type="button" asp-action="BlankExperience" asp-controller="Profile" id="btnAddExp" style="border-radius:42px;">
@@ -344,6 +367,57 @@
   </div>
 </form>
 
+<!-- MODAL FOR EDIT Portfolio -->
+<form asp-action="EditPortfolio">
+  <div class="modal fade" id="editPortfolio" tabindex="-1" role="dialog" aria-labelledby="editPortfolioCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPortfolioLongTitle">Add Project to your portfolio</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-body">
+        @if(Model.ListOfPortfolios == null)
+        {
+            var port = new GradConnect.Models.Portfolio();
+            //port.CompanyName = "";
+          <div id="PortEditorRows">
+            <partial name="_PortfolioEditor"  model="port"/>                                
+          </div>
+
+          <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
+              <i class="fas fa-plus"></i>
+          </button>           
+        }
+        else
+        {
+          <div id="portfolioList">                            
+            <h2 style= "text-align: center;">Portfolio</h2>
+            @foreach(var port in Model.ListOfPortfolios)
+            {
+              <div id="PortEditorRows">
+                <partial name="_PortfolioEditor" model="port"/>                                
+              </div>
+            }
+          </div>
+          <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
+              <i class="fas fa-plus"></i>
+          </button>                      
+        }
+        
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="EditPortfolio" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
 @section scripts{
   <script type="text/javascript">  
@@ -366,9 +440,9 @@
     });
     //REMOVE SKILL
     $(document).on("click", "#removeSkill", function () {
-        console.log($(this).text());
+        //console.log($(this).text());
             $(this).parents("div.SkillEditorRow:first").remove();
-        console.log('clicked');
+        //console.log('clicked');
         return false;
     });
 
@@ -384,15 +458,28 @@
     });    
 //REMOvE EXPERIENCE
     $(document).on("click", "#removeExp", function () {
-        console.log($(this).text());
+        //console.log($(this).text());
         $(this).parents("div.ExpEditorRow:first").remove();
-        console.log('clicked');
+        //console.log('clicked');
+        return false;
+    });
+    // ADD Porftolio ROW
+    $(document).on("click" ,"#btnAddPort", function () {
+        $.ajax({
+            url: "/Profile/BlankPortfolio",
+            cache: false,
+            success: function (html) { $("#portfolioList").append(html);
+            }      
+        });
+        return false;
+    });    
+//REMOvE EXPERIENCE
+    $(document).on("click", "#removePortfolio", function () {
+        //console.log($(this).text());
+        $(this).parents("div.PortfolioEditorRow:first").remove();
+        //console.log('clicked');
         return false;
     });
 
     </script>
 }
-
-      
-
-

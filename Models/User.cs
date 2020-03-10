@@ -38,7 +38,7 @@ namespace GradConnect.Models
         public IEnumerable<UserRole> UserRoles { get; set; }
         public IEnumerable<Experience> Experiences { get; set; }
         public IEnumerable<CV> CVs { get; set; }
-        public IEnumerable<Portfolio> Portfolios { get; set; }
+        public List<Portfolio> Portfolios { get; set; }
         public IEnumerable<UserSkill> UserSkills { get; set; }
         public IEnumerable<BookmarkedPost> BookmarkedPosts { get; set; }
         public IEnumerable<Submission> Submissions { get; set; }
