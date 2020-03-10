@@ -110,34 +110,16 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-        public async Task<IActionResult> EditProfile(UserProfileViewModel model)
+        public async Task<IActionResult> EditAbout(UserProfileViewModel model)
         {
             var user = GetUser();
 
             if (ModelState.IsValid)
             {
                 var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
-                var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
-                var userSkills = await _context.UserSkills.Where(x => x.UserId == user.Id).ToListAsync();
 
-                userFromDb.Forename = model.Forename;
-                userFromDb.Surname = model.Surname;
-                userFromDb.Experiences = model.Experiences;
-                userFromDb.Email = model.Email;
                 userFromDb.About = model.About;
-                userFromDb.CourseName = model.Course;
-                foreach (var s in model.ListOfSkills)
-                {
-                    UserSkill newUS = new UserSkill
-                    {
-                        UserId = user.Id,
-                        SkillId = s.Id
-                    };
-                    _context.UserSkills.Update(newUS);
-                };
-
+                
                 _context.Users.Update(userFromDb);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), model);
