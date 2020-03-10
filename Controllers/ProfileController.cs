@@ -38,7 +38,7 @@ namespace GradConnect.Controllers
 
             var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
             var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
-            var userSkills = await _context.UserSkills.Include(x =>x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
+            var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
             // var photos = await _context.Photos.Where(x => x. == user.Id).ToListAsync();
             model.Forename = userFromDb.Forename;
             model.Surname = userFromDb.Surname;
@@ -51,7 +51,7 @@ namespace GradConnect.Controllers
             model.VerifiedStudent = userFromDb.StudentEmailConfirmed;
             model.Institution = userFromDb.InstitutionName;
             List<Skill> skills = new List<Skill>();
-            if(userSkills.Count == 0)
+            if (userSkills.Count == 0)
             {
                 return View(model);
             }
@@ -59,14 +59,14 @@ namespace GradConnect.Controllers
             {
                 foreach (var s in userSkills)
                 {
-                    var skill = await _context.Skills.FirstOrDefaultAsync(x => x.Id == s.SkillId);
+                    //var skill = await _context.Skills.FirstOrDefaultAsync(x => x.Id == s.SkillId);
                     skills.Add(s.Skill);
-                    
+
                 }
                 model.ListOfSkills = skills;
             }
-            
-            
+
+
             return View(model);
         }
         public IActionResult BlankSkill()
@@ -83,29 +83,35 @@ namespace GradConnect.Controllers
                 var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
                 var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
                 
+                foreach (var item in userSkills)
+                {
+                    _context.UserSkills.Remove(item);
+                    await _context.SaveChangesAsync();
+                }
                 //userSkills.ToHashSet();
                 foreach (var skill in model.ListOfSkills)
                 {
-                        
-                    UserSkill us = new UserSkill
+                    if (model.ListOfSkills.FindAll(x => x.Name == skill.Name).Count == 1)
                     {
-                        Skill = skill,
-                        SkillId = skill.Id,
-                        UserId = user.Id,
-                        User = user
-                    };
-                    await _context.UserSkills.AddAsync(us);
-                        
-                    //await _context.UserSkills.AddRangeAsync(us);
+                        UserSkill us = new UserSkill
+                        {
+                            Skill = skill,
+                            SkillId = skill.Id,
+                            UserId = user.Id,
+                            User = user
+                        };
+                        await _context.UserSkills.AddAsync(us);
+                        //await _context.UserSkills.AddRangeAsync(us);
+                    }
                 }
                 await _context.SaveChangesAsync();
             }
-                
+
             return RedirectToAction(nameof(Index));
         }
-    
-            
-        
+
+
+
         public async Task<IActionResult> EditProfile(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -131,7 +137,7 @@ namespace GradConnect.Controllers
                     };
                     _context.UserSkills.Update(newUS);
                 };
-                
+
                 _context.Users.Update(userFromDb);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), model);
