@@ -39,10 +39,11 @@ namespace GradConnect.Controllers
             var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
             var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
             var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
+            var exps = await _context.Experiences.Where(x => x.UserId == user.Id).ToListAsync();
             // var photos = await _context.Photos.Where(x => x. == user.Id).ToListAsync();
             model.Forename = userFromDb.Forename;
             model.Surname = userFromDb.Surname;
-            model.Experiences = userFromDb.Experiences;
+            model.Experiences = exps;
             model.Email = userFromDb.Email;
             model.About = userFromDb.About;
             model.Course = userFromDb.CourseName;
@@ -72,6 +73,10 @@ namespace GradConnect.Controllers
         public IActionResult BlankSkill()
         {
             return PartialView("_SkillsEditor", new Skill());
+        }
+        public IActionResult BlankExperience()
+        {
+            return PartialView("_ExperienceEditor", new Experience());
         }
 
         public async Task<IActionResult> AddSkillsToUser(UserProfileViewModel model)
@@ -119,29 +124,61 @@ namespace GradConnect.Controllers
                 var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
 
                 userFromDb.About = model.About;
-                
+
                 _context.Users.Update(userFromDb);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), model);
+                return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Index), model);
+            return RedirectToAction(nameof(Index));
         }
 
-        // public void AddSkillToUser(List<Skill> list)
-        // {
-        //     var user = GetUser();
-        //     var userFromDb = _context.Users.FirstOrDefault(x => x.Id == user.Id);
-        //     List<UserSkill> userSkills = new List<UserSkill>();
-        //     foreach (var s in list)
-        //     {
-        //         UserSkill newUS = new UserSkill
-        //         {
-        //             UserId = user.Id,
-        //             SkillId = s.Id
-        //         };
-        //     };
-        // }
+        public async Task<IActionResult> EditExperience(UserProfileViewModel model)
+        {
+            var user = GetUser();
+
+            if (ModelState.IsValid)
+            {
+                //var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+                var expFromDb = await _context.Experiences.Where(x => x.UserId == user.Id).ToListAsync();
+
+                if(expFromDb != null || model.Experiences.Count() !=0)
+                {
+                    foreach (var exp in expFromDb)
+                    {
+                        _context.Experiences.Remove(exp);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                
+                if(model.Experiences == null || model.Experiences.Count() == 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var mExp in model.Experiences)
+                    {
+                        Experience newExp = new Experience();
+                        
+                        newExp.JobTitle = mExp.JobTitle;
+                        newExp.CompanyName = mExp.CompanyName;
+                        newExp.YearStart = mExp.YearStart;
+                        newExp.YearEnd = mExp.YearEnd;
+                        newExp.Responsibilities = mExp.Responsibilities;
+                        newExp.UserId = user.Id;
+                        newExp.User = user;
+                        
+
+                        await _context.Experiences.AddAsync(newExp);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
 
         public async Task<IActionResult> AddProfileImage(UserProfileViewModel model)
         {

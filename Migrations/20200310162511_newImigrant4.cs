@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class newImigrant2 : Migration
+    public partial class newImigrant4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -333,7 +333,7 @@ namespace GradConnect.Migrations
                     YearEnd = table.Column<string>(nullable: true),
                     Responsibilities = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    CvId = table.Column<int>(nullable: false)
+                    CvId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -343,7 +343,7 @@ namespace GradConnect.Migrations
                         column: x => x.CvId,
                         principalTable: "CVs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

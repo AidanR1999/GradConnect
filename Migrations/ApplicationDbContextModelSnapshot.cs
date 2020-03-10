@@ -157,7 +157,7 @@ namespace GradConnect.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CvId")
+                    b.Property<int?>("CvId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("JobTitle")
@@ -777,9 +777,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.CV", "Cv")
                         .WithMany("Experiences")
-                        .HasForeignKey("CvId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CvId");
 
                     b.HasOne("GradConnect.Models.User", "User")
                         .WithMany("Experiences")

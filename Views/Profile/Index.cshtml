@@ -53,28 +53,30 @@
       @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
       {
         <p>Please add skills</p>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+        <button type="button" class="btn btn-sm-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
           <i class="fas fa-plus"></i> Add Skills
         </button>
       }
       else
-      {
-        foreach (var item in Model.ListOfSkills)
+      { var i = 0;
+      <div class="row">
+        @foreach (var item in Model.ListOfSkills)
         {
-            if(item.Id % 2 != 0)
+            if(i % 2 != 0)
             {
-              
-              <div>
-                <p>@item.Name</p>
+              <div class="col col-md-6">
+                <h5><span class="badge badge-pill badge-info">@item.Name</span></h5>
               </div>
             }
             else
             {
-              <div>
-                <p>@item.Name</p>
+              <div class="col col-md-6">
+                <h5><span class="badge badge-pill badge-info">@item.Name</span></h5>
               </div>
             }
+            i++;
         }
+        </div>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
           <i class="fas fa-plus"></i> Edit Skills
         </button>
@@ -86,8 +88,8 @@
   <div class="col-md-8">
       <div class="card card-body">
         <ul class="nav nav-tabs nav-justified">
-          <li class="active"><button class="btn btn-primary" data-toggle="tab" href="#about">About</button></li>
-          <li><button class="btn btn-primary" data-toggle="tab" href="#experience">Experience</button></li>
+          <li class="active"><button class="btn btn-primary" data-toggle="tab" href="#about" style="margin-right : 2px">About</button></li>
+          <li><button class="btn btn-primary" data-toggle="tab" href="#experience" style="margin-right : 2px">Experience</button></li>
           <li><button class="btn btn-primary" data-toggle="tab" href="#portfolio">Portfolio</button></li>
         </ul>
     
@@ -118,7 +120,35 @@
           </div>
           <div id="experience" class="tab-pane fade">
             <h3>Experience</h3>
-            <p>Some content in experience.</p>
+            @if(Model.Experiences == null || Model.Experiences.Count() == 0)
+            {
+              <p>Please give us details about your Experience</p>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
+                <i class="fas fa-plus"></i> Add Experience
+              </button>
+            }
+            else
+            {
+              @foreach(var item in Model.Experiences)
+              {
+                <dd>
+                    <h4>@item.CompanyName, <span>@item.JobTitle,  @item.YearStart - @item.YearEnd</span></h4>
+                    <ul>
+                        <li>@item.Responsibilities</li>                        
+                    </ul>                    
+                </dd>
+                if(Model.Experiences.Count() > 1)
+                {
+                  <hr>
+                }
+              }
+              <dd class="clear"></dd>
+
+
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
+                <i class="fas fa-plus"></i> Add Experience
+              </button>
+            }
           </div>
           <div id="portfolio" class="tab-pane fade">
             <h3>Portfolio</h3>
@@ -260,6 +290,60 @@
   </div>
 </form>
 
+<!-- MODAL FOR EDIT Experience -->
+<form asp-action="EditExperience">
+  <div class="modal fade" id="editExperience" tabindex="-1" role="dialog" aria-labelledby="editExperienceCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editExperienceLongTitle">Add Experience</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-body">
+        @if(Model.Experiences == null)
+        {
+            var exp = new GradConnect.Models.Experience();
+            exp.CompanyName = "";
+          <div id="ExpEditorRows">
+            <partial name="_ExperienceEditor"  model="exp"/>                                
+          </div>
+
+          <button type="button" asp-action="BlankExperience" asp-controller="Profile" id="btnAddExp" style="border-radius:42px;">
+              <i class="fas fa-plus"></i>
+          </button>           
+        }
+        else
+        {
+          <div id="experienceList">                            
+            <h2 style= "text-align: center;">Experience</h2>
+            @foreach(var exp in Model.Experiences)
+            {
+              <div id="ExpEditorRows">
+              <partial name="_ExperienceEditor" model="exp"/>                                
+                                            
+              </div>
+                                        
+            }
+          </div>
+          <button type="button" asp-action="BlankExperience" asp-controller="Profile" id="btnAddExp" style="border-radius:42px;">
+              <i class="fas fa-plus"></i>
+          </button>                      
+        }
+        
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="EditExperience" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
 
 @section scripts{
   <script type="text/javascript">  
@@ -286,8 +370,25 @@
             $(this).parents("div.SkillEditorRow:first").remove();
         console.log('clicked');
         return false;
-    });    
+    });
 
+// ADD EXPERIENCE ROW
+    $(document).on("click" ,"#btnAddExp", function () {
+        $.ajax({
+            url: "/Profile/BlankExperience",
+            cache: false,
+            success: function (html) { $("#experienceList").append(html);
+            }      
+        });
+        return false;
+    });    
+//REMOvE EXPERIENCE
+    $(document).on("click", "#removeExp", function () {
+        console.log($(this).text());
+        $(this).parents("div.ExpEditorRow:first").remove();
+        console.log('clicked');
+        return false;
+    });
 
     </script>
 }

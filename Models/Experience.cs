@@ -19,7 +19,7 @@ namespace GradConnect.Models
         public virtual User User { get; set; }
 
         [InverseProperty("CV")]
-        public int CvId { get; set; }
+        public int? CvId { get; set; }
         public virtual CV Cv { get; set; }
     }
 }
