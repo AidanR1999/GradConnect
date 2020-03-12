@@ -40,7 +40,28 @@
         <h3>@Model.Forename @Model.Surname</h3>    
         <p>@Model.Institution</p>
         
-        <p>@Model.Course</p> 
+        @if(Model.Course == null || Model.Course == "")
+        {
+          <p>Please add your course</p>
+          <form asp-action="AddCourse">
+              <div class="col-3">
+                <label asp-for="@Model.Course"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="@Model.Course" />
+            </div>
+            <span asp-validation-for="@Model.Course" class="text-danger"></span>              
+              <button type="submit" asp-action="AddCourse" class="btn btn-success">Save changes</button>
+            </form>
+          
+        }
+        else
+        {
+          <p>@Model.Course</p>
+          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#EditCourseModalCenter">
+            <i class="fas fa-edit"></i> Edit Course
+          </button>
+        }
         
     </div>
   </div>
@@ -78,7 +99,7 @@
         }
         </div>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
-          <i class="fas fa-plus"></i> Edit Skills
+          <i class="fas fa-edit"></i> Edit Skills
         </button>
       }
       
@@ -113,7 +134,7 @@
             {
               <p>@Model.About</p>
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditAbout">
-                Edit
+                <i class="fas fa-edit"></i>Edit
               </button>
             }
             
@@ -297,7 +318,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" asp-action="AddSkillsToUser" class="btn btn-primary">Save changes</button>
+          <button type="submit" asp-action="AddSkillsToUser" class="btn btn-success">Save changes</button>
         </div>
       </div>
     </div>
@@ -327,6 +348,37 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" asp-action="EditAbout" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL FOR EDIT COURSE -->
+<form asp-action="AddCourse">
+  <div class="modal fade" id="EditCourseModalCenter" tabindex="-1" role="dialog" aria-labelledby="EditCourseCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit Course section</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form asp-action="AddCourse">
+              <div class="col-3">
+                <label asp-for="@Model.Course"></label>
+              </div>
+            <div class="col-9">
+                <input type="text" asp-for="@Model.Course" />
+            </div>
+            <span asp-validation-for="@Model.Course" class="text-danger"></span>              
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="AddCourse" class="btn btn-success">Save changes</button>
         </div>
       </div>
     </div>

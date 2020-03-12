@@ -192,7 +192,20 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> AddCourse(UserProfileViewModel model)
+        {
+            var user = GetUser();
+            if (ModelState.IsValid)
+            {
+                var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+                userFromDb.CourseName = model.Course;
+                _context.Users.Update(userFromDb);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
 
+            return RedirectToAction(nameof(Index));
+        }
 
         public async Task<IActionResult> EditPortfolio(UserProfileViewModel model)
         {
