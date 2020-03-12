@@ -16,6 +16,8 @@ namespace GradConnect.ViewModels
         public IFormFile ProfilePicture { get; set; }        
         public string ProfilePhoto { get; set; }
         public List<Portfolio> ListOfPortfolios { get; set; }
+        public IFormFile PictureFile { get; set; }
+        public string ProjectImageString { get; set; }
         public List<Experience> Experiences { get; set; }
         public List<Skill> ListOfSkills { get; set; }
 

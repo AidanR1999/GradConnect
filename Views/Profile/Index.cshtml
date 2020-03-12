@@ -53,7 +53,7 @@
       @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
       {
         <p>Please add skills</p>
-        <button type="button" class="btn btn-sm-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
           <i class="fas fa-plus"></i> Add Skills
         </button>
       }
@@ -131,12 +131,14 @@
             {
               @foreach(var item in Model.Experiences)
               {
-                <dd>
-                    <h4>@item.CompanyName, <span>@item.JobTitle,  @item.YearStart - @item.YearEnd</span></h4>
-                    <ul>
-                        <li>@item.Responsibilities</li>                        
-                    </ul>                    
-                </dd>
+                <div class="card card-body">
+                  <dd>
+                      <h4>@item.CompanyName, <span>@item.JobTitle,  @item.YearStart - @item.YearEnd</span></h4>
+                      <ul>
+                          <li>@item.Responsibilities</li>                        
+                      </ul>                    
+                  </dd>
+                </div>
                 if(Model.Experiences.Count() > 1)
                 {
                   <hr>
@@ -163,11 +165,29 @@
             {
               foreach(var port in Model.ListOfPortfolios)
               {
-                <dd>
-                    <h4>@port.ProjectName</h4>
-                    <p>@port.Description</p>
-                    <a href="@port.Link">@port.Link</a>                    
-                </dd>
+                <div class="card card-body">
+                  <div class="row">
+                    <dd>
+                        <h4>@port.ProjectName</h4>
+                        <p>@port.Description</p>
+                        <a href="@port.Link">@port.Link</a>                    
+                    </dd>
+                  </div>
+                  @if(@port.Image != null)
+                  {
+                    <div class="row">
+                      <p>
+                        <a target="_blank" href="@port.Image" type="button" >
+                          <img src="~/Images/Portfolio/@port.ProjectName"   
+                                
+                              height="200" width="200"   
+                              asp-append-version="true"
+                              style="cursor: pointer; 1px solid black;"/>
+                        </a>
+                      </p>
+                  </div>
+                  }
+                </div>
                 if(Model.ListOfPortfolios.Count() > 1)
                 {
                   <hr>
@@ -215,18 +235,14 @@
         </div>
         <div class="modal-footer">
           <div class="input-group mb-3">
-          <div class="custom-file">
-              <input asp-for="ProfilePicture" class="custom-file-input" id="cropzee-input">  
-              <label class="custom-file-label" for="customFile">Choose image</label>
-          </div>
-          <span asp-validation-for="ProfilePicture" class="text-danger"></span>  
-          <div class="input-group-append">
-              <input type="submit" value="Upload" onclick="cropzeeGetImage('cropzee-input')" class="btn btn-sm btn-primary rounded-0" /> 
-              @* <button onclick="cropzeeGetImage('cropzee-input')"></button> *@
-          </div>
-          <div>
-            
-            @* <input id="cropzee-input" type="file" accept="image/*"> *@
+            <div class="custom-file">
+                <input asp-for="ProfilePicture" class="custom-file-input" id="cropzee-input">  
+                <label class="custom-file-label" for="customFile">Choose image</label>
+            </div>
+            <span asp-validation-for="ProfilePicture" class="text-danger"></span>  
+            <div class="input-group-append">
+                <input type="submit" value="Upload" onclick="cropzeeGetImage('cropzee-input')" class="btn btn-sm btn-primary rounded-0" /> 
+                @* <button onclick="cropzeeGetImage('cropzee-input')"></button> *@
             </div>
           </div>
         </div>
@@ -368,7 +384,7 @@
 </form>
 
 <!-- MODAL FOR EDIT Portfolio -->
-<form asp-action="EditPortfolio">
+<form enctype="multipart/form-data" asp-action="EditPortfolio">
   <div class="modal fade" id="editPortfolio" tabindex="-1" role="dialog" aria-labelledby="editPortfolioCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">

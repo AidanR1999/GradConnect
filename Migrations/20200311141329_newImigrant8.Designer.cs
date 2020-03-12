@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200310204657_newImigrant6")]
-    partial class newImigrant6
+    [Migration("20200311141329_newImigrant8")]
+    partial class newImigrant8
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -274,6 +274,9 @@ namespace GradConnect.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Link")

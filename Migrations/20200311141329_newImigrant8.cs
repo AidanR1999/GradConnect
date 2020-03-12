@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class newImigrant6 : Migration
+    public partial class newImigrant8 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -355,6 +355,7 @@ namespace GradConnect.Migrations
                     ProjectName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Link = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
                     PhotoId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },

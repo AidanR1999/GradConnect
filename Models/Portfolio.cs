@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace GradConnect.Models
 {
@@ -8,6 +9,9 @@ namespace GradConnect.Models
         public string ProjectName { get; set; }
         public string Description { get; set; }
         public string Link { get; set; }
+        public string Image { get; set; }
+        [NotMapped]
+        public IFormFile PictureFile { get; set; }
 
         //Navigational properties
         [InverseProperty("Photo")]

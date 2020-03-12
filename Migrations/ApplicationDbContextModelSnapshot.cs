@@ -274,6 +274,9 @@ namespace GradConnect.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Link")
                         .HasColumnType("TEXT");
 

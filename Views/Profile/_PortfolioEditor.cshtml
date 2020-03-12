@@ -18,7 +18,7 @@
                 <label asp-for="Description"></label>
             </div>
             <div class="col-8">
-                <textarea rows="4" cols="40" asp-for="Description">
+                <textarea rows="3" cols="40" asp-for="Description">
                     </textarea>
             </div>
             <span asp-validation-for="Description" class="text-danger"></span>
@@ -31,7 +31,18 @@
                 <input type="text" asp-for="Link" />
             </div>
             <span asp-validation-for="Link" class="text-danger"></span>
-        </div>         
+        </div>
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input asp-for="PictureFile" class="custom-file-input" id="portfolioImage">
+                <label class="custom-file-label" for="PictureFile">Choose file</label>
+            </div>
+            <div class="input-group-append">
+                <span class="input-group-text" id="">Upload</span>
+            </div>
+        </div>
+
+        
         <hr>
     }
     
