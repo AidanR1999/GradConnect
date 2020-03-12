@@ -3,6 +3,7 @@
 <div class="ExpEditorRow">
     @using (Html.BeginCollectionItem("experiences"))
     {
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <a href="#" class="deleteRow" id="removeExp"><i class="fas fa-times"></i></a>
         
         <div class="form-group row">

@@ -3,6 +3,7 @@
 <div class="SkillEditorRow">
     @using (Html.BeginCollectionItem("ListOfSkills"))
     {
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <a href="#" class="deleteRow" id="removeSkill"><i class="fas fa-times"></i></a>
         <div class="form-group row">
             <div class="col-3">

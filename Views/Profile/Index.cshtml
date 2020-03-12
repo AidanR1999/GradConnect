@@ -173,19 +173,21 @@
                         <a href="@port.Link">@port.Link</a>                    
                     </dd>
                   </div>
-                  @if(@port.Image != null)
-                  {
-                    <div class="row">
-                      <p>
-                        <a target="_blank" href="@port.Image" type="button" >
-                          <img src="~/Images/Portfolio/@port.ProjectName"   
-                                
-                              height="200" width="200"   
-                              asp-append-version="true"
-                              style="cursor: pointer; 1px solid black;"/>
-                        </a>
-                      </p>
-                  </div>
+                  @if(port.Image != null)
+                   {
+                    
+                      <div class="row" style="text-align: center;">
+                        <p> 
+                          <a target="_blank" href="~/Images/Portfolios/@port.Image">
+                            
+                            <img src="~/Images/Portfolios/@port.Image" 
+                            height="200" width="200"   
+                            asp-append-version="true"
+                            style="cursor: pointer; 1px solid black;"/>
+                            </a> 
+                        </p>
+                      </div>
+                    
                   }
                 </div>
                 if(Model.ListOfPortfolios.Count() > 1)
@@ -396,36 +398,59 @@
       </div>
       <div class="modal-body">
         <div class="card card-body">
-        @if(Model.ListOfPortfolios == null)
-        {
-            var port = new GradConnect.Models.Portfolio();
-            //port.CompanyName = "";
-          <div id="PortEditorRows">
-            <partial name="_PortfolioEditor"  model="port"/>                                
-          </div>
+          @if(Model.ListOfPortfolios == null || Model.ListOfPortfolios.Count() == 0)
+          {
+              var port = new GradConnect.Models.Portfolio();
+              
+            <div id="PortEditorRows">
+              <partial name="_PortfolioEditor"  model="port"/>                                
+            </div>
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input asp-for="PictureFiles" class="custom-file-input" id="cropzee-input">  
+                  <label class="custom-file-label" for="customFile">Choose image</label>
+                </div>
+              <span asp-validation-for="PictureFiles" class="text-danger"></span>
+            </div>
 
-          <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
-              <i class="fas fa-plus"></i>
-          </button>           
-        }
-        else
-        {
-          <div id="portfolioList">                            
-            <h2 style= "text-align: center;">Portfolio</h2>
-            @foreach(var port in Model.ListOfPortfolios)
-            {
-              <div id="PortEditorRows">
-                <partial name="_PortfolioEditor" model="port"/>                                
-              </div>
-            }
-          </div>
-          <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
-              <i class="fas fa-plus"></i>
-          </button>                      
-        }
+            <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
+                <i class="fas fa-plus"></i>
+            </button>           
+          }
+          else
+          {
+            <div id="portfolioList">                            
+              <h2 style= "text-align: center;">Portfolio</h2>
+              @foreach(var port in Model.ListOfPortfolios)
+              {
+                <div id="PortEditorRows">
+                  <partial name="_PortfolioEditor" model="port"/>                                
+                </div>
+                
+                  <p> 
+                      <img src="~/Images/Portfolios/@port.Image" 
+                      height="200" width="200"   
+                      asp-append-version="true"
+                      />
+                  </p>
+                
+                <div class="input-group mb-3">
+                  <div class="custom-file">
+                      <input asp-for="PictureFiles" class="custom-file-input">  
+                      <label class="custom-file-label" for="customFile">Choose image</label>
+                  </div>
+                  <span asp-validation-for="PictureFiles" class="text-danger"></span>  
+                </div>
+
+              }
+            </div>
+            <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
+                <i class="fas fa-plus"></i>
+            </button>                      
+          }
         
         </div>
-        </div>
+        
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" asp-action="EditPortfolio" class="btn btn-success">Save changes</button>
