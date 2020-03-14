@@ -305,55 +305,7 @@ namespace GradConnect.Controllers
         #endregion
 
         #region Utils
-        private string UploadedPortfolioImage(UserProfileViewModel model)
-        {
-            var user = GetUser();
-            var portfolio = _context.Portfolios.Where(x => x.UserId == user.Id).ToList();
-            string uniqueFileName = null;
-
-            if (model.PictureFiles != null)
-            {
-                var files = HttpContext.Request.Form.Files;
-                if (files.Count > 0 && files[0] != null)
-                {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images/Portfolios");
-                    for (var i = 0; i < files.Count(); i++)
-                    {
-                        foreach (var project in model.ListOfPortfolios)
-                        {
-
-                            do
-                            {
-                                var extension = Path.GetExtension(files[i].FileName);
-                                //find extension of the images
-                                var extension_new = Path.GetExtension(files[i].FileName);
-                                var extension_old = Path.GetExtension(project.Image);
-
-                                //if old image exists
-                                if (System.IO.File.Exists(Path.Combine(uploadsFolder, project.ProjectName + extension_old)))
-                                {
-                                    //delete old image
-                                    System.IO.File.Delete(Path.Combine(uploadsFolder, project.ProjectName + extension_old));
-                                }
-
-                                uniqueFileName = project.ProjectName + extension;
-                                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    files[i].CopyTo(fileStream);
-                                }
-                                project.ImageProcessed = true;
-                                _context.Portfolios.Update(project);
-                            } while (project.ImageProcessed != true);
-                            break;
-                        }
-
-                    }
-
-                }
-            }
-            return uniqueFileName;
-        }
+        
         private string UploadedFile(UserProfileViewModel model)
         {
             var user = GetUser();
