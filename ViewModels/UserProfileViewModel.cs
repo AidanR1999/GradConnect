@@ -20,7 +20,6 @@ namespace GradConnect.ViewModels
         public string ProjectImageString { get; set; }
         public List<Experience> Experiences { get; set; }
         public List<Skill> ListOfSkills { get; set; }
-        public bool ImageProcessed { get; set; }
 
     }
 }

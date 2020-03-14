@@ -277,9 +277,6 @@ namespace GradConnect.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("ImageProcessed")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Link")
                         .HasColumnType("TEXT");
 

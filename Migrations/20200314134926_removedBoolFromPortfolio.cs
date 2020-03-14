@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class AddedBoolVarToPortfolio : Migration
+    public partial class removedBoolFromPortfolio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -356,7 +356,6 @@ namespace GradConnect.Migrations
                     Description = table.Column<string>(nullable: true),
                     Link = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    ImageProcessed = table.Column<bool>(nullable: false),
                     PhotoId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },

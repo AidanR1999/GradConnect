@@ -13,7 +13,6 @@ namespace GradConnect.Models
         [NotMapped]
         public IFormFile PictureFile { get; set; }
         
-        public bool ImageProcessed { get; set; }
         //Navigational properties
         [InverseProperty("Photo")]
         public int? PhotoId { get; set; }
