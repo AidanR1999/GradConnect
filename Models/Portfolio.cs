@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
 
@@ -6,6 +7,8 @@ namespace GradConnect.Models
     public class Portfolio
     {
         public int Id { get; set; }
+        
+        [Display(Name = "Project Name")]
         public string ProjectName { get; set; }
         public string Description { get; set; }
         public string Link { get; set; }

@@ -23,7 +23,8 @@ namespace GradConnect.ViewModels
         public string City { get; set; }
         public string Email { get; set; }
         public string Postcode { get; set; }
-
+        
+        [DataType(DataType.Date)]
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
 

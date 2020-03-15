@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 #endregion
 namespace GradConnect.Controllers
@@ -31,6 +32,7 @@ namespace GradConnect.Controllers
         #endregion
 
         #region CRUD
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var user = GetUser();
@@ -70,19 +72,22 @@ namespace GradConnect.Controllers
 
             return View(model);
         }
+        [Authorize]
         public IActionResult BlankSkill()
         {
             return PartialView("_SkillsEditor", new Skill());
         }
+        [Authorize]
         public IActionResult BlankExperience()
         {
             return PartialView("_ExperienceEditor", new Experience());
         }
-
+        [Authorize]
         public IActionResult BlankPortfolio()
         {
             return PartialView("_PortfolioEditor", new Portfolio());
         }
+        [Authorize]
         public async Task<IActionResult> AddPortfolio(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -128,6 +133,7 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> EditPortfolio(int id)
         {
@@ -140,7 +146,7 @@ namespace GradConnect.Controllers
             return PartialView("_EditPortfolio", model);
         }
 
-        
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> EditPortfolioPost(int id, UserProfileViewModel model)
         {
@@ -198,6 +204,7 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> DeletePortfolio(int id)
         {
@@ -209,7 +216,7 @@ namespace GradConnect.Controllers
 
             return PartialView("_DeletePortfolio", model);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> DeletePortfolioPost(int id, UserProfileViewModel model)
         {
@@ -234,6 +241,7 @@ namespace GradConnect.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize]
         public async Task<IActionResult> AddSkillsToUser(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -278,6 +286,8 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        [Authorize]
         public async Task<IActionResult> EditAbout(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -296,6 +306,7 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         public async Task<IActionResult> EditExperience(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -343,6 +354,7 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         public async Task<IActionResult> AddCourse(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -357,7 +369,7 @@ namespace GradConnect.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize]
         public async Task<IActionResult> AddProfileImage(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -411,7 +423,7 @@ namespace GradConnect.Controllers
             return uniqueFileName;
         }
 
-        public User GetUser()
+        private User GetUser()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
