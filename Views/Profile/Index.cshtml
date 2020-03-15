@@ -195,7 +195,7 @@
                     </dd>
                   </div>
                   @if(port.Image != null)
-                   {
+                  {
                     
                       <div class="row" style="text-align: center;">
                         <p> 
@@ -210,25 +210,19 @@
                       </div>
                     
                   }
-                  <button type="button" class="btn btn-primary" data-project-id=@port.Id data-toggle="modal" data-target="#my_modal">
-                    <i class="fas fa-plus"></i> Edit Project
-                  </button>
-                  <a href="#my_modal" data-toggle="modal" data-project-id="my_id_value">Open Modal</a>
+                  <div class="row">
+                    <a href="#" onclick="editProject(@port.Id)" class="btn btn-sm btn-primary">
+                      <i class="fas fa-edit"></i>Edit</a>
+                  </div>
+                  <div class="row">
+                    <a href="#" onclick="deleteProject(@port.Id)" class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash-alt"></i>Delete</a>
+                  </div>
 
-
-                  @* <div> <a href="#myModal1" class='open-dialog' role="button" 
-                      class="btn" data-toggle="modal" data-id=@port.Id>Edit Project</a><br/>
-                    <a href="#myModal1" class='open-dialog' role="button" 
-                      class="btn" data-toggle="modal" data-id='10320321'>Launch Modal (10320321)</a>
-                  </div> *@
                 </div>
                 
-                
-                @* <button type="button" class="open-dialog btn btn-primary btn-sm" data-url="@Url.Action("Portfolio", new {portfolio = @port.Id})">
-                        Edit
-                    </button> *@
-                
               }
+              
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
                 <i class="fas fa-plus"></i> Add Project
               </button>
@@ -241,126 +235,14 @@
   </div>
 </div>
 
-
-@* <div id="myModal1" class="modal hide" tabindex="-1" role="dialog">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    </div>
-    <div class="modal-body"> 
-      @{
-        
-      }
-      @foreach(var item in Model.ListOfPortfolios)
-      {
-        if(item.Id == $('#InstrumentIDLink'))
-        {
-                <div class="form-group row">
-                  <div class="col-3">
-                      <label asp-for="@item.ProjectName"></label>
-                  </div>
-                  <div class="col-9">
-                      <input type="text" asp-for="@item.ProjectName" />
-                  </div>
-                  <span asp-validation-for="@item.ProjectName" class="text-danger"></span>
-                </div> 
-        }
-      }
-      <a href='#' id='InstrumentIDLink'>Anchor Link Value=</a>
-      
-    </div>
-    <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      <button class="btn btn-primary">Save changes</button>
-    </div>
-</div> *@
-
-<div class="modal" id="my_modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Modal header</h4>
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          
-      </div>
-      <div class="modal-body">
-       
-        @foreach (var item in Model.ListOfPortfolios)
-        {
-          //*****************tutaj chce id sprawdzic*****************
-            if(item.Id == 4)
-            {
-                <div class="form-group row">
-                  <div class="col-3">
-                      <label asp-for="@item.ProjectName"></label>
-                  </div>
-                  <div class="col-9">
-                      <input type="text" asp-for="@item.ProjectName" />
-                  </div>
-                  <span asp-validation-for="@item.ProjectName" class="text-danger"></span>
-                </div> 
-            }
-        }
-        <p>some content</p>
-        <input type="text" name="projectId" value="projectId"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
+<div id="modalWrapper">
+  
 </div>
 
-@* <!-- Modal -->
-<div class="modal fade" id="editPortfolio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            @foreach (var item in Model.ListOfPortfolios)
-            {
-                @if(item.Id > 0)
-                {
-                  <div class="modal-body">
-                    <div class="form-group row">
-                  <div class="col-3">
-                      <label asp-for="item.ProjectName"></label>
-                  </div>
-                  <div class="col-9">
-                      <input type="text" asp-for="item.ProjectName" />
-                  </div>
-                  <span asp-validation-for="item.ProjectName" class="text-danger"></span>
-                  </div> 
-                  <div class="form-group row">
-                      <div class="col-3">
-                          <label asp-for="item.Description"></label>
-                      </div>
-                      <div class="col-8">
-                          <textarea rows="4" cols="30" asp-for="item.Description">
-                              </textarea>
-                      </div>
-                      <span asp-validation-for="item.Description" class="text-danger"></span>
-                  </div>
-                  <div class="form-group row">
-                      <div class="col-3">
-                          <label asp-for="item.Link"></label>
-                      </div>
-                      <div class="col-9">
-                          <input type="text" asp-for="item.Link" />
-                      </div>
-                      <span asp-validation-for="item.Link" class="text-danger"></span>
-                  </div>
-                }
-                
-            }
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div> *@
+<div id="DeleteModalWrapper">
+  
+</div>
+
 
 <!-- Modal for image uploads -->
 <form enctype="multipart/form-data" asp-action="AddProfileImage">
@@ -571,8 +453,8 @@
   </div>
 </form>
 
-<!-- MODAL FOR EDIT Portfolio -->
-@* <form enctype="multipart/form-data" asp-action="EditPortfolio">
+<!-- MODAL FOR ADD Portfolio -->
+<form enctype="multipart/form-data" asp-action="AddPortfolio">
   <div class="modal fade" id="editPortfolio" tabindex="-1" role="dialog" aria-labelledby="editPortfolioCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -584,67 +466,30 @@
       </div>
       <div class="modal-body">
         <div class="card card-body">
-          @if(Model.ListOfPortfolios == null || Model.ListOfPortfolios.Count() == 0)
-          {
-              var port = new GradConnect.Models.Portfolio();
-              
+          @{
+              var newport = new GradConnect.Models.Portfolio();
+          }  
             <div id="PortEditorRows">
-              <partial name="_PortfolioEditor"  model="port"/>                                
+              <partial name="_PortfolioEditor"  model="newport"/>                                
             </div>
             <div class="input-group mb-3">
                 <div class="custom-file">
-                  <input asp-for="PictureFiles" class="custom-file-input" id="cropzee-input">  
+                  <input asp-for="@Model.PictureFile" class="custom-file-input" id="cropzee-input">  
                   <label class="custom-file-label" for="customFile">Choose image</label>
                 </div>
-              <span asp-validation-for="PictureFiles" class="text-danger"></span>
+              <span asp-validation-for="@Model.PictureFile" class="text-danger"></span>
             </div>
 
-            <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
-                <i class="fas fa-plus"></i>
-            </button>           
-          }
-          else
-          {
-            <div id="portfolioList">                            
-              <h2 style= "text-align: center;">Portfolio</h2>
-              @foreach(var port in Model.ListOfPortfolios)
-              {
-                <div id="PortEditorRows">
-                  <partial name="_PortfolioEditor" model="port"/>                                
-                </div>
-                
-                  <p> 
-                      <img src="~/Images/Portfolios/@port.Image" 
-                      height="200" width="200"   
-                      asp-append-version="true"
-                      />
-                  </p>
-                
-                <div class="input-group mb-3">
-                  <div class="custom-file">
-                      <input asp-for="PictureFiles" class="custom-file-input">  
-                      <label class="custom-file-label" for="customFile">Choose image</label>
-                  </div>
-                  <span asp-validation-for="PictureFiles" class="text-danger"></span>  
-                </div>
-
-              }
-            </div>
-            <button type="button" asp-action="BlankPortfolio" asp-controller="Profile" id="btnAddPort" style="border-radius:42px;">
-                <i class="fas fa-plus"></i>
-            </button>                      
-          }
-        
-        </div>
+            
         
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" asp-action="EditPortfolio" class="btn btn-success">Save changes</button>
+          <button type="submit" asp-action="AddPortfolio" class="btn btn-success">Save changes</button>
         </div>
       </div>
     </div>
   </div>
-</form> *@
+</form>
 
 @section scripts{
   <script type="text/javascript">  
@@ -690,43 +535,28 @@
         //console.log('clicked');
         return false;
     });
-    // ADD Porftolio ROW
-    $(document).on("click" ,"#btnAddPort", function () {
-        $.ajax({
-            url: "/Profile/BlankPortfolio",
-            cache: false,
-            success: function (html) { $("#portfolioList").append(html);
-            }      
-        });
-        return false;
-    });    
-//REMOvE EXPERIENCE
-    $(document).on("click", "#removePortfolio", function () {
-        //console.log($(this).text());
-        $(this).parents("div.PortfolioEditorRow:first").remove();
-        //console.log('clicked');
-        return false;
-    });
-
-
-  //
-     //triggered when modal is about to be shown
-     $('#my_modal').on('show.bs.modal', function(e) { 
-        var projectId = $(e.relatedTarget).data('project-id');
-        $(e.currentTarget).find('input[name="projectId"]').val(projectId);
-        var id = $('#projectId').val();
-        @foreach (var item in Model.ListOfPortfolios)
-        {
-          
+    
+    //EDIT PORTFOLIO
+    function editProject(projectId) {
+    $.ajax({
+        url: '/Profile/EditPortfolio/' + projectId, // The method name + paramater
+        success: function(data) {
+            
+            $('#modalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+            $('#editModal').modal();
         }
-    });  
-    
-    @* // $('#myModal1').on('show.bs.modal', function(e) { 
-      //var projectId = $(e.relatedTarget).data('id');
-      //$('#InstrumentIDLink').attr('href', 'url+'+ projectId)
-      //$('#InstrumentIDLink').text('Anchor Link Value='+ projectId);
-    
- @* //})    *@
+      });
+    }
+    function deleteProject(projectId) {
+    $.ajax({
+        url: '/Profile/DeletePortfolio/' + projectId, // The method name + paramater
+        success: function(data) {
+            
+            $('#DeleteModalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+            $('#deleteModal').modal();
+        }
+      });
+    }
 
     </script>
 }

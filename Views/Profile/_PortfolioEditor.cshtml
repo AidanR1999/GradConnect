@@ -4,13 +4,13 @@
     @using (Html.BeginCollectionItem("ListOfPortfolios"))
     {
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <a href="#" class="deleteRow" id="removePortfolio"><i class="fas fa-times"></i></a>
+        
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="ProjectName"></label>
             </div>
             <div class="col-9">
-                <input type="text" asp-for="ProjectName" />
+                <input type="text" asp-for="ProjectName" required />
             </div>
             <span asp-validation-for="ProjectName" class="text-danger"></span>
         </div> 
@@ -19,7 +19,7 @@
                 <label asp-for="Description"></label>
             </div>
             <div class="col-8">
-                <textarea rows="4" cols="30" asp-for="Description">
+                <textarea rows="4" cols="30" asp-for="Description" required>
                     </textarea>
             </div>
             <span asp-validation-for="Description" class="text-danger"></span>
