@@ -83,6 +83,157 @@ namespace GradConnect.Controllers
         {
             return PartialView("_PortfolioEditor", new Portfolio());
         }
+        public async Task<IActionResult> AddPortfolio(UserProfileViewModel model)
+        {
+            var user = GetUser();
+
+            if (ModelState.IsValid)
+            {
+                foreach (var item in model.ListOfPortfolios)
+                {
+                    Portfolio newPort = new Portfolio();
+                    newPort.ProjectName = item.ProjectName;
+                    newPort.Description = item.Description;
+                    newPort.Link = item.Link;
+                    newPort.User = user;
+                    newPort.UserId = user.Id;
+                    await _context.Portfolios.AddAsync(newPort);
+                    await _context.SaveChangesAsync();
+                    if (model.PictureFile != null)
+                    {
+                        var files = HttpContext.Request.Form.Files;
+                        if (files.Count > 0 && files[0] != null)
+                        {
+                            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images/Portfolios");
+                            if (files.Count < 1)
+                            {
+                                await _context.Portfolios.AddAsync(newPort);
+                                await _context.SaveChangesAsync();
+                                return RedirectToAction(nameof(Index));
+                            }
+                            var extension = Path.GetExtension(files[0].FileName);
+                            newPort.Image = newPort.Id + extension;
+                            string filePath = Path.Combine(uploadsFolder, newPort.Image);
+                            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                            {
+                                files[0].CopyTo(fileStream);
+                            }
+                        }
+
+                    }
+                    _context.Portfolios.Update(newPort);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditPortfolio(int id)
+        {
+            var user = GetUser();
+            var port = await _context.Portfolios.FirstOrDefaultAsync(x => x.Id == id);
+
+            UserProfileViewModel model = new UserProfileViewModel();
+            model.Portfolio = port;
+
+            return PartialView("_EditPortfolio", model);
+        }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> EditPortfolioPost(int id, UserProfileViewModel model)
+        {
+            var user = GetUser();
+            var port = await _context.Portfolios.FirstOrDefaultAsync(x => x.Id == id);
+            if (ModelState.IsValid)
+            {
+                // var item = model.ListOfPortfolios.Where(x => x.Id == id).FirstOrDefault();
+
+                port.Description = model.Portfolio.Description;
+                port.Link = model.Portfolio.Link;
+                port.ProjectName = model.Portfolio.ProjectName;
+                port.Image = model.Portfolio.Image;
+                port.User = user;
+                port.UserId = user.Id;
+                if (model.PictureFile != null)
+                {
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Count > 0 && files[0] != null)
+                    {
+                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images/Portfolios");
+                        if (files.Count < 1)
+                        {
+                            _context.Portfolios.Update(port);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        var extension = Path.GetExtension(files[0].FileName);
+                        //find extension of the images
+                        var extension_new = Path.GetExtension(files[0].FileName);
+                        var extension_old = Path.GetExtension(port.Image);
+
+                        //if old image exists
+                        if (System.IO.File.Exists(Path.Combine(uploadsFolder, id + extension_old)))
+                        {
+                            //delete old image
+                            System.IO.File.Delete(Path.Combine(uploadsFolder, id + extension_old));
+                        }
+
+                        port.Image = id + extension;
+                        string filePath = Path.Combine(uploadsFolder, port.Image);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            files[0].CopyTo(fileStream);
+                        }
+                    }
+
+                }
+
+                _context.Portfolios.Update(port);
+                await _context.SaveChangesAsync();
+
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletePortfolio(int id)
+        {
+            var user = GetUser();
+            var port = await _context.Portfolios.FirstOrDefaultAsync(x => x.Id == id);
+
+            UserProfileViewModel model = new UserProfileViewModel();
+            model.Portfolio = port;
+
+            return PartialView("_DeletePortfolio", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePortfolioPost(int id, UserProfileViewModel model)
+        {
+            var user = GetUser();
+
+            if (ModelState.IsValid)
+            {
+                var port = await _context.Portfolios.FirstOrDefaultAsync(x => x.Id == id);
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images/Portfolios");
+                var extension_old = Path.GetExtension(port.Image);
+                if (System.IO.File.Exists(Path.Combine(uploadsFolder, id + extension_old)))
+                {
+                    //delete old image
+                    System.IO.File.Delete(Path.Combine(uploadsFolder, id + extension_old));
+                }
+
+                _context.Portfolios.Remove(port);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
         public async Task<IActionResult> AddSkillsToUser(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -207,85 +358,6 @@ namespace GradConnect.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> EditPortfolio(UserProfileViewModel model)
-        {
-            var user = GetUser();
-
-            if (ModelState.IsValid)
-            {
-                //var userFromDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
-                var portfoliosFromDb = await _context.Portfolios.Include(x => x.Photo).Where(x => x.UserId == user.Id).ToListAsync();
-
-                if (portfoliosFromDb != null || model.ListOfPortfolios.Count() != 0)
-                {
-                    foreach (var port in portfoliosFromDb)
-                    {
-                        _context.Portfolios.Remove(port);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-
-                if (model.ListOfPortfolios == null || model.ListOfPortfolios.Count() == 0)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    for (var i = 0; i < model.ListOfPortfolios.Count(); i++)
-                    {
-                        Portfolio newPort = new Portfolio();
-                        newPort.ProjectName = model.ListOfPortfolios[i].ProjectName;
-                        newPort.Description = model.ListOfPortfolios[i].Description;
-                        newPort.Link = model.ListOfPortfolios[i].Link;
-                        newPort.User = user;
-                        newPort.UserId = user.Id;
-
-                        if (model.PictureFiles != null)
-                        {
-                            var files = HttpContext.Request.Form.Files;
-                            if (files.Count > 0 && files[0] != null)
-                            {
-                                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images/Portfolios");
-                                if(files.Count < i+1)
-                                {
-                                    await _context.Portfolios.AddAsync(newPort);
-                                    await _context.SaveChangesAsync();
-                                    return RedirectToAction(nameof(Index));
-                                }
-                                var extension = Path.GetExtension(files[i].FileName);
-                                //find extension of the images
-                                var extension_new = Path.GetExtension(files[i].FileName);
-                                var extension_old = Path.GetExtension(model.ListOfPortfolios[i].Image);
-
-                                //if old image exists
-                                if (System.IO.File.Exists(Path.Combine(uploadsFolder, model.ListOfPortfolios[i].ProjectName + extension_old)))
-                                {
-                                    //delete old image
-                                    System.IO.File.Delete(Path.Combine(uploadsFolder, model.ListOfPortfolios[i].ProjectName + extension_old));
-                                }
-
-                                newPort.Image = model.ListOfPortfolios[i].ProjectName + extension;
-                                string filePath = Path.Combine(uploadsFolder, newPort.Image);
-                                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    files[i].CopyTo(fileStream);
-                                }
-                            }
-
-                        }
-                        // string uniqueFileName = UploadedPortfolioImage(model);
-                        // newPort.Image = uniqueFileName;
-                        await _context.Portfolios.AddAsync(newPort);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-
         public async Task<IActionResult> AddProfileImage(UserProfileViewModel model)
         {
             var user = GetUser();
@@ -305,7 +377,6 @@ namespace GradConnect.Controllers
         #endregion
 
         #region Utils
-        
         private string UploadedFile(UserProfileViewModel model)
         {
             var user = GetUser();
