@@ -394,13 +394,13 @@ namespace GradConnect.Controllers
                     var extension_old = Path.GetExtension(user.ProfileImage);
 
                     //if old image exists
-                    if (System.IO.File.Exists(Path.Combine(uploadsFolder, user.Forename + "_" + user.Surname + extension_old)))
+                    if (System.IO.File.Exists(Path.Combine(uploadsFolder, user.Id + extension_old)))
                     {
                         //delete old image
-                        System.IO.File.Delete(Path.Combine(uploadsFolder, user.Forename + "_" + user.Surname + extension_old));
+                        System.IO.File.Delete(Path.Combine(uploadsFolder, user.Id + extension_old));
                     }
 
-                    uniqueFileName = user.Forename + "_" + user.Surname + extension;
+                    uniqueFileName = user.Id + extension;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {

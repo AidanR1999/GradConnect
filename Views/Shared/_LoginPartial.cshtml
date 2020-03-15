@@ -2,11 +2,50 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+{   
+
+    
+    <li class="nav-item">        
+        @if(user.ProfileImage == null)
+        {
+            <p>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">
+                    <img src="~/Images/UsersProfileImages/blank.jpg"   
+                    class="rounded-circle"   
+                    height="40" width="40"   
+                    asp-append-version="true"
+                    style="cursor : pointer;" />            
+                </a>
+            </p>
+        }
+        else
+        {
+            <p>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">
+                    <img src="~/Images/UsersProfileImages/@user.ProfileImage"   
+                    class="rounded-circle"   
+                    height="40" width="40"   
+                    asp-append-version="true" 
+                    style="cursor : pointer;"/>
+                </a>
+            </p>
+        }
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Hello @User.Identity.Name!
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+        <div class="dropdown-divider"></div>
+        <a  class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account Settings</a>
+        </div>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
