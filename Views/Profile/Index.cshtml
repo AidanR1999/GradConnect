@@ -1,4 +1,11 @@
 @model GradConnect.ViewModels.UserProfileViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 @{
     ViewData["Title"] = "Profile";
@@ -12,56 +19,88 @@
         @if(Model.ProfilePhoto == null)
         {
           <p>
-            <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
-              <img src="~/Images/UsersProfileImages/blank.jpg"   
+            @if(user == @Model.User)
+            {
+                <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+                <img src="~/Images/UsersProfileImages/blank.jpg"   
                   class="rounded-circle"   
                   height="200" width="200"   
                   asp-append-version="true"
                   style="cursor: pointer; 1px solid black;"/>
-            </a>
+                </a>
+            }
+            else
+            {
+              <img src="~/Images/UsersProfileImages/blank.jpg"   
+                  class="rounded-circle"   
+                  height="200" width="200"   
+                  asp-append-version="true"
+                  style="1px solid black;"/>
+            } 
+              
+                          
+              
           </p>
         }
         else
         {
           <p>
-            <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
-                <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
+            @if(user == @Model.User)
+            {
+              <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+                  <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
+                    class="rounded-circle"   
+                    height="200" width="200"   
+                    asp-append-version="true"
+                    style="cursor: pointer; border: 1px solid black;" />
+              </a>
+            }
+            else
+            {
+              <img src="~/Images/UsersProfileImages/blank.jpg"   
                   class="rounded-circle"   
                   height="200" width="200"   
                   asp-append-version="true"
-                  style="cursor: pointer; border: 1px solid black;" />
-            </a>
+                  style="1px solid black;"/>
+            }  
           </p>
               @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
           
         }
     </div>
     <div class="col-md-9">
-        <h3>@Model.Forename @Model.Surname</h3>    
+        <h3>@Model.Fullname</h3>    
         <p>@Model.Institution</p>
         
         @if(Model.Course == null || Model.Course == "")
         {
-          <p>Please add your course</p>
-          <form asp-action="AddCourse">
+            if(user == @Model.User)
+            {
+              <p>Please add your course</p>
+              <form asp-action="AddCourse">
               <div class="col-3">
                 <label asp-for="@Model.Course"></label>
-            </div>
-            <div class="col-9">
-                <input type="text" asp-for="@Model.Course" />
-            </div>
-            <span asp-validation-for="@Model.Course" class="text-danger"></span>              
-              <button type="submit" asp-action="AddCourse" class="btn btn-success">Save changes</button>
-            </form>
-          
+              </div>
+              <div class="col-9">
+                  <input type="text" asp-for="@Model.Course" />
+              </div>
+              <span asp-validation-for="@Model.Course" class="text-danger"></span>              
+                <button type="submit" asp-action="AddCourse" class="btn btn-success">Save changes</button>
+              </form>
+            }
         }
         else
         {
-          <p>@Model.Course</p>
-          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#EditCourseModalCenter">
-            <i class="fas fa-edit"></i> Edit Course
-          </button>
+              <p>@Model.Course</p>
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#EditCourseModalCenter">
+                <i class="fas fa-edit"></i> Edit Course
+              </button>
+            }
         }
+          
+          
         
     </div>
   </div>
@@ -73,10 +112,17 @@
     <div class="card card-body">
       @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
       {
-        <p>Please add skills</p>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
-          <i class="fas fa-plus"></i> Add Skills
-        </button>
+        if(user == @Model.User)
+        {
+          <p>Please add skills</p>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+            <i class="fas fa-plus"></i> Add Skills
+          </button>
+        }
+        else
+        {
+          <p>This users has not added any skills yet</p>
+        }
       }
       else
       { var i = 0;
@@ -98,9 +144,12 @@
             i++;
         }
         </div>
+        if(user == @Model.User)
+        {
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
           <i class="fas fa-edit"></i> Edit Skills
         </button>
+        }
       }
       
     </div>
@@ -120,22 +169,32 @@
             <h3>About</h3>
             @if(Model.About == null)
             {
-              <form asp-action="EditAbout">
-                <p>Please write something about yourself so employers can know you better</p>
-                <div class="col-10">
-                  <textarea rows="4" cols="50" asp-for="About">
-                  </textarea>
-                </div>
-                <span asp-validation-for="About" class="text-danger"></span>
-                <button type="submit" asp-action="EditAbout" class="btn btn-success">Save changes</button>
-              </form>
+              if(user == @Model.User)
+              {
+                <form asp-action="EditAbout">
+                  <p>Please write something about yourself so employers can know you better</p>
+                  <div class="col-10">
+                    <textarea rows="4" cols="50" asp-for="About">
+                    </textarea>
+                  </div>
+                  <span asp-validation-for="About" class="text-danger"></span>
+                  <button type="submit" asp-action="EditAbout" class="btn btn-success">Save changes</button>
+                </form>
+              }
+              else
+              {
+                <p>This users has not completed this section yet</p>
+              }
             }
             else
             {
               <p>@Model.About</p>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditAbout">
-                <i class="fas fa-edit"></i>Edit
-              </button>
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditAbout">
+                  <i class="fas fa-edit"></i>Edit
+                </button>
+              }
             }
             
           </div>
@@ -143,10 +202,17 @@
             <h3>Experience</h3>
             @if(Model.Experiences == null || Model.Experiences.Count() == 0)
             {
-              <p>Please give us details about your Experience</p>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
-                <i class="fas fa-plus"></i> Add Experience
-              </button>
+              if(user == @Model.User)
+              {
+                <p>Please give us details about your Experience</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
+                  <i class="fas fa-plus"></i> Add Experience
+                </button>
+              }
+              else
+              {
+                <p>This users has not completed this section yet</p>
+              }
             }
             else
             {
@@ -167,20 +233,29 @@
               }
               <dd class="clear"></dd>
 
-
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
-                <i class="fas fa-plus"></i> Add Experience
-              </button>
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
+                  <i class="fas fa-plus"></i> Add Experience
+                </button>
+              }
             }
           </div>
           <div id="portfolio" class="tab-pane fade">
             <h3>Portfolio</h3>
             @if(Model.ListOfPortfolios == null || Model.ListOfPortfolios.Count() ==0)
             {
-              <p>Here you can show up your skills and add any of your projects with images and links i.e. Github</p>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
-                <i class="fas fa-plus"></i> Add Project
-              </button>
+              if(user == @Model.User)
+              {
+                <p>Here you can show up your skills and add any of your projects with images and links i.e. Github</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                  <i class="fas fa-plus"></i> Add Project
+                </button>
+              }
+              else
+              {
+                <p>This users has not completed this section yet</p>
+              }
             }
             else
             {
@@ -222,13 +297,13 @@
                 </div>
                 
               }
-              
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
-                <i class="fas fa-plus"></i> Add Project
-              </button>
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                  <i class="fas fa-plus"></i> Add Project
+                </button>
+              }
             }
-
-
           </div>
         </div>
       </div>

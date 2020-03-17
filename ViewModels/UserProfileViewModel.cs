@@ -8,10 +8,12 @@ namespace GradConnect.ViewModels
     {
         public string Forename { get; set; }
         public string Surname { get; set; }
+        public string Fullname => $"{Forename} {Surname}";
         public string Institution { get; set; }
         public string Email { get; set; }
         public string Course { get; set; }
         public string About { get; set; }
+        public User User { get; set; }
         public bool VerifiedStudent { get; set; }
         public IFormFile ProfilePicture { get; set; }        
         public string ProfilePhoto { get; set; }

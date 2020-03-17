@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200314134926_removedBoolFromPortfolio")]
-    partial class removedBoolFromPortfolio
+    [Migration("20200317155423_AddedFullNameToUser2")]
+    partial class AddedFullNameToUser2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

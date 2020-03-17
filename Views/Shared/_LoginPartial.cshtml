@@ -9,10 +9,10 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {   
-
+    
     
     <li class="nav-item">        
-        @if(user.ProfileImage == null)
+        @if(user.ProfileImage == null) 
         {
             <p>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">

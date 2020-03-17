@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-    public partial class removedBoolFromPortfolio : Migration
+    public partial class AddedFullNameToUser2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

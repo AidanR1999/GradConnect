@@ -33,44 +33,103 @@ namespace GradConnect.Controllers
 
         #region CRUD
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
             var user = GetUser();
-            UserProfileViewModel model = new UserProfileViewModel();
-
-            var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
-            var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
-            var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
-            var exps = await _context.Experiences.Where(x => x.UserId == user.Id).ToListAsync();
-            // var photos = await _context.Photos.Where(x => x. == user.Id).ToListAsync();
-            model.Forename = userFromDb.Forename;
-            model.Surname = userFromDb.Surname;
-            model.Experiences = exps;
-            model.Email = userFromDb.Email;
-            model.About = userFromDb.About;
-            model.Course = userFromDb.CourseName;
-            model.ProfilePhoto = userFromDb.ProfileImage;
-            model.ListOfPortfolios = portfolios;
-            model.VerifiedStudent = userFromDb.StudentEmailConfirmed;
-            model.Institution = userFromDb.InstitutionName;
-
-            List<Skill> skills = new List<Skill>();
-            if (userSkills.Count == 0)
+            if(userName != null)
             {
-                return View(model);
+                try
+                {
+                    //var spacePos = userName.IndexOf(" ");
+                    userName = userName.Trim();
+                    var searchedUser =  _context.Users.Where(x => x.Forename.ToLower().Contains(userName.ToLower()) || x.Surname.ToLower().Contains(userName.ToLower())).FirstOrDefault();
+                    if(searchedUser != null)
+                    {
+                        var portfolios = await _context.Portfolios.Where(x => x.UserId == searchedUser.Id).ToListAsync();
+                        var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == searchedUser.Id).ToListAsync();
+                        var exps = await _context.Experiences.Where(x => x.UserId == searchedUser.Id).ToListAsync();
+                        UserProfileViewModel model = new UserProfileViewModel();
+                        model.User = searchedUser;
+                        model.Forename = searchedUser.Forename;
+                        model.Surname = searchedUser.Surname;
+                        model.Experiences = exps;
+                        model.Email = searchedUser.Email;
+                        model.About = searchedUser.About;
+                        model.Course = searchedUser.CourseName;
+                        model.ProfilePhoto = searchedUser.ProfileImage;
+                        model.ListOfPortfolios = portfolios;
+                        model.VerifiedStudent = searchedUser.StudentEmailConfirmed;
+                        model.Institution = searchedUser.InstitutionName;
+
+                        List<Skill> skills = new List<Skill>();
+                        if (userSkills.Count == 0)
+                        {
+                            return View(model);
+                        }
+                        else
+                        {
+                            foreach (var s in userSkills)
+                            {
+                                skills.Add(s.Skill);
+
+                            }
+                            model.ListOfSkills = skills;
+                        }
+
+                        return View(model);
+                    }
+                    else
+                    {
+                        BadRequest();
+                    }
+                    
+                }
+                catch 
+                {
+                    
+                    BadRequest();
+                }
             }
             else
             {
-                foreach (var s in userSkills)
+                UserProfileViewModel model = new UserProfileViewModel();
+
+                var userFromDb = await _context.Users.Include(x => x.Photo).FirstOrDefaultAsync(x => x.Id == user.Id);
+                var portfolios = await _context.Portfolios.Where(x => x.UserId == user.Id).ToListAsync();
+                var userSkills = await _context.UserSkills.Include(x => x.Skill).Where(x => x.UserId == user.Id).ToListAsync();
+                var exps = await _context.Experiences.Where(x => x.UserId == user.Id).ToListAsync();
+                // var photos = await _context.Photos.Where(x => x. == user.Id).ToListAsync();
+                model.Forename = userFromDb.Forename;
+                model.Surname = userFromDb.Surname;
+                model.Experiences = exps;
+                model.Email = userFromDb.Email;
+                model.About = userFromDb.About;
+                model.Course = userFromDb.CourseName;
+                model.ProfilePhoto = userFromDb.ProfileImage;
+                model.ListOfPortfolios = portfolios;
+                model.VerifiedStudent = userFromDb.StudentEmailConfirmed;
+                model.Institution = userFromDb.InstitutionName;
+                model.User = userFromDb;
+                List<Skill> skills = new List<Skill>();
+                if (userSkills.Count == 0)
                 {
-                    skills.Add(s.Skill);
-
+                    return View(model);
                 }
-                model.ListOfSkills = skills;
+                else
+                {
+                    foreach (var s in userSkills)
+                    {
+                        skills.Add(s.Skill);
+
+                    }
+                    model.ListOfSkills = skills;
+                }
+
+
+                return View(model);
             }
-
-
-            return View(model);
+            return RedirectToAction("Index", "Posts");
+            
         }
         [Authorize]
         public IActionResult BlankSkill()
