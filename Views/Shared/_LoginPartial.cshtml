@@ -38,19 +38,18 @@
         }
     </li>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Hello @User.Identity.Name!
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
-        <a class="dropdown-item text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Solutions</a>
-        <a class="dropdown-item text-dark" asp-area="" asp-controller="Home" asp-action="Index">My Bookmarks</a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+        <a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">My Solutions</a>
+        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">My Bookmarks</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account Settings</a>
-        <form  class="dropdown-item form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account Settings</a>
+        <form  class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
-        </div>
     </li>
 }
 else
