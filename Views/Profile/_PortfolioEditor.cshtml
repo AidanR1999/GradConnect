@@ -1,0 +1,40 @@
+@model Portfolio
+
+<div class="PortfolioEditorRow">
+    @using (Html.BeginCollectionItem("ListOfPortfolios"))
+    {
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="ProjectName"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="ProjectName" required />
+            </div>
+            <span asp-validation-for="ProjectName" class="text-danger"></span>
+        </div> 
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Description"></label>
+            </div>
+            <div class="col-8">
+                <textarea rows="4" cols="30" asp-for="Description" required>
+                    </textarea>
+            </div>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Link"></label>
+            </div>
+            <div class="col-9">
+                <input type="text" asp-for="Link" />
+            </div>
+            <span asp-validation-for="Link" class="text-danger"></span>
+        </div>
+        
+        <hr>
+    }
+    
+</div>

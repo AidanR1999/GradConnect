@@ -7,9 +7,13 @@ namespace GradConnect.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
+        [Display(Name = "Job Title")]
         public string JobTitle { get; set; }
+        [Display(Name = "What year you started working?")]
         public string YearStart { get; set; }
+        [Display(Name = "What year you finished?")]
         public string YearEnd { get; set; }
         public string Responsibilities { get; set; }
 

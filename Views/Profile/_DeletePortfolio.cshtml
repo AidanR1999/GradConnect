@@ -1,0 +1,52 @@
+@model GradConnect.ViewModels.UserProfileViewModel;
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Project</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                
+            </div>
+            <div class="modal-body">
+                
+                    <form enctype="multipart/form-data" method="POST" asp-action="DeletePortfolioPost">
+                        
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label asp-for="@Model.Portfolio.ProjectName"></label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" asp-for="@Model.Portfolio.ProjectName" disabled/>
+                            </div>
+                            <span asp-validation-for="@Model.Portfolio.ProjectName" class="text-danger"></span>
+                        </div> 
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label asp-for="@Model.Portfolio.Description"></label>
+                            </div>
+                            <div class="col-8">
+                                <textarea rows="4" cols="30" asp-for="@Model.Portfolio.Description" disabled>
+                                </textarea>
+                            </div>
+                            <span asp-validation-for="@Model.Portfolio.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label asp-for="@Model.Portfolio.Link"></label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" asp-for="@Model.Portfolio.Link" disabled/>
+                            </div>
+                            <span asp-validation-for="@Model.Portfolio.Link" class="text-danger"></span>
+                        </div>
+                        
+                        <button type="submit" asp-action="DeletePortfolioPost" asp-route-id="@Model.Portfolio.Id" class="btn btn-danger">Delete</button>    
+                    </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,23 +1,24 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace GradConnect.Models
 {
     public class Portfolio
     {
-        public Portfolio(int id, string description, int photoId, string userId) 
-        {
-            this.Id = id;
-                this.Description = description;
-                this.PhotoId = photoId;
-                this.UserId = userId;
-               
-        }
         public int Id { get; set; }
+        
+        [Display(Name = "Project Name")]
+        public string ProjectName { get; set; }
         public string Description { get; set; }
-
+        public string Link { get; set; }
+        public string Image { get; set; }
+        [NotMapped]
+        public IFormFile PictureFile { get; set; }
+        
         //Navigational properties
         [InverseProperty("Photo")]
-        public int PhotoId { get; set; }
+        public int? PhotoId { get; set; }
         public virtual Photo Photo  { get; set; }
         
         [InverseProperty("User")]

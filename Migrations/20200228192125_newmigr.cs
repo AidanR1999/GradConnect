@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
+<<<<<<< HEAD:Migrations/20200228192125_newmigr.cs
     public partial class newmigr : Migration
+=======
+    public partial class AddedFullNameToUser2 : Migration
+>>>>>>> profile:Migrations/20200317155423_AddedFullNameToUser2.cs
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -352,8 +356,11 @@ namespace GradConnect.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ProjectName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    PhotoId = table.Column<int>(nullable: false),
+                    Link = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    PhotoId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -467,6 +474,7 @@ namespace GradConnect.Migrations
                     About = table.Column<string>(nullable: true),
                     InstitutionName = table.Column<string>(nullable: true),
                     CourseName = table.Column<string>(nullable: true),
+                    ProfileImage = table.Column<string>(nullable: true),
                     PhotoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -798,7 +806,7 @@ namespace GradConnect.Migrations
                 column: "PhotoId",
                 principalTable: "Photos",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Posts_AspNetUsers_UserId",

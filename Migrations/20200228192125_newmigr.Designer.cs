@@ -9,8 +9,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<< HEAD:Migrations/20200228192125_newmigr.Designer.cs
     [Migration("20200228192125_newmigr")]
     partial class newmigr
+=======
+    [Migration("20200317155423_AddedFullNameToUser2")]
+    partial class AddedFullNameToUser2
+>>>>>>> profile:Migrations/20200317155423_AddedFullNameToUser2.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -276,8 +281,17 @@ namespace GradConnect.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PhotoId")
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PhotoId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProjectName")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
@@ -470,6 +484,9 @@ namespace GradConnect.Migrations
 
                     b.Property<int?>("PhotoId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
@@ -823,9 +840,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.Photo", "Photo")
                         .WithMany()
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PhotoId");
 
                     b.HasOne("GradConnect.Models.User", "User")
                         .WithMany("Portfolios")
