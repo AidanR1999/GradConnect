@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-<<<<<<< HEAD:Migrations/20200228192125_newmigr.cs
-    public partial class newmigr : Migration
-=======
-    public partial class AddedFullNameToUser2 : Migration
->>>>>>> profile:Migrations/20200317155423_AddedFullNameToUser2.cs
+    public partial class newMig2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -243,7 +239,7 @@ namespace GradConnect.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
-                    CvId = table.Column<int>(nullable: false)
+                    CvId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -253,7 +249,7 @@ namespace GradConnect.Migrations
                         column: x => x.CvId,
                         principalTable: "CVs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

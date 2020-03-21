@@ -381,7 +381,7 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CvId")
+                    b.Property<int?>("CvId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -875,9 +875,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.CV", "Cv")
                         .WithMany("Skills")
-                        .HasForeignKey("CvId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CvId");
                 });
 
             modelBuilder.Entity("GradConnect.Models.Submission", b =>

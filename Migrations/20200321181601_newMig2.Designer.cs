@@ -9,13 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<< HEAD:Migrations/20200228192125_newmigr.Designer.cs
-    [Migration("20200228192125_newmigr")]
-    partial class newmigr
-=======
-    [Migration("20200317155423_AddedFullNameToUser2")]
-    partial class AddedFullNameToUser2
->>>>>>> profile:Migrations/20200317155423_AddedFullNameToUser2.Designer.cs
+    [Migration("20200321181601_newMig2")]
+    partial class newMig2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -388,7 +383,7 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CvId")
+                    b.Property<int?>("CvId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -882,9 +877,7 @@ namespace GradConnect.Migrations
                 {
                     b.HasOne("GradConnect.Models.CV", "Cv")
                         .WithMany("Skills")
-                        .HasForeignKey("CvId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CvId");
                 });
 
             modelBuilder.Entity("GradConnect.Models.Submission", b =>
