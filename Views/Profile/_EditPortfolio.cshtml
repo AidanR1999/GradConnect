@@ -39,15 +39,19 @@
                             </div>
                             <span asp-validation-for="@Model.Portfolio.Link" class="text-danger"></span>
                         </div>
-                        <div class="row">
-                            <p> 
-                                <img src="~/Images/Portfolios/@Model.Portfolio.Image" 
-                                height="200" width="200"   
-                                asp-append-version="true"
-                                style="align-text: center;"/>
-                                </a> 
-                            </p>
-                        </div>
+                        
+                        
+                            <div class="form-group row">    
+                                <p> 
+                                    <img src="~/Images/Portfolios/@Model.Portfolio.Image" 
+                                        height="200" width="200"   
+                                        asp-append-version="true"
+                                        style="align-text: center;"/>
+                                    </a> 
+                                </p>
+                            </div>    
+                        
+                        
                         <div class="input-group mb-3">
                         <div class="custom-file">
                             <input asp-for="@Model.PictureFile" class="custom-file-input">  
