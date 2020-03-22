@@ -179,7 +179,8 @@ namespace GradConnect.Controllers
 
             UserProfileViewModel model = new UserProfileViewModel();
             model.Portfolio = port;
-
+            model.User = user;
+            model.User.Id = user.Id;
             return PartialView("_EditPortfolio", model);
         }
 

@@ -8,7 +8,7 @@
 }
 
 @{
-    ViewData["Title"] = "@Model.Fullname || GradConnect";
+    ViewData["Title"] = @Model.Fullname + " || GradConnect";
 }
 
 <div class="card card-body">
@@ -57,7 +57,7 @@
             }
             else
             {
-              <img src="~/Images/UsersProfileImages/blank.jpg"   
+              <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"   
                   class="rounded-circle"   
                   height="200" width="200"   
                   asp-append-version="true"
@@ -285,21 +285,23 @@
                       </div>
                     
                   }
-                  <div class="row">
-                    <a href="#" onclick="editProject(@port.Id)" class="btn btn-sm btn-primary">
-                      <i class="fas fa-edit"></i>Edit</a>
-                  </div>
-                  <div class="row">
-                    <a href="#" onclick="deleteProject(@port.Id)" class="btn btn-sm btn-danger">
-                      <i class="fas fa-trash-alt"></i>Delete</a>
-                  </div>
-
+                  @if(user == @Model.User)
+                  {
+                    <div class="row">
+                      <button href="#" onclick="editProject(@port.Id)" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit"></i>Edit</button>
+                    </div>
+                    <div class="row">
+                      <button href="#" onclick="deleteProject(@port.Id)" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>Delete</button>
+                    </div>
+                  }
                 </div>
                 
               }
               if(user == @Model.User)
               {
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPortfolio">
                   <i class="fas fa-plus"></i> Add Project
                 </button>
               }
@@ -530,11 +532,11 @@
 
 <!-- MODAL FOR ADD Portfolio -->
 <form enctype="multipart/form-data" asp-action="AddPortfolio">
-  <div class="modal fade" id="editPortfolio" tabindex="-1" role="dialog" aria-labelledby="editPortfolioCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="addPortfolio" tabindex="-1" role="dialog" aria-labelledby="addPortfolioCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editPortfolioLongTitle">Add Project to your portfolio</h5>
+        <h5 class="modal-title" id="addPortfolioLongTitle">Add Project to your portfolio</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
