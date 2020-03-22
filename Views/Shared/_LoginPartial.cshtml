@@ -15,7 +15,7 @@
         @if(user.ProfileImage == null) 
         {
             <p>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">
+                <a class="nav-link text-dark" asp-area="" asp-route-id="@user.Id" asp-controller="Profile" asp-action="Details">
                     <img src="~/Images/UsersProfileImages/blank.jpg"   
                     class="rounded-circle"   
                     height="40" width="40"   
@@ -27,7 +27,7 @@
         else
         {
             <p>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">
+                <a class="nav-link text-dark" asp-area="" asp-route-id="@user.Id" asp-controller="Profile" asp-action="Details">
                     <img src="~/Images/UsersProfileImages/@user.ProfileImage"   
                     class="rounded-circle"   
                     height="40" width="40"   
@@ -42,7 +42,7 @@
             Hello @User.Identity.Name!
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-        <a class="dropdown-item" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
+        <a class="dropdown-item" asp-area="" asp-controller="Profile" asp-route-id="@user.Id" asp-action="Details">Profile</a>
         <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">My Solutions</a>
         <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">My Bookmarks</a>
         <div class="dropdown-divider"></div>

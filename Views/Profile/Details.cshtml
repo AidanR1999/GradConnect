@@ -1,0 +1,637 @@
+@model GradConnect.ViewModels.UserProfileViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@{
+    ViewData["Title"] = "@Model.Fullname || GradConnect";
+}
+
+<div class="card card-body">
+  <div class="row align-items-center">
+  <!-- Image trigger modal -->
+    <div class="col-md-3">
+      
+        @if(Model.ProfilePhoto == null)
+        {
+          <p>
+            @if(user == @Model.User)
+            {
+                <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+                <img src="~/Images/UsersProfileImages/blank.jpg"   
+                  class="rounded-circle"   
+                  height="200" width="200"   
+                  asp-append-version="true"
+                  style="cursor: pointer; 1px solid black;"/>
+                </a>
+            }
+            else
+            {
+              <img src="~/Images/UsersProfileImages/blank.jpg"   
+                  class="rounded-circle"   
+                  height="200" width="200"   
+                  asp-append-version="true"
+                  style="1px solid black;"/>
+            } 
+              
+                          
+              
+          </p>
+        }
+        else
+        {
+          <p>
+            @if(user == @Model.User)
+            {
+              <a href="" type="button"  data-toggle="modal" data-target="#ImageUpload">
+                  <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"  
+                    class="rounded-circle"   
+                    height="200" width="200"   
+                    asp-append-version="true"
+                    style="cursor: pointer; border: 1px solid black;" />
+              </a>
+            }
+            else
+            {
+              <img src="~/Images/UsersProfileImages/blank.jpg"   
+                  class="rounded-circle"   
+                  height="200" width="200"   
+                  asp-append-version="true"
+                  style="1px solid black;"/>
+            }  
+          </p>
+              @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
+          
+        }
+    </div>
+    <div class="col-md-9">
+        <h3>@Model.Fullname</h3>    
+        <p>@Model.Institution</p>
+        
+        @if(Model.Course == null || Model.Course == "")
+        {
+            if(user == @Model.User)
+            {
+              <p>Please add your course</p>
+              <form asp-action="AddCourse">
+              <div class="col-3">
+                <label asp-for="@Model.Course"></label>
+              </div>
+              <div class="col-9">
+                  <input type="text" asp-for="@Model.Course" />
+              </div>
+              <span asp-validation-for="@Model.Course" class="text-danger"></span>              
+                <button type="submit" asp-action="AddCourse" class="btn btn-success">Save changes</button>
+              </form>
+            }
+        }
+        else
+        {
+              <p>@Model.Course</p>
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#EditCourseModalCenter">
+                <i class="fas fa-edit"></i> Edit Course
+              </button>
+            }
+        }
+          
+          
+        
+    </div>
+  </div>
+</div>
+<hr>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card card-body">
+      @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
+      {
+        if(user == @Model.User)
+        {
+          <p>Please add skills</p>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+            <i class="fas fa-plus"></i> Add Skills
+          </button>
+        }
+        else
+        {
+          <p>This users has not added any skills yet</p>
+        }
+      }
+      else
+      { var i = 0;
+      <div class="row">
+        @foreach (var item in Model.ListOfSkills)
+        {
+            if(i % 2 != 0)
+            {
+              <div class="col col-md-6">
+                <h5><span class="badge badge-pill badge-info">@item.Name</span></h5>
+              </div>
+            }
+            else
+            {
+              <div class="col col-md-6">
+                <h5><span class="badge badge-pill badge-info">@item.Name</span></h5>
+              </div>
+            }
+            i++;
+        }
+        </div>
+        if(user == @Model.User)
+        {
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditSkillsModalCenter">
+          <i class="fas fa-edit"></i> Edit Skills
+        </button>
+        }
+      }
+      
+    </div>
+  </div>
+
+  <div class="col-md-8">
+      <div class="card card-body">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active"><button class="btn btn-primary" data-toggle="tab" href="#about" style="margin-right : 2px">About</button></li>
+          <li><button class="btn btn-primary" data-toggle="tab" href="#experience" style="margin-right : 2px">Experience</button></li>
+          <li><button class="btn btn-primary" data-toggle="tab" href="#portfolio">Portfolio</button></li>
+        </ul>
+    
+        <hr>
+        <div class="tab-content">
+          <div id="about" class="tab-pane fade in active">
+            <h3>About</h3>
+            @if(Model.About == null)
+            {
+              if(user == @Model.User)
+              {
+                <form asp-action="EditAbout">
+                  <p>Please write something about yourself so employers can know you better</p>
+                  <div class="col-10">
+                    <textarea rows="4" cols="50" asp-for="About">
+                    </textarea>
+                  </div>
+                  <span asp-validation-for="About" class="text-danger"></span>
+                  <button type="submit" asp-action="EditAbout" class="btn btn-success">Save changes</button>
+                </form>
+              }
+              else
+              {
+                <p>This users has not completed this section yet</p>
+              }
+            }
+            else
+            {
+              <p>@Model.About</p>
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditAbout">
+                  <i class="fas fa-edit"></i>Edit
+                </button>
+              }
+            }
+            
+          </div>
+          <div id="experience" class="tab-pane fade">
+            <h3>Experience</h3>
+            @if(Model.Experiences == null || Model.Experiences.Count() == 0)
+            {
+              if(user == @Model.User)
+              {
+                <p>Please give us details about your Experience</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
+                  <i class="fas fa-plus"></i> Add Experience
+                </button>
+              }
+              else
+              {
+                <p>This users has not completed this section yet</p>
+              }
+            }
+            else
+            {
+              @foreach(var item in Model.Experiences)
+              {
+                <div class="card card-body">
+                  <dd>
+                      <h4>@item.CompanyName, <span>@item.JobTitle,  @item.YearStart - @item.YearEnd</span></h4>
+                      <ul>
+                          <li>@item.Responsibilities</li>                        
+                      </ul>                    
+                  </dd>
+                </div>
+                if(Model.Experiences.Count() > 1)
+                {
+                  <hr>
+                }
+              }
+              <dd class="clear"></dd>
+
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editExperience">
+                  <i class="fas fa-plus"></i> Add Experience
+                </button>
+              }
+            }
+          </div>
+          <div id="portfolio" class="tab-pane fade">
+            <h3>Portfolio</h3>
+            @if(Model.ListOfPortfolios == null || Model.ListOfPortfolios.Count() ==0)
+            {
+              if(user == @Model.User)
+              {
+                <p>Here you can show up your skills and add any of your projects with images and links i.e. Github</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                  <i class="fas fa-plus"></i> Add Project
+                </button>
+              }
+              else
+              {
+                <p>This users has not completed this section yet</p>
+              }
+            }
+            else
+            {
+              @foreach(var port in Model.ListOfPortfolios)
+              {
+                <div class="card card-body">
+                  <div class="row">
+                    <dd>
+                        <h4>@port.ProjectName</h4>
+                        <p>@port.Description</p>
+                        <a href="@port.Link">@port.Link</a>                    
+                    </dd>
+                  </div>
+                  @if(port.Image != null)
+                  {
+                    
+                      <div class="row" style="text-align: center;">
+                        <p> 
+                          <a target="_blank" href="~/Images/Portfolios/@port.Image">
+                            
+                            <img src="~/Images/Portfolios/@port.Image" 
+                            height="200" width="200"   
+                            asp-append-version="true"
+                            style="cursor: pointer; 1px solid black;"/>
+                            </a> 
+                        </p>
+                      </div>
+                    
+                  }
+                  <div class="row">
+                    <a href="#" onclick="editProject(@port.Id)" class="btn btn-sm btn-primary">
+                      <i class="fas fa-edit"></i>Edit</a>
+                  </div>
+                  <div class="row">
+                    <a href="#" onclick="deleteProject(@port.Id)" class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash-alt"></i>Delete</a>
+                  </div>
+
+                </div>
+                
+              }
+              if(user == @Model.User)
+              {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPortfolio">
+                  <i class="fas fa-plus"></i> Add Project
+                </button>
+              }
+            }
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div id="modalWrapper">
+  
+</div>
+
+<div id="DeleteModalWrapper">
+  
+</div>
+
+
+<!-- Modal for image uploads -->
+<form enctype="multipart/form-data" asp-action="AddProfileImage">
+  <div class="modal fade" id="ImageUpload" tabindex="-1" role="dialog" aria-labelledby="ImageUploadCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ImageUploadLongTitle">Upload Your Profile Picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          @if(Model.ProfilePhoto == null)
+          {
+            <img src="~/Images/UsersProfileImages/blank.jpg"   
+                class="rounded-circle"   
+                height="100" width="100"   
+                asp-append-version="true" />
+          }
+          else
+          {
+            <img src="~/Images/UsersProfileImages/@Model.ProfilePhoto"   
+                class="rounded-circle"   
+                height="100" width="100"   
+                asp-append-version="true" />
+          }
+          @* <label for="cropzee-input" class="image-previewer" data-cropzee="cropzee-input"></label> *@
+        </div>
+        <div class="modal-footer">
+          <div class="input-group mb-3">
+            <div class="custom-file">
+                <input asp-for="ProfilePicture" class="custom-file-input" id="cropzee-input">  
+                <label class="custom-file-label" for="customFile">Choose image</label>
+            </div>
+            <span asp-validation-for="ProfilePicture" class="text-danger"></span>  
+            <div class="input-group-append">
+                <input type="submit" value="Upload" onclick="cropzeeGetImage('cropzee-input')" class="btn btn-sm btn-primary rounded-0" /> 
+                @* <button onclick="cropzeeGetImage('cropzee-input')"></button> *@
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL FOR EDIT SKILLS -->
+<form asp-action="AddSkillsToUser" id="addSkillsForm">
+  <div class="modal fade" id="EditSkillsModalCenter" tabindex="-1" role="dialog" aria-labelledby="EditSkillsCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditSkillsLongTitle">Add Skills</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-body" style="margin-top: 30px;">
+    @if(Model.ListOfSkills == null || Model.ListOfSkills.Count == 0)
+    {
+        var skill = new GradConnect.Models.Skill();
+        skill.Name = "";
+      <div id="skillsList">
+        <div id="SkillEditorRows">
+          <partial name="_SkillsEditor" model="skill"/>                                                          
+        </div>  
+      </div> 
+        <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
+          <i class="fas fa-plus"></i>
+        </button>            
+    }
+    else
+    {
+      <div id="skillsList">
+        @foreach (var item in Model.ListOfSkills)
+        {
+          <div id="SkillEditorRows">
+            <partial name="_SkillsEditor" model="item"/>                      
+          </div>
+        }
+      </div>
+      <button type="button" asp-action="BlankSkill" asp-controller="Profile" id="btnAddSkill" style="border-radius:42px;">
+          <i class="fas fa-plus"></i>
+      </button>                      
+    }
+    </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="AddSkillsToUser" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL FOR EDIT about -->
+<form asp-action="EditAbout">
+  <div class="modal fade" id="EditAbout" tabindex="-1" role="dialog" aria-labelledby="EditAboutCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit About section</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            <p>Please write something about yourself so employers can know you better</p>
+            <div class="col-10">
+              <textarea rows="4" cols="50" asp-for="About">
+              </textarea>
+            </div>
+            <span asp-validation-for="About" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="EditAbout" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL FOR EDIT COURSE -->
+<form asp-action="AddCourse">
+  <div class="modal fade" id="EditCourseModalCenter" tabindex="-1" role="dialog" aria-labelledby="EditCourseCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit Course section</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form asp-action="AddCourse">
+              <div class="col-3">
+                <label asp-for="@Model.Course"></label>
+              </div>
+            <div class="col-9">
+                <input type="text" asp-for="@Model.Course" />
+            </div>
+            <span asp-validation-for="@Model.Course" class="text-danger"></span>              
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="AddCourse" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL FOR EDIT Experience -->
+<form asp-action="EditExperience">
+  <div class="modal fade" id="editExperience" tabindex="-1" role="dialog" aria-labelledby="editExperienceCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editExperienceLongTitle">Add Experience</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-body">
+        @if(Model.Experiences == null)
+        {
+            var exp = new GradConnect.Models.Experience();
+            exp.CompanyName = "";
+          <div id="ExpEditorRows">
+            <partial name="_ExperienceEditor"  model="exp"/>                                
+          </div>
+
+          <button type="button" asp-action="BlankExperience" asp-controller="Profile" id="btnAddExp" style="border-radius:42px;">
+              <i class="fas fa-plus"></i>
+          </button>           
+        }
+        else
+        {
+          <div id="experienceList">                            
+            <h2 style= "text-align: center;">Experience</h2>
+            @foreach(var exp in Model.Experiences)
+            {
+              <div id="ExpEditorRows">
+                <partial name="_ExperienceEditor" model="exp"/>                                
+              </div>
+            }
+          </div>
+          <button type="button" asp-action="BlankExperience" asp-controller="Profile" id="btnAddExp" style="border-radius:42px;">
+              <i class="fas fa-plus"></i>
+          </button>                      
+        }
+        
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="EditExperience" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL FOR ADD Portfolio -->
+<form enctype="multipart/form-data" asp-action="AddPortfolio">
+  <div class="modal fade" id="editPortfolio" tabindex="-1" role="dialog" aria-labelledby="editPortfolioCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPortfolioLongTitle">Add Project to your portfolio</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-body">
+          @{
+              var newport = new GradConnect.Models.Portfolio();
+          }  
+            <div id="PortEditorRows">
+              <partial name="_PortfolioEditor"  model="newport"/>                                
+            </div>
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input asp-for="@Model.PictureFile" class="custom-file-input" id="cropzee-input">  
+                  <label class="custom-file-label" for="customFile">Choose image</label>
+                </div>
+              <span asp-validation-for="@Model.PictureFile" class="text-danger"></span>
+            </div>
+
+            
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" asp-action="AddPortfolio" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+@section scripts{
+  <script type="text/javascript">  
+        // Add the following code if you want the name of the file appear on select  
+        $(".custom-file-input").on("change", function () {  
+            var fileName = $(this).val().split("\\").pop();  
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
+        });  
+
+        
+      //ADD SKILL ROW
+    $(document).on("click" ,"#btnAddSkill", function () {
+        $.ajax({
+            url: "/Profile/BlankSkill",
+            cache: false,
+            success: function (html) { $("#skillsList").append(html);
+            }      
+        });
+        return false;
+    });
+    //REMOVE SKILL
+    $(document).on("click", "#removeSkill", function () {
+        //console.log($(this).text());
+            $(this).parents("div.SkillEditorRow:first").remove();
+        //console.log('clicked');
+        return false;
+    });
+
+// ADD EXPERIENCE ROW
+    $(document).on("click" ,"#btnAddExp", function () {
+        $.ajax({
+            url: "/Profile/BlankExperience",
+            cache: false,
+            success: function (html) { $("#experienceList").append(html);
+            }      
+        });
+        return false;
+    });    
+//REMOvE EXPERIENCE
+    $(document).on("click", "#removeExp", function () {
+        //console.log($(this).text());
+        $(this).parents("div.ExpEditorRow:first").remove();
+        //console.log('clicked');
+        return false;
+    });
+    
+    //EDIT PORTFOLIO
+    function editProject(projectId) {
+    $.ajax({
+        url: '/Profile/EditPortfolio/' + projectId, // The method name + paramater
+        success: function(data) {
+            
+            $('#modalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+            $('#editModal').modal();
+        }
+      });
+    }
+    function deleteProject(projectId) {
+    $.ajax({
+        url: '/Profile/DeletePortfolio/' + projectId, // The method name + paramater
+        success: function(data) {
+            
+            $('#DeleteModalWrapper').html(data); // This should be an empty div where you can inject your new html (the partial view)
+            $('#deleteModal').modal();
+        }
+      });
+    }
+
+    </script>
+}
