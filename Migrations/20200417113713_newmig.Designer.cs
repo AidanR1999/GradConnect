@@ -9,13 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradConnect.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<< HEAD:Migrations/20200321181601_newMig2.Designer.cs
-    [Migration("20200321181601_newMig2")]
-    partial class newMig2
-=======
-    [Migration("20200302165808_UpdatedJobs")]
-    partial class UpdatedJobs
->>>>>>> Jobs:Migrations/20200302165808_UpdatedJobs.Designer.cs
+    [Migration("20200417113713_newmig")]
+    partial class newmig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

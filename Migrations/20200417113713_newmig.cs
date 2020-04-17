@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GradConnect.Migrations
 {
-<<<<<<< HEAD:Migrations/20200321181601_newMig2.cs
-    public partial class newMig2 : Migration
-=======
-    public partial class UpdatedJobs : Migration
->>>>>>> Jobs:Migrations/20200302165808_UpdatedJobs.cs
+    public partial class newmig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
