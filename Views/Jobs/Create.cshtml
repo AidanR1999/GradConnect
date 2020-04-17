@@ -1,0 +1,61 @@
+﻿@model GradConnect.ViewModels.CreateJobsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Job</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractType" class="control-label"></label>
+                @Html.DropDownList("ContractType", new List<SelectListItem> {
+               new SelectListItem { Text = "Permanent", Value = "Permanent", Selected = true},
+               new SelectListItem { Text = "Temporary", Value = "Temporary"},
+               new SelectListItem { Text = "Contractor", Value = "Contractor"}
+                },"Select Contract Type")
+                @*<input asp-for="ContractType" class="form-control" />*@
+                <span asp-validation-for="ContractType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractedHours" class="control-label"></label>
+                @Html.DropDownList("ContractedHours", new List<SelectListItem> {
+               new SelectListItem { Text = "Full Time", Value = "Full Time", Selected = true},
+               new SelectListItem { Text = "Part Time", Value = "Part Time"},
+               new SelectListItem { Text = "Flexi", Value = "Flexi"}
+                },"Select Contracted Hours")
+                @*<input asp-for="ContractedHours" class="form-control" />*@
+                <span asp-validation-for="ContractedHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

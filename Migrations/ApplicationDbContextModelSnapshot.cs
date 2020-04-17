@@ -190,11 +190,26 @@ namespace GradConnect.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ContractType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ContractedHours")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DatePosted")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("EmployerId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");

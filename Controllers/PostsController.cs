@@ -9,6 +9,7 @@ using GradConnect.Data;
 using GradConnect.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using GradConnect.ViewModels;
 
 namespace GradConnect.Controllers
 {
@@ -33,7 +34,45 @@ namespace GradConnect.Controllers
 
             //sorts the posts and lists them in chronological order
             var posts = _context.Posts.Include(p => p.User);
-            return View(posts.OrderByDescending(x => x.DatePosted).ToList());
+            var jobs = _context.Jobs;
+
+            var feed = new FeedViewModel();
+
+            foreach(var post in posts)
+            {
+                var postCard = new PostCardViewModel()
+                {
+                    Id = post.Id,
+                    Title = post.Title,
+                    DatePosted = (DateTime)post.DatePosted,
+                    Description = post.Description,
+                    Salary = null,
+                    Location = "",
+                    ContractType = "",
+                    Icon = null
+                };
+                feed.PostCardFeed.Add(postCard);
+            }
+
+            foreach(var job in jobs)
+            {
+                var postCard = new PostCardViewModel()
+                {
+                    Id = job.Id,
+                    Title = job.Title,
+                    DatePosted = (DateTime)job.DatePosted,
+                    Description = job.Description,
+                    Salary = job.Salary,
+                    Location = job.Location,
+                    ContractType = job.ContractType,
+                    Icon = null
+                };
+                feed.PostCardFeed.Add(postCard);
+            }
+
+            //feed.PostCardFeed = (List<PostCardViewModel>) feed.PostCardFeed.OrderByDescending(x => x.DatePosted);
+
+            return View(feed);
         }
 
         // GET: Posts/Details/5

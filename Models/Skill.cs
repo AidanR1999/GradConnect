@@ -19,7 +19,6 @@ namespace GradConnect.Models
         public IEnumerable<PostSkill> PostSkills { get; set; }
         public IEnumerable<JobSkill> JobSkills { get; set; }
 
-
         [InverseProperty("CV")]
         public int? CvId { get; set; }
         public virtual CV Cv { get; set; }
