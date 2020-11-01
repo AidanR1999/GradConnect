@@ -11,10 +11,10 @@ This project was created as part of a 3rd year university integrated project. Th
 The Visual Prototype: [insert]
 
 # Credits
-Lukasz Bonkowski
-Pawel Kmiec
-James Lawn
-Euan McDonald
-Peter McKendry
-Aidan Rooney
-Cameron Walker
+Lukasz Bonkowski  
+Pawel Kmiec  
+James Lawn  
+Euan McDonald  
+Peter McKendry  
+Aidan Rooney  
+Cameron Walker  
